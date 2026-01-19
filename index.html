@@ -111,7 +111,6 @@
         .split-left {
             position: relative;
             z-index: 10;
-            background: var(--color-ink);
         }
 
         /* Right Column - Sticky Photo Carousel */
@@ -119,7 +118,6 @@
             position: sticky;
             top: 0;
             height: 100vh;
-            background: var(--color-ink);
             overflow: hidden;
         }
 
@@ -553,7 +551,8 @@
            FOOTER
            ======================================== */
         footer {
-            background: var(--color-ink);
+            position: relative;
+            z-index: 10;
             border-top: 1px solid var(--color-charcoal);
             padding: var(--space-16) var(--space-8);
             text-align: center;
