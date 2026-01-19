@@ -364,15 +364,14 @@
             color: var(--text-primary);
             margin-bottom: 1.5rem;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s;
+            transition: opacity 0.8s ease 0.15s;
             position: relative;
+            display: inline-block;
         }
 
         .about-heading.visible {
             opacity: 1;
-            transform: translateY(0);
-            animation: glitchSubtle 5s infinite;
+            animation: glitchSubtle 4s infinite;
         }
 
         .about-heading::before,
@@ -380,48 +379,46 @@
             content: "We're All Kinship";
             position: absolute;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             width: 100%;
             height: 100%;
             opacity: 0;
-            text-align: center;
         }
 
         .about-heading.visible::before {
             color: var(--accent);
-            animation: glitchSubtleTop 5s infinite;
+            animation: glitchSubtleTop 4s infinite;
             clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
         }
 
         .about-heading.visible::after {
             color: #ff00ff;
-            animation: glitchSubtleBottom 5s infinite;
+            animation: glitchSubtleBottom 4s infinite;
             clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
         }
 
         @keyframes glitchSubtle {
-            0%, 94%, 100% { transform: translate(0); }
-            95% { transform: translate(-1px, 1px); }
-            96% { transform: translate(1px, -1px); }
-            97% { transform: translate(-1px, 0); }
-            98% { transform: translate(1px, 0); }
+            0%, 92%, 100% { transform: translate(0); }
+            93% { transform: translate(-2px, 1px); }
+            94% { transform: translate(2px, -1px); }
+            95% { transform: translate(-1px, 0); }
+            96% { transform: translate(1px, 1px); }
         }
 
         @keyframes glitchSubtleTop {
-            0%, 94%, 100% { transform: translate(0); opacity: 0; }
-            95% { transform: translate(2px, -1px); opacity: 0.6; }
-            96% { transform: translate(-2px, 1px); opacity: 0.6; }
-            97% { transform: translate(1px, 0); opacity: 0; }
-            98% { transform: translate(-1px, 0); opacity: 0.6; }
+            0%, 92%, 100% { transform: translate(0); opacity: 0; }
+            93% { transform: translate(3px, -2px); opacity: 0.7; }
+            94% { transform: translate(-3px, 2px); opacity: 0.7; }
+            95% { transform: translate(2px, 0); opacity: 0; }
+            96% { transform: translate(-2px, 0); opacity: 0.7; }
         }
 
         @keyframes glitchSubtleBottom {
-            0%, 94%, 100% { transform: translate(0); opacity: 0; }
-            94.5% { transform: translate(-2px, 1px); opacity: 0.6; }
-            95.5% { transform: translate(2px, -1px); opacity: 0.6; }
-            96.5% { transform: translate(-1px, 0); opacity: 0; }
-            97.5% { transform: translate(1px, 0); opacity: 0.6; }
+            0%, 92%, 100% { transform: translate(0); opacity: 0; }
+            92.5% { transform: translate(-3px, 2px); opacity: 0.7; }
+            93.5% { transform: translate(3px, -2px); opacity: 0.7; }
+            94.5% { transform: translate(-2px, 0); opacity: 0; }
+            95.5% { transform: translate(2px, 0); opacity: 0.7; }
         }
 
         .about-intro {
