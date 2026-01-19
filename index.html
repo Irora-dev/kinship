@@ -315,79 +315,30 @@
             transform: translateX(4px);
         }
 
-        /* Mixes Section */
-        .mixes-list {
+        /* Mixes Section - YouTube Embeds */
+        .youtube-mixes {
             display: flex;
             flex-direction: column;
             gap: var(--space-6);
             margin-top: var(--space-8);
         }
 
-        .mix-item {
-            display: flex;
-            align-items: center;
-            gap: var(--space-4);
-            padding: var(--space-4) 0;
-            border-bottom: 1px solid var(--color-charcoal);
-            cursor: pointer;
-            transition: all var(--transition-base);
-            text-decoration: none;
-            color: inherit;
+        .youtube-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--color-smoke);
         }
 
-        .mix-item:hover {
-            padding-left: var(--space-4);
-            border-color: var(--color-amber-dim);
-        }
-
-        .mix-number {
-            font-family: var(--font-heading);
-            font-size: var(--text-lg);
-            color: var(--color-amber);
-            min-width: 40px;
-        }
-
-        .mix-info {
-            flex: 1;
-        }
-
-        .mix-title {
-            font-family: var(--font-heading);
-            font-size: var(--text-lg);
-            color: var(--color-cream);
-            margin-bottom: 0.25rem;
-        }
-
-        .mix-duration {
-            font-size: var(--text-sm);
-            color: var(--color-mist);
-        }
-
-        .mix-play {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--color-charcoal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all var(--transition-base);
-        }
-
-        .mix-item:hover .mix-play {
-            background: var(--color-amber);
-        }
-
-        .mix-play svg {
-            width: 16px;
-            height: 16px;
-            color: var(--color-mist);
-            margin-left: 2px;
-            transition: color var(--transition-base);
-        }
-
-        .mix-item:hover .mix-play svg {
-            color: var(--color-ink);
+        .youtube-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         /* Events Section */
@@ -741,47 +692,17 @@
             <section class="content-section" id="mixes" data-section="mixes">
                 <span class="section-label">Mixes</span>
                 <h2 class="section-title">For the late drive home</h2>
-                <div class="mixes-list">
-                    <a href="#" class="mix-item" target="_blank">
-                        <span class="mix-number">01</span>
-                        <div class="mix-info">
-                            <h3 class="mix-title">Liquid Foundations</h3>
-                            <span class="mix-duration">1:42:30</span>
-                        </div>
-                        <div class="mix-play">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </a>
-                    <a href="#" class="mix-item" target="_blank">
-                        <span class="mix-number">02</span>
-                        <div class="mix-info">
-                            <h3 class="mix-title">Golden Hour</h3>
-                            <span class="mix-duration">1:28:15</span>
-                        </div>
-                        <div class="mix-play">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </a>
-                    <a href="#" class="mix-item" target="_blank">
-                        <span class="mix-number">03</span>
-                        <div class="mix-info">
-                            <h3 class="mix-title">Melodic Journeys</h3>
-                            <span class="mix-duration">1:55:42</span>
-                        </div>
-                        <div class="mix-play">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </a>
+                <div class="youtube-mixes">
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/Rq84SY2NPX0" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/xsX3cJOYotQ" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/i7AhEcDRql8" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
-                <a href="#" class="text-link">
-                    View All Mixes <span>→</span>
-                </a>
             </section>
 
             <!-- Community Section -->
