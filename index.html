@@ -292,13 +292,15 @@
         }
 
         .hero-tagline::before {
-            color: var(--accent-secondary);
+            color: var(--cream);
+            filter: brightness(1.2);
             animation: taglineGlitchTop 4s infinite 3.5s;
             clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
         }
 
         .hero-tagline::after {
-            color: var(--accent);
+            color: var(--cream);
+            filter: brightness(0.8);
             animation: taglineGlitchBottom 4s infinite 3.5s;
             clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
         }
