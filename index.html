@@ -183,6 +183,76 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Orbiting text */
+        .orbit-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 15vh;
+            margin: auto;
+            width: 55vmin;
+            height: 55vmin;
+            max-width: 520px;
+            max-height: 520px;
+            animation: orbitSpin 30s linear infinite;
+        }
+
+        .orbit-text svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .orbit-text text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            fill: var(--text-secondary);
+        }
+
+        .orbit-text-reverse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 15vh;
+            margin: auto;
+            width: 48vmin;
+            height: 48vmin;
+            max-width: 450px;
+            max-height: 450px;
+            animation: orbitSpinReverse 25s linear infinite;
+        }
+
+        .orbit-text-reverse svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .orbit-text-reverse text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            fill: var(--accent);
+            opacity: 0.6;
+        }
+
+        @keyframes orbitSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes orbitSpinReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
 
         .hero-text {
             position: absolute;
@@ -941,6 +1011,28 @@
         <div class="hero-bg"></div>
         <div class="hero-content">
             <div class="logo-container">
+                <!-- Outer orbit -->
+                <div class="orbit-text">
+                    <svg viewBox="0 0 300 300">
+                        <defs>
+                            <path id="circlePath" d="M 150, 150 m -120, 0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0"/>
+                        </defs>
+                        <text>
+                            <textPath href="#circlePath">KINSHIP • COMMUNITY • KINDNESS • MUSIC • MALTA • KINSHIP • COMMUNITY • KINDNESS • MUSIC • MALTA •</textPath>
+                        </text>
+                    </svg>
+                </div>
+                <!-- Inner orbit (reverse) -->
+                <div class="orbit-text-reverse">
+                    <svg viewBox="0 0 300 300">
+                        <defs>
+                            <path id="circlePathInner" d="M 150, 150 m -110, 0 a 110,110 0 1,0 220,0 a 110,110 0 1,0 -220,0"/>
+                        </defs>
+                        <text>
+                            <textPath href="#circlePathInner">MELODIC DNB • TOGETHER • LOVE • MELODIC DNB • TOGETHER • LOVE •</textPath>
+                        </text>
+                    </svg>
+                </div>
                 <img src="assets/logo.png" alt="Kinship Logo" class="logo">
             </div>
             <div class="hero-text">
@@ -1117,6 +1209,8 @@
         const heroBg = document.querySelector('.hero-bg');
         const logoContainer = document.querySelector('.logo-container');
         const heroText = document.querySelector('.hero-text');
+        const orbitText = document.querySelector('.orbit-text');
+        const orbitTextReverse = document.querySelector('.orbit-text-reverse');
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
@@ -1133,11 +1227,15 @@
                 heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
                 logoContainer.style.transform = `translateY(${scrollY * 0.3}px)`;
                 heroText.style.transform = `translateY(${scrollY * 0.4}px)`;
+                orbitText.style.transform = `translateY(${scrollY * 0.25}px) rotate(${scrollY * 0.1}deg)`;
+                orbitTextReverse.style.transform = `translateY(${scrollY * 0.25}px) rotate(-${scrollY * 0.1}deg)`;
 
                 // Fade out as you scroll
                 const opacity = 1 - (scrollY / window.innerHeight) * 1.2;
                 logoContainer.style.opacity = Math.max(0, opacity);
                 heroText.style.opacity = Math.max(0, opacity);
+                orbitText.style.opacity = Math.max(0, opacity);
+                orbitTextReverse.style.opacity = Math.max(0, opacity);
             }
         });
 
