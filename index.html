@@ -180,7 +180,39 @@
             transform: translateX(-20px);
             animation: letterSlideIn 0.5s ease forwards;
             position: relative;
-            text-shadow: 3px 3px 0 var(--color-amber);
+        }
+
+        .v-letter::before,
+        .v-letter::after {
+            content: attr(data-letter);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.7;
+        }
+
+        .v-letter::before {
+            color: var(--color-amber);
+            animation: glitchLeft 3s ease-in-out infinite;
+        }
+
+        .v-letter::after {
+            color: var(--color-amber-dim);
+            animation: glitchRight 3s ease-in-out infinite;
+        }
+
+        @keyframes glitchLeft {
+            0%, 100% { transform: translate(-2px, 1px); opacity: 0.5; }
+            25% { transform: translate(-1px, -1px); opacity: 0.7; }
+            50% { transform: translate(-3px, 0px); opacity: 0.4; }
+            75% { transform: translate(-1px, 2px); opacity: 0.6; }
+        }
+
+        @keyframes glitchRight {
+            0%, 100% { transform: translate(2px, -1px); opacity: 0.4; }
+            25% { transform: translate(1px, 1px); opacity: 0.5; }
+            50% { transform: translate(2px, -2px); opacity: 0.6; }
+            75% { transform: translate(3px, 0px); opacity: 0.3; }
         }
 
         .v-letter:nth-child(1) { animation-delay: 0.4s; }
@@ -644,13 +676,13 @@
                 <div class="hero-branding">
                     <img src="assets/logo.png" alt="Kinship" class="hero-logo">
                     <div class="vertical-text">
-                        <span class="v-letter">K</span>
-                        <span class="v-letter">I</span>
-                        <span class="v-letter">N</span>
-                        <span class="v-letter">S</span>
-                        <span class="v-letter">H</span>
-                        <span class="v-letter">I</span>
-                        <span class="v-letter">P</span>
+                        <span class="v-letter" data-letter="K">K</span>
+                        <span class="v-letter" data-letter="I">I</span>
+                        <span class="v-letter" data-letter="N">N</span>
+                        <span class="v-letter" data-letter="S">S</span>
+                        <span class="v-letter" data-letter="H">H</span>
+                        <span class="v-letter" data-letter="I">I</span>
+                        <span class="v-letter" data-letter="P">P</span>
                     </div>
                 </div>
                 <p class="hero-tagline">Fostering a love for melodic drum & bass in Malta</p>
