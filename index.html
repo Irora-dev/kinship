@@ -298,11 +298,11 @@
         }
 
         .hero-tagline {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #000000;
             text-transform: uppercase;
             margin-top: 2rem;
             opacity: 0;
@@ -311,11 +311,11 @@
         }
 
         .tagline-malta {
-            font-size: 4rem;
+            font-size: 4.5rem;
             display: block;
-            font-weight: 400;
-            color: var(--brown-dark);
-            letter-spacing: 0.15em;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: 0.08em;
         }
 
         @keyframes textReveal {
@@ -403,20 +403,23 @@
         /* About Section */
         .about-content {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 5rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .about-text {
-            flex: 1;
+            width: 100%;
         }
 
         .about-heading {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 300;
+            font-size: 3.5rem;
+            font-weight: 400;
             color: var(--brown-dark);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease;
@@ -428,11 +431,11 @@
         }
 
         .about-intro {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             line-height: 1.9;
             font-weight: 300;
             color: var(--text-secondary);
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease 0.15s;
@@ -445,7 +448,8 @@
 
         .about-pillars {
             display: flex;
-            gap: 3rem;
+            justify-content: center;
+            gap: 4rem;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease 0.3s;
@@ -463,14 +467,14 @@
         }
 
         .pillar svg {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             color: var(--accent);
         }
 
         .pillar h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -479,8 +483,9 @@
 
         /* Malta Illustration Placeholder */
         .malta-placeholder {
-            flex: 0 0 350px;
-            height: 450px;
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
             border: 2px dashed var(--warm-brown);
             border-radius: 20px;
             display: flex;
@@ -495,14 +500,15 @@
                 radial-gradient(circle at 30% 80%, var(--golden-light) 1px, transparent 1px),
                 radial-gradient(circle at 70% 20%, var(--golden-light) 1px, transparent 1px);
             background-size: 40px 40px;
+            margin-top: 4rem;
             opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.8s ease 0.2s;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.4s;
         }
 
         .malta-placeholder.visible {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .malta-placeholder svg {
@@ -888,19 +894,8 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .about-content {
-                flex-direction: column;
-                gap: 3rem;
-            }
-
             .malta-placeholder {
-                flex: none;
-                width: 100%;
-                height: 300px;
-            }
-
-            .about-pillars {
-                justify-content: center;
+                height: 280px;
             }
         }
 
@@ -930,7 +925,16 @@
             }
 
             .about-heading {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+
+            .about-intro {
+                font-size: 1.2rem;
+            }
+
+            .malta-placeholder {
+                height: 220px;
+                margin-top: 2.5rem;
             }
 
             .about-pillars {
