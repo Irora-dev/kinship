@@ -536,28 +536,6 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        /* Photo counter */
-        .photo-counter {
-            position: absolute;
-            bottom: var(--space-8);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.5rem;
-            z-index: 10;
-        }
-
-        .photo-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--color-charcoal);
-            transition: all var(--transition-base);
-        }
-
-        .photo-dot.active {
-            background: var(--color-amber);
-        }
 
         /* ========================================
            FOOTER
@@ -826,15 +804,6 @@
                     <img src="assets/hero-bg.jpg" alt="Kinship" class="photo-image">
                 </div>
 
-                <!-- Photo counter dots -->
-                <div class="photo-counter">
-                    <div class="photo-dot active"></div>
-                    <div class="photo-dot"></div>
-                    <div class="photo-dot"></div>
-                    <div class="photo-dot"></div>
-                    <div class="photo-dot"></div>
-                    <div class="photo-dot"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -869,7 +838,6 @@
         // Photo Carousel - Scroll-based rotation with stacked effect
         // ========================================
         const photoCards = document.querySelectorAll('.photo-card');
-        const photoDots = document.querySelectorAll('.photo-dot');
         const totalPhotos = photoCards.length;
         let currentPhoto = 0;
 
@@ -882,23 +850,18 @@
                 if (diff === 0) {
                     position = 'active';
                 } else if (diff === 1) {
-                    position = 'behind-1';  // Next card peeks from behind
+                    position = 'behind-1';
                 } else if (diff === 2) {
                     position = 'behind-2';
                 } else if (diff === 3) {
                     position = 'behind-3';
                 } else if (diff === -1) {
-                    position = 'ahead-1';   // Previous card fades out
+                    position = 'ahead-1';
                 } else {
                     position = 'hidden';
                 }
 
                 card.setAttribute('data-position', position);
-            });
-
-            // Update dots
-            photoDots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === activeIndex);
             });
         }
 
