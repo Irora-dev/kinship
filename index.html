@@ -294,25 +294,39 @@
         }
 
         @keyframes taglineGlitch {
-            0%, 92%, 100% {
+            0%, 90%, 100% {
                 transform: translate(0);
                 text-shadow: none;
             }
+            91% {
+                transform: translate(-4px, 2px);
+                text-shadow:
+                    4px 0 0 #8B5CF6,
+                    -4px 0 0 #06B6D4;
+            }
+            92% {
+                transform: translate(4px, -2px);
+                text-shadow:
+                    -4px 0 0 #8B5CF6,
+                    4px 0 0 #06B6D4;
+            }
             93% {
-                transform: translate(-3px, 2px);
-                text-shadow: 3px -2px 0 rgba(139, 92, 246, 0.5), -3px 2px 0 rgba(6, 182, 212, 0.5);
+                transform: translate(-2px, -3px);
+                text-shadow:
+                    3px 2px 0 #8B5CF6,
+                    -3px -2px 0 #06B6D4;
             }
             94% {
-                transform: translate(3px, -2px);
-                text-shadow: -3px 2px 0 rgba(139, 92, 246, 0.5), 3px -2px 0 rgba(6, 182, 212, 0.5);
+                transform: translate(3px, 1px);
+                text-shadow:
+                    -3px -1px 0 #8B5CF6,
+                    3px 1px 0 #06B6D4;
             }
             95% {
-                transform: translate(-2px, -1px);
-                text-shadow: 2px 1px 0 rgba(139, 92, 246, 0.3), -2px -1px 0 rgba(6, 182, 212, 0.3);
-            }
-            96% {
-                transform: translate(2px, 1px);
-                text-shadow: -2px -1px 0 rgba(139, 92, 246, 0.4), 2px 1px 0 rgba(6, 182, 212, 0.4);
+                transform: translate(-1px, 2px);
+                text-shadow:
+                    2px -2px 0 #8B5CF6,
+                    -2px 2px 0 #06B6D4;
             }
         }
 
