@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KINSHIP | Melodic Drum & Bass in the Heart of Malta</title>
+    <title>Kinship — Melodic Drum & Bass in Malta</title>
+    <meta name="description" content="Malta's melodic drum & bass community. Curated mixes, intimate events, genuine connection. Find your people.">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="apple-touch-icon" href="assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,107 +18,88 @@
         }
 
         :root {
-            --cream: #FAF7F2;
-            --cream-dark: #F5F0E6;
-            --warm-brown: #8B7355;
-            --brown-medium: #6B5344;
-            --brown-dark: #4A3728;
-            --text-primary: #2C2416;
-            --text-secondary: #5D4E3C;
-            --text-muted: #8B7355;
-            --accent: #8B5CF6;
-            --accent-light: #A78BFA;
-            --golden: #D4A574;
-            --golden-light: #E8C9A0;
-            --sunrise-top: #C9B8D4;
-            --sunrise-mid: #F5D5C8;
-            --sunrise-bottom: #FAF7F2;
+            /* Core palette */
+            --color-ink: #0D0D0D;
+            --color-smoke: #1A1A1A;
+            --color-charcoal: #2A2A2A;
+            --color-stone: #3D3D3D;
+
+            /* Warm accents */
+            --color-amber: #D4915D;
+            --color-amber-glow: #E5A66D;
+            --color-amber-dim: #B87A4A;
+
+            /* Light tones */
+            --color-haze: #E8DFD0;
+            --color-cream: #F5F0E8;
+            --color-mist: #A89F94;
+
+            /* Font families */
+            --font-heading: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+
+            /* Font sizes (fluid) */
+            --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+            --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+            --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+            --text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.35rem);
+            --text-xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+            --text-2xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+            --text-3xl: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+            --text-display: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+
+            /* Spacing */
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-24: 6rem;
+            --space-32: 8rem;
+
+            /* Effects */
+            --shadow-glow: 0 0 40px rgba(212, 145, 93, 0.3);
+            --transition-base: 300ms ease;
+            --transition-slow: 500ms ease;
         }
 
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--cream);
-            color: var(--text-primary);
+            font-family: var(--font-body);
+            background-color: var(--color-ink);
+            color: var(--color-haze);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Loading Screen */
-        .loader {
+        /* Film Grain Overlay */
+        .grain-overlay {
+            pointer-events: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--cream);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            animation: loaderFade 0.8s ease forwards 1.5s;
+            inset: 0;
+            z-index: 1000;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px 200px;
         }
 
-        .loader-logo {
-            width: 150px;
-            height: 150px;
-            animation: loaderPulse 1s ease-in-out infinite, loaderSpin 3s linear infinite;
-        }
-
-        .loader-text {
-            margin-top: 2rem;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            animation: loaderTextPulse 1s ease-in-out infinite;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 2px;
-            background: var(--cream-dark);
-            margin-top: 1.5rem;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .loader-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--golden), var(--accent));
-            animation: loaderBarFill 1.5s ease forwards;
-        }
-
-        @keyframes loaderPulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-
-        @keyframes loaderSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes loaderTextPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes loaderBarFill {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes loaderFade {
-            to {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
+        /* Ambient Glow */
+        .ambient-glow {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 50%) var(--mouse-y, 80%),
+                rgba(212, 145, 93, 0.06),
+                transparent 40%
+            );
+            transition: background 0.3s ease;
         }
 
         /* Navigation */
@@ -126,63 +108,67 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            padding: 1.5rem 3rem;
+            z-index: 100;
+            padding: var(--space-6) var(--space-8);
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: transparent;
-            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+            transition: background var(--transition-base), backdrop-filter var(--transition-base);
         }
 
         nav.scrolled {
-            background: rgba(250, 247, 242, 0.95);
+            background: rgba(13, 13, 13, 0.9);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(44, 36, 22, 0.08);
         }
 
         .nav-logo {
-            height: 50px;
+            height: 40px;
             width: auto;
+            opacity: 0.9;
+            transition: opacity var(--transition-base);
+        }
+
+        .nav-logo:hover {
+            opacity: 1;
         }
 
         .nav-links {
             display: flex;
-            gap: 3rem;
+            gap: var(--space-8);
             list-style: none;
         }
 
         .nav-links a {
-            color: var(--text-secondary);
+            color: var(--color-mist);
             text-decoration: none;
+            font-size: var(--text-sm);
             font-weight: 400;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color var(--transition-base);
             position: relative;
-            transition: color 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--accent);
+            color: var(--color-amber);
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -4px;
             left: 0;
             width: 0;
             height: 1px;
-            background: var(--accent);
-            transition: width 0.3s ease;
+            background: var(--color-amber);
+            transition: width var(--transition-base);
         }
 
         .nav-links a:hover::after {
             width: 100%;
         }
 
-        /* Hero Section - Rising Sun */
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -191,22 +177,12 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(
-                to bottom,
-                var(--sunrise-top) 0%,
-                var(--sunrise-mid) 40%,
-                var(--golden-light) 70%,
-                var(--cream) 100%
-            );
-            padding-bottom: 100px;
+            background: linear-gradient(to bottom, var(--color-ink) 0%, var(--color-smoke) 100%);
         }
 
         .hero-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background-image: url('assets/hero-bg.jpg');
             background-size: cover;
             background-position: center;
@@ -214,27 +190,26 @@
             z-index: 0;
         }
 
-        /* Sun rays behind logo */
-        .sun-rays {
+        /* Ambient corner glows */
+        .hero::before,
+        .hero::after {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -40%);
-            width: 800px;
-            height: 800px;
-            pointer-events: none;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 145, 93, 0.08) 0%, transparent 70%);
             z-index: 1;
         }
 
-        .sun-ray {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 4px;
-            height: 400px;
-            background: linear-gradient(to top, rgba(212, 165, 116, 0.4), transparent);
-            transform-origin: bottom center;
-            border-radius: 2px;
+        .hero::before {
+            bottom: -200px;
+            left: -200px;
+        }
+
+        .hero::after {
+            bottom: -200px;
+            right: -200px;
         }
 
         .hero-content {
@@ -244,752 +219,645 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 0 2rem;
-            margin-top: 5vh;
+            padding: 0 var(--space-8);
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: var(--space-8);
             opacity: 0;
-            animation: heroReveal 1.2s ease forwards 1.7s;
+            transform: translateY(20px) scale(0.95);
+            animation: fadeInUp 0.8s ease forwards 0.2s;
         }
 
-        @keyframes heroReveal {
-            to { opacity: 1; }
-        }
-
-        .logo-container {
-            width: 45vmin;
-            height: 45vmin;
-            max-width: 400px;
-            max-height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Sun glow behind logo */
-        .logo-container::before {
-            content: '';
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(212, 165, 116, 0.5) 0%, rgba(212, 165, 116, 0.2) 40%, transparent 70%);
-            border-radius: 50%;
-            animation: sunGlow 4s ease-in-out infinite;
-        }
-
-        @keyframes sunGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        .logo {
-            width: 100%;
-            height: 100%;
-            max-width: 400px;
-            max-height: 400px;
-            animation: gentleSpin 90s linear infinite;
-            object-fit: contain;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes gentleSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .hero-wordmark {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: var(--color-cream);
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 0.4s;
         }
 
         .hero-tagline {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: #000000;
-            text-transform: uppercase;
-            margin-top: 2rem;
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            font-weight: 300;
+            color: var(--color-mist);
+            letter-spacing: 0.02em;
             opacity: 0;
             transform: translateY(20px);
-            animation: textReveal 1s ease forwards 2.2s;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
         }
 
-        .tagline-malta {
-            font-size: 4.5rem;
-            display: block;
-            font-weight: 700;
-            color: #000000;
-            letter-spacing: 0.08em;
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--space-8);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-4);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1s, pulse 2s ease-in-out infinite 1.5s;
         }
 
-        @keyframes textReveal {
+        .scroll-indicator span {
+            font-size: var(--text-xs);
+            color: var(--color-mist);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-amber);
+        }
+
+        @keyframes fadeInUp {
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Organic wave divider */
-        .wave-divider {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-            z-index: 5;
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(5px); }
         }
 
-        .wave-divider svg {
-            position: relative;
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 150px;
-            transform: rotateX(180deg);
-        }
-
-        .wave-divider svg path {
-            fill: var(--cream);
-        }
-
-        /* Content wrapper */
-        .content {
+        /* Section Styles */
+        section {
             position: relative;
             z-index: 10;
-            background: var(--cream);
         }
 
-        /* Flowing section styles */
-        .flow-section {
-            padding: 6rem 5rem;
-            position: relative;
-            max-width: 1400px;
+        .section-container {
+            max-width: 1280px;
             margin: 0 auto;
+            padding: var(--space-24) var(--space-8);
         }
 
-        .section-header {
+        /* About Teaser */
+        .about-teaser {
+            background: var(--color-ink);
+            border-top: 1px solid var(--color-charcoal);
+        }
+
+        .about-teaser .section-container {
+            max-width: 700px;
             text-align: center;
-            margin-bottom: 4rem;
         }
 
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--brown-dark);
-            margin-bottom: 0.5rem;
+        .about-quote {
+            font-family: var(--font-heading);
+            font-size: var(--text-xl);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--color-cream);
+            margin-bottom: var(--space-8);
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-subtitle {
-            font-size: 1rem;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-        }
-
-        .section-subtitle.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* About Section */
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .about-text {
-            width: 100%;
-        }
-
-        .about-heading {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.5rem;
-            font-weight: 400;
-            color: var(--brown-dark);
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
             transition: all 0.8s ease;
         }
 
-        .about-heading.visible {
+        .about-quote.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .about-intro {
-            font-size: 1.4rem;
-            line-height: 1.9;
-            font-weight: 300;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
+        .about-text {
+            font-size: var(--text-base);
+            line-height: 1.8;
+            color: var(--color-haze);
+            margin-bottom: var(--space-8);
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
             transition: all 0.8s ease 0.15s;
         }
 
-        .about-intro.visible {
+        .about-text.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .about-pillars {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
+        .text-link {
+            color: var(--color-amber);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            transition: all var(--transition-base);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.8s ease 0.3s;
+            transition: all 0.8s ease 0.3s, color var(--transition-base);
         }
 
-        .about-pillars.visible {
+        .text-link.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .pillar {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        .text-link:hover {
+            color: var(--color-amber-glow);
         }
 
-        .pillar svg {
-            width: 28px;
-            height: 28px;
-            color: var(--accent);
+        .text-link span {
+            transition: transform var(--transition-base);
         }
 
-        .pillar h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-primary);
-        }
-
-        /* Malta Illustration Placeholder */
-        .malta-placeholder {
-            width: 100%;
-            max-width: 700px;
-            height: 350px;
-            border: 2px dashed var(--warm-brown);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            background:
-                radial-gradient(circle at 20% 30%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 30% 80%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 70% 20%, var(--golden-light) 1px, transparent 1px);
-            background-size: 40px 40px;
-            margin-top: 4rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease 0.4s;
-        }
-
-        .malta-placeholder.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .malta-placeholder svg {
-            width: 48px;
-            height: 48px;
-            color: var(--warm-brown);
-            opacity: 0.6;
-        }
-
-        .malta-placeholder span {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem;
-            letter-spacing: 0.1em;
-            color: var(--warm-brown);
-            text-transform: uppercase;
-        }
-
-        /* Organic divider between sections */
-        .organic-divider {
-            width: 100%;
-            height: 150px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .organic-divider svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Events Section */
-        .events-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 4rem;
-        }
-
-        .event-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 3rem;
-            padding: 2.5rem;
-            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, transparent 100%);
-            border-radius: 30px;
-            border: 1px solid rgba(139, 115, 85, 0.15);
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .event-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .event-item:nth-child(2) { transition-delay: 0.15s; }
-        .event-item:nth-child(3) { transition-delay: 0.3s; }
-
-        .event-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(74, 55, 40, 0.1);
-            border-color: var(--accent);
-        }
-
-        .event-date-block {
-            flex: 0 0 120px;
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--cream-dark);
-            border-radius: 15px;
-        }
-
-        .event-date-block .month {
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.25rem;
-        }
-
-        .event-date-block .day {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 300;
-            color: var(--brown-dark);
-            line-height: 1;
-        }
-
-        .event-date-block .year {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .event-details {
-            flex: 1;
-        }
-
-        .event-details h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 400;
-            color: var(--brown-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .event-venue {
-            font-size: 0.9rem;
-            color: var(--accent);
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-        }
-
-        .event-details p {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .event-btn {
-            display: inline-block;
-            padding: 0.75rem 2rem;
-            background: transparent;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            border: 1px solid var(--accent);
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .event-btn:hover {
-            background: var(--accent);
-            color: var(--cream);
-        }
-
-        /* Malta placeholder in events */
-        .malta-placeholder-small {
-            width: 100%;
-            height: 200px;
-            border: 2px dashed var(--warm-brown);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            background:
-                radial-gradient(circle at 20% 30%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, var(--golden-light) 1px, transparent 1px);
-            background-size: 30px 30px;
-            margin-top: 3rem;
-            opacity: 0;
-            transition: all 0.8s ease 0.4s;
-        }
-
-        .malta-placeholder-small.visible {
-            opacity: 1;
-        }
-
-        .malta-placeholder-small svg {
-            width: 32px;
-            height: 32px;
-            color: var(--warm-brown);
-            opacity: 0.6;
-        }
-
-        .malta-placeholder-small span {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            color: var(--warm-brown);
-            text-transform: uppercase;
+        .text-link:hover span {
+            transform: translateX(4px);
         }
 
         /* Mixes Section */
-        .mixes-flow {
+        .mixes-section {
+            background: var(--color-smoke);
+        }
+
+        .section-header {
             display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-12);
             flex-wrap: wrap;
-            gap: 3rem;
-            justify-content: center;
+            gap: var(--space-4);
         }
 
-        .mix-item {
-            flex: 1 1 350px;
-            max-width: 400px;
+        .section-header-left {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(30px);
+            transition: all 0.8s ease;
         }
 
-        .mix-item.visible {
+        .section-header-left.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .mix-item:nth-child(2) { transition-delay: 0.15s; }
-        .mix-item:nth-child(3) { transition-delay: 0.3s; }
-
-        .mix-video {
-            position: relative;
-            padding-bottom: 56.25%;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(74, 55, 40, 0.15);
-        }
-
-        .mix-video iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .mix-info {
-            padding: 1.5rem 0.5rem;
-            text-align: center;
-        }
-
-        .mix-info h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
             font-weight: 400;
-            color: var(--brown-dark);
-            margin-bottom: 0.3rem;
+            color: var(--color-cream);
+            margin-bottom: 0.25rem;
+        }
+
+        .section-subtitle {
+            font-size: var(--text-sm);
+            color: var(--color-mist);
+            font-style: italic;
+        }
+
+        .mixes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-6);
+        }
+
+        .mix-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease, transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .mix-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mix-card:nth-child(2) { transition-delay: 0.1s; }
+        .mix-card:nth-child(3) { transition-delay: 0.2s; }
+
+        .mix-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .mix-card-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-smoke) 100%);
+            transition: transform var(--transition-slow);
+        }
+
+        .mix-card:hover .mix-card-bg {
+            transform: scale(1.02);
+        }
+
+        .mix-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(13, 13, 13, 0.95) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .mix-card:hover .mix-card-overlay {
+            opacity: 1;
+        }
+
+        .mix-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-6);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all var(--transition-base);
+        }
+
+        .mix-card:hover .mix-card-content {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         .mix-series {
-            color: var(--accent);
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
+            font-size: var(--text-xs);
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-amber);
+            margin-bottom: 0.25rem;
         }
 
-        /* Community Section */
-        .community-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+        .mix-title {
+            font-family: var(--font-heading);
+            font-size: var(--text-lg);
+            color: var(--color-cream);
+            margin-bottom: 0.25rem;
         }
 
-        .community-intro {
-            font-size: 1.2rem;
-            line-height: 1.9;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
+        .mix-duration {
+            font-size: var(--text-sm);
+            color: var(--color-mist);
+        }
+
+        .mix-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--color-amber);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            transform: translateY(20px);
+            transition: all var(--transition-base);
+        }
+
+        .mix-card:hover .mix-play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .mix-play-btn svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-ink);
+            margin-left: 3px;
+        }
+
+        /* Events Section */
+        .events-section {
+            background: var(--color-ink);
+            border-top: 1px solid var(--color-charcoal);
+        }
+
+        .event-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-16);
+            align-items: center;
+        }
+
+        .event-info {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+
+        .event-info.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .event-label {
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-mist);
+            margin-bottom: var(--space-4);
+        }
+
+        .event-name {
+            font-family: var(--font-heading);
+            font-size: var(--text-3xl);
+            font-weight: 400;
+            color: var(--color-cream);
+            margin-bottom: var(--space-4);
+        }
+
+        .event-date {
+            font-size: var(--text-lg);
+            color: var(--color-amber);
+            margin-bottom: var(--space-6);
+        }
+
+        .event-lineup {
+            margin-bottom: var(--space-6);
+        }
+
+        .event-lineup p {
+            font-size: var(--text-base);
+            color: var(--color-haze);
+            line-height: 1.8;
+        }
+
+        .event-meta {
+            font-size: var(--text-sm);
+            color: var(--color-mist);
+            margin-bottom: var(--space-8);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: var(--space-4) var(--space-8);
+            background: var(--color-amber);
+            color: var(--color-ink);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border-radius: 9999px;
+            transition: all var(--transition-base);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-amber-glow);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .event-image {
+            position: relative;
+            opacity: 0;
+            transform: translateX(30px) rotate(2deg);
             transition: all 0.8s ease 0.2s;
         }
 
-        .community-intro.visible {
+        .event-image.visible {
+            opacity: 1;
+            transform: translateX(0) rotate(2deg);
+        }
+
+        .event-image-inner {
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-smoke) 100%);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .event-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            color: var(--color-stone);
+        }
+
+        .event-image-placeholder svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        /* Community Section */
+        .community-section {
+            background: var(--color-smoke);
+            border-top: 1px solid var(--color-charcoal);
+        }
+
+        .community-section .section-container {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .community-heading {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: 400;
+            color: var(--color-cream);
+            margin-bottom: var(--space-6);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .community-heading.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .community-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+        .community-text {
+            font-size: var(--text-base);
+            color: var(--color-haze);
+            line-height: 1.8;
+            margin-bottom: var(--space-8);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.15s;
+        }
+
+        .community-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: var(--space-4) var(--space-8);
+            background: transparent;
+            color: var(--color-amber);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border: 1px solid var(--color-amber);
+            border-radius: 9999px;
+            transition: all var(--transition-base);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.8s ease 0.3s;
         }
 
-        .community-links.visible {
+        .btn-outline.visible {
             opacity: 1;
             transform: translateY(0);
+            transition: all 0.8s ease 0.3s, background var(--transition-base), color var(--transition-base);
         }
 
-        .community-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            background: var(--cream-dark);
-            border-radius: 50px;
-            text-decoration: none;
-            color: var(--text-primary);
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .community-link:hover {
-            border-color: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
-        }
-
-        .community-link svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--accent);
-            transition: fill 0.3s ease;
-        }
-
-        .community-link:hover svg {
-            fill: var(--brown-dark);
-        }
-
-        .community-link span {
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 500;
+        .btn-outline:hover {
+            background: var(--color-amber);
+            color: var(--color-ink);
         }
 
         /* Footer */
         footer {
-            padding: 4rem 5rem 2rem;
+            background: var(--color-ink);
+            border-top: 1px solid var(--color-charcoal);
+            padding: var(--space-16) var(--space-8);
             text-align: center;
-            position: relative;
-            background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
         }
 
         .footer-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            letter-spacing: 0.4em;
-            color: var(--brown-dark);
-            margin-bottom: 0.75rem;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto var(--space-6);
+            opacity: 0.7;
         }
 
-        .footer-tagline {
-            color: var(--accent);
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            margin-bottom: 2rem;
+        .footer-handle {
+            font-size: var(--text-sm);
+            color: var(--color-mist);
+            margin-bottom: var(--space-6);
         }
 
-        .footer-divider {
-            width: 80px;
-            height: 1px;
-            background: var(--warm-brown);
-            margin: 2rem auto;
-            opacity: 0.3;
+        .footer-handle a {
+            color: var(--color-amber);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+
+        .footer-handle a:hover {
+            color: var(--color-amber-glow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+
+        .social-links a {
+            color: var(--color-mist);
+            transition: color var(--transition-base);
+        }
+
+        .social-links a:hover {
+            color: var(--color-amber);
+        }
+
+        .social-links svg {
+            width: 24px;
+            height: 24px;
         }
 
         .footer-copy {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
+            font-size: var(--text-xs);
+            color: var(--color-stone);
+            margin-bottom: var(--space-4);
         }
 
-        /* Malta placeholder in footer area */
-        .footer-malta {
-            width: 100%;
-            max-width: 600px;
-            height: 150px;
-            border: 2px dashed var(--warm-brown);
-            border-radius: 20px;
-            display: flex;
+        .back-to-top {
+            font-size: var(--text-xs);
+            color: var(--color-mist);
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            background:
-                radial-gradient(circle at 20% 30%, var(--golden-light) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, var(--golden-light) 1px, transparent 1px);
-            background-size: 25px 25px;
-            margin: 0 auto 3rem;
+            gap: 0.5rem;
+            transition: color var(--transition-base);
         }
 
-        .footer-malta svg {
-            width: 28px;
-            height: 28px;
-            color: var(--warm-brown);
-            opacity: 0.6;
-        }
-
-        .footer-malta span {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            color: var(--warm-brown);
-            text-transform: uppercase;
+        .back-to-top:hover {
+            color: var(--color-amber);
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .malta-placeholder {
-                height: 280px;
+            .event-layout {
+                grid-template-columns: 1fr;
+                gap: var(--space-12);
+            }
+
+            .event-image {
+                order: -1;
+                max-width: 400px;
+                margin: 0 auto;
             }
         }
 
         @media (max-width: 768px) {
-            .flow-section {
-                padding: 4rem 2rem;
-            }
-
             nav {
-                padding: 1rem 1.5rem;
+                padding: var(--space-4) var(--space-6);
             }
 
             .nav-links {
                 display: none;
             }
 
-            .hero-tagline {
-                font-size: 1.8rem;
+            .hero-logo {
+                width: 80px;
+                height: 80px;
             }
 
-            .tagline-malta {
-                font-size: 2.8rem;
+            .section-container {
+                padding: var(--space-16) var(--space-6);
             }
 
-            .section-title {
-                font-size: 2.2rem;
+            .mixes-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
             }
 
-            .about-heading {
-                font-size: 2.5rem;
+            .mix-card {
+                aspect-ratio: 16/9;
             }
 
-            .about-intro {
-                font-size: 1.2rem;
+            .mix-card-content {
+                transform: translateY(0);
+                opacity: 1;
             }
 
-            .malta-placeholder {
-                height: 220px;
-                margin-top: 2.5rem;
+            .mix-card-overlay {
+                opacity: 1;
             }
 
-            .about-pillars {
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
+            .event-info {
+                text-align: center;
             }
 
-            .event-item {
-                flex-direction: column;
-                gap: 1.5rem;
+            .social-links {
+                gap: var(--space-8);
             }
-
-            .event-date-block {
-                flex: none;
-                width: 100%;
-            }
-
-            .mixes-flow {
-                gap: 2rem;
-            }
-
-            .mix-item {
-                flex: 1 1 100%;
-                max-width: 100%;
-            }
-
-            .community-links {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Cursor musical notes trail */
-        .cursor-note {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            color: var(--warm-brown);
-            text-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loader">
-        <img src="assets/logo.png" alt="Loading" class="loader-logo">
-        <p class="loader-text">Loading</p>
-        <div class="loader-bar">
-            <div class="loader-bar-fill"></div>
-        </div>
-    </div>
+    <!-- Film Grain Overlay -->
+    <div class="grain-overlay"></div>
 
-    <!-- Cursor musical notes trail -->
-    <div class="cursor-notes"></div>
+    <!-- Ambient Glow -->
+    <div class="ambient-glow"></div>
 
     <!-- Navigation -->
     <nav>
@@ -997,248 +865,178 @@
             <img src="assets/text-logo.png" alt="KINSHIP" class="nav-logo">
         </a>
         <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#events">Events</a></li>
             <li><a href="#mixes">Mixes</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#about">About</a></li>
             <li><a href="#community">Community</a></li>
         </ul>
     </nav>
 
-    <!-- Hero Section - Rising Sun -->
+    <!-- Hero Section -->
     <section class="hero">
-        <!-- Background image -->
         <div class="hero-bg"></div>
-
-        <!-- Sun rays -->
-        <div class="sun-rays" id="sunRays"></div>
-
         <div class="hero-content">
-            <div class="logo-container">
-                <img src="assets/logo.png" alt="Kinship Logo" class="logo">
-            </div>
-            <p class="hero-tagline">
-                <span class="tagline-malta">Malta's</span>
-                Melodic DnB Movement
-            </p>
+            <img src="assets/logo.png" alt="Kinship" class="hero-logo">
+            <h1 class="hero-wordmark">Kinship</h1>
+            <p class="hero-tagline">Melodic drum & bass in the heart of Malta</p>
         </div>
-
-        <!-- Wave divider -->
-        <div class="wave-divider">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
-                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
             </svg>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="content">
-        <!-- About Section -->
-        <section class="flow-section" id="about">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2 class="about-heading">We're All Kinship</h2>
-                    <p class="about-intro">Whether you've danced to a thousand basslines or have never felt the warmth of a melodic drop, you belong here. Kinship is about connection, kindness, and the belief that music can bring us closer together.</p>
+    <!-- About Teaser -->
+    <section class="about-teaser" id="about">
+        <div class="section-container">
+            <p class="about-quote">"Everyone's first rave was once."</p>
+            <p class="about-text">
+                Kinship exists to build Malta's melodic drum & bass community—not as promoters throwing events, but as a gathering point for people who love the warmer, more emotional side of DnB.
+            </p>
+            <a href="#" class="text-link">
+                Discover More <span>→</span>
+            </a>
+        </div>
+    </section>
 
-                    <div class="about-pillars">
-                        <div class="pillar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                            <h3>Community</h3>
-                        </div>
-                        <div class="pillar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                            </svg>
-                            <h3>Mixes</h3>
-                        </div>
-                        <div class="pillar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                            </svg>
-                            <h3>Events</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Malta illustration placeholder -->
-                <div class="malta-placeholder">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    <span>Malta Illustration</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Events Section -->
-        <section class="flow-section" id="events">
+    <!-- Mixes Section -->
+    <section class="mixes-section" id="mixes">
+        <div class="section-container">
             <div class="section-header">
-                <h2 class="section-title">Upcoming Events</h2>
-                <p class="section-subtitle">Where the music comes alive</p>
+                <div class="section-header-left">
+                    <h2 class="section-title">Mixes</h2>
+                    <p class="section-subtitle">"For the late drive home"</p>
+                </div>
+                <a href="#" class="text-link">
+                    View All <span>→</span>
+                </a>
             </div>
 
-            <div class="events-flow">
-                <div class="event-item">
-                    <div class="event-date-block">
-                        <div class="month">Mar</div>
-                        <div class="day">15</div>
-                        <div class="year">2026</div>
+            <div class="mixes-grid">
+                <div class="mix-card">
+                    <div class="mix-card-bg"></div>
+                    <div class="mix-card-overlay"></div>
+                    <div class="mix-play-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
                     </div>
-                    <div class="event-details">
-                        <h3>KINSHIP 001</h3>
-                        <p class="event-venue">Valletta Waterfront, Malta</p>
-                        <p>Our inaugural event. An intimate night of melodic drum & bass featuring rising liquid DnB talent and local support.</p>
-                        <a href="#" class="event-btn">Get Tickets</a>
-                    </div>
-                </div>
-
-                <div class="event-item">
-                    <div class="event-date-block">
-                        <div class="month">Jun</div>
-                        <div class="day">21</div>
-                        <div class="year">2026</div>
-                    </div>
-                    <div class="event-details">
-                        <h3>Summer Sessions</h3>
-                        <p class="event-venue">St. Julian's, Malta</p>
-                        <p>A sunset to sunrise journey through the warmer side of drum & bass. Open air. Golden hour. Pure connection.</p>
-                        <a href="#" class="event-btn">Coming Soon</a>
+                    <div class="mix-card-content">
+                        <p class="mix-series">Kinship Sessions</p>
+                        <h3 class="mix-title">KS001 — Liquid Foundations</h3>
+                        <p class="mix-duration">1:42:30</p>
                     </div>
                 </div>
 
-                <div class="event-item">
-                    <div class="event-date-block">
-                        <div class="month">Sep</div>
-                        <div class="day">--</div>
-                        <div class="year">2026</div>
+                <div class="mix-card">
+                    <div class="mix-card-bg"></div>
+                    <div class="mix-card-overlay"></div>
+                    <div class="mix-play-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
                     </div>
-                    <div class="event-details">
-                        <h3>Headline Announcement</h3>
-                        <p class="event-venue">Location TBA</p>
-                        <p>Something special is brewing. Follow us on socials to be the first to know when we reveal our first international headliner.</p>
-                        <a href="#" class="event-btn">Stay Tuned</a>
+                    <div class="mix-card-content">
+                        <p class="mix-series">Kinship Sessions</p>
+                        <h3 class="mix-title">KS002 — Golden Hour</h3>
+                        <p class="mix-duration">1:28:15</p>
+                    </div>
+                </div>
+
+                <div class="mix-card">
+                    <div class="mix-card-bg"></div>
+                    <div class="mix-card-overlay"></div>
+                    <div class="mix-play-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <div class="mix-card-content">
+                        <p class="mix-series">Kinship Sessions</p>
+                        <h3 class="mix-title">KS003 — Melodic Journeys</h3>
+                        <p class="mix-duration">1:55:42</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Malta placeholder -->
-            <div class="malta-placeholder-small">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <div class="section-container">
+            <div class="event-layout">
+                <div class="event-info">
+                    <p class="event-label">Next Event</p>
+                    <h2 class="event-name">KINSHIP 001</h2>
+                    <p class="event-date">March 15, 2026</p>
+                    <div class="event-lineup">
+                        <p>Hybrid Minds</p>
+                        <p>Monrroe</p>
+                        <p>+ Kinship Residents</p>
+                    </div>
+                    <p class="event-meta">Warehouse 52, Marsa · Doors 10pm</p>
+                    <a href="#" class="btn-primary">Get Tickets</a>
+                </div>
+                <div class="event-image">
+                    <div class="event-image-inner">
+                        <div class="event-image-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Event Artwork</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community-section" id="community">
+        <div class="section-container">
+            <h2 class="community-heading">Find Your People</h2>
+            <p class="community-text">
+                Kinship is more than events. It's listening sessions in living rooms. It's group trips to festivals. It's finding your tribe in a new city.
+            </p>
+            <a href="#" class="btn-outline">Join the Community</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="assets/logo.png" alt="Kinship" class="footer-logo">
+        <p class="footer-handle"><a href="#">@kinshipmalta</a></p>
+        <div class="social-links">
+            <a href="#" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
-                <span>Malta Skyline Illustration</span>
-            </div>
-        </section>
-
-        <!-- Mixes Section -->
-        <section class="flow-section" id="mixes">
-            <div class="section-header">
-                <h2 class="section-title">Kinship Sessions</h2>
-                <p class="section-subtitle">Curated melodic journeys between events</p>
-            </div>
-
-            <div class="mixes-flow">
-                <div class="mix-item">
-                    <div class="mix-video">
-                        <iframe src="https://www.youtube-nocookie.com/embed/vBI9kSyd-Yc?rel=0&modestbranding=1" title="Kinship Session 001" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="mix-info">
-                        <span class="mix-series">Kinship Sessions 001</span>
-                        <h3>Liquid Foundations</h3>
-                    </div>
-                </div>
-                <div class="mix-item">
-                    <div class="mix-video">
-                        <iframe src="https://www.youtube-nocookie.com/embed/uTG5oMuVA7w?rel=0&modestbranding=1" title="Kinship Session 002" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="mix-info">
-                        <span class="mix-series">Kinship Sessions 002</span>
-                        <h3>Golden Hour</h3>
-                    </div>
-                </div>
-                <div class="mix-item">
-                    <div class="mix-video">
-                        <iframe src="https://www.youtube-nocookie.com/embed/Ldz5vItdjRo?rel=0&modestbranding=1" title="Kinship Session 003" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="mix-info">
-                        <span class="mix-series">Kinship Sessions 003</span>
-                        <h3>Melodic Journeys</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Community Section -->
-        <section class="flow-section" id="community">
-            <div class="section-header">
-                <h2 class="section-title">Join The Family</h2>
-                <p class="section-subtitle">Connect with the community</p>
-            </div>
-
-            <div class="community-content">
-                <p class="community-intro">
-                    Kinship is more than events and mixes—it's a community of people who share a love for the warmer, more emotional side of drum & bass. Join us online, come to our listening sessions, and find your tribe.
-                </p>
-
-                <div class="community-links">
-                    <a href="#" class="community-link">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                        <span>Instagram</span>
-                    </a>
-                    <a href="#" class="community-link">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-                        </svg>
-                        <span>Facebook</span>
-                    </a>
-                    <a href="#" class="community-link">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                        </svg>
-                        <span>Discord</span>
-                    </a>
-                    <a href="#" class="community-link">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.164 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
-                        </svg>
-                        <span>SoundCloud</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <div class="footer-malta">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </a>
+            <a href="#" aria-label="SoundCloud">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.052-.1-.084-.1zm-.899 1.124c-.053 0-.084.04-.094.09l-.199 1.14.199 1.09c.01.05.041.09.094.09.054 0 .084-.04.094-.09l.224-1.09-.224-1.14c-.01-.05-.04-.09-.094-.09zm1.945-1.049c-.06 0-.102.05-.111.11l-.21 2.167.21 2.082c.009.063.051.107.111.107.058 0 .101-.044.11-.107l.239-2.082-.239-2.167c-.009-.06-.052-.11-.11-.11zm.901-.127c-.065 0-.111.056-.12.12l-.191 2.254.191 2.164c.009.066.055.116.12.116.063 0 .109-.05.12-.116l.216-2.164-.216-2.254c-.011-.064-.057-.12-.12-.12zm.958-.163c-.071 0-.119.058-.128.126l-.173 2.417.173 2.246c.009.071.057.123.128.123.069 0 .117-.052.127-.123l.197-2.246-.197-2.417c-.01-.068-.058-.126-.127-.126zm.966-.199c-.074 0-.123.063-.135.134l-.155 2.616.155 2.328c.012.074.061.127.135.127.072 0 .121-.053.134-.127l.176-2.328-.176-2.616c-.013-.071-.062-.134-.134-.134zm.973-.226c-.08 0-.132.066-.142.14l-.137 2.842.137 2.41c.01.078.062.133.142.133.078 0 .129-.055.142-.133l.155-2.41-.155-2.842c-.013-.074-.064-.14-.142-.14zm.983-.259c-.084 0-.137.071-.15.149l-.119 3.101.119 2.486c.013.082.066.143.15.143.082 0 .135-.061.15-.143l.134-2.486-.134-3.101c-.015-.078-.068-.149-.15-.149zm.992-.287c-.089 0-.143.074-.157.155l-.1 3.388.1 2.562c.014.085.068.148.157.148.087 0 .141-.063.157-.148l.113-2.562-.113-3.388c-.016-.081-.07-.155-.157-.155zm1-.316c-.093 0-.148.08-.164.163l-.082 3.704.082 2.638c.016.09.071.153.164.153.091 0 .147-.063.164-.153l.094-2.638-.094-3.704c-.017-.083-.073-.163-.164-.163zm1.013-.343c-.099 0-.154.083-.171.168l-.063 4.047.063 2.714c.017.092.072.158.171.158.097 0 .152-.066.171-.158l.072-2.714-.072-4.047c-.019-.085-.074-.168-.171-.168zm1.025-.37c-.103 0-.158.088-.179.175l-.044 4.417.044 2.79c.021.095.076.163.179.163.101 0 .156-.068.179-.163l.051-2.79-.051-4.417c-.023-.087-.078-.175-.179-.175zm1.036-.396c-.108 0-.164.091-.186.181l-.026 4.813.026 2.866c.022.098.078.168.186.168.106 0 .162-.07.186-.168l.03-2.866-.03-4.813c-.024-.09-.08-.181-.186-.181zm1.049-.421c-.113 0-.168.095-.193.187l-.007 5.208.007 2.942c.025.103.08.173.193.173.111 0 .166-.07.193-.173l.009-2.942-.009-5.208c-.027-.092-.082-.187-.193-.187zm1.061-.449c-.117 0-.173.099-.2.193l.012 5.604-.012 3.018c.027.107.083.178.2.178.115 0 .171-.071.2-.178l.014-3.018-.014-5.604c-.029-.094-.085-.193-.2-.193zm1.073-.475c-.122 0-.178.102-.207.199l.032 5.999-.032 3.094c.029.11.085.183.207.183.12 0 .176-.073.207-.183l.037-3.094-.037-5.999c-.031-.097-.087-.199-.207-.199zm1.086-.501c-.127 0-.183.106-.214.205l.051 6.395-.051 3.17c.031.114.087.188.214.188.125 0 .181-.074.214-.188l.059-3.17-.059-6.395c-.033-.099-.089-.205-.214-.205zm1.098-.529c-.131 0-.188.109-.221.211l.071 6.79-.071 3.246c.033.117.09.193.221.193.13 0 .186-.076.221-.193l.082-3.246-.082-6.79c-.035-.102-.091-.211-.221-.211zm4.498 2.239c-.241 0-.472.043-.688.125-1.133-6.73-6.871-11.824-13.791-11.824-7.64 0-13.833 6.193-13.833 13.833s6.193 13.833 13.833 13.833h14.479c2.727 0 4.939-2.212 4.939-4.939s-2.212-4.939-4.939-4.939z"/>
                 </svg>
-                <span>Malta Coastline Illustration</span>
-            </div>
-            <div class="footer-logo">KINSHIP</div>
-            <p class="footer-tagline">Melodic Drum & Bass in the Heart of Malta</p>
-            <div class="footer-divider"></div>
-            <p class="footer-copy">&copy; 2026 Kinship Malta. All rights reserved.</p>
-        </footer>
-    </div>
+            </a>
+            <a href="#" aria-label="Mixcloud">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.462 8.596l1.372 6.804h.319l1.391-6.804h1.88l1.391 6.804h.32l1.371-6.804h1.812l-1.979 8.404H7.58l-1.35-6.391-1.35 6.391H2.463L.483 8.596zm14.638 0v8.404h-1.607v-3.091H12.87v3.091h-1.607V8.596h1.607v3.705h2.623V8.596zm3.077 8.404h-1.607V8.596h1.607zm3.34-8.404c.952 0 1.727.775 1.727 1.728v4.949c0 .952-.775 1.727-1.727 1.727h-2.98v-8.404zm.12 6.796V10.204h-1.492v5.188z"/>
+                </svg>
+            </a>
+        </div>
+        <p class="footer-copy">© 2026 Kinship · Malta</p>
+        <a href="#" class="back-to-top">Back to Top ↑</a>
+    </footer>
 
     <script>
-        // Generate sun rays
-        const sunRays = document.getElementById('sunRays');
-        const numRays = 24;
-        for (let i = 0; i < numRays; i++) {
-            const ray = document.createElement('div');
-            ray.className = 'sun-ray';
-            ray.style.transform = `translate(-50%, -100%) rotate(${(360 / numRays) * i}deg)`;
-            ray.style.opacity = 0.3 + Math.random() * 0.4;
-            ray.style.height = (300 + Math.random() * 200) + 'px';
-            sunRays.appendChild(ray);
-        }
+        // Ambient glow follows cursor
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.querySelector('.ambient-glow').style.setProperty('--mouse-x', x + '%');
+            document.querySelector('.ambient-glow').style.setProperty('--mouse-y', y + '%');
+        });
 
         // Navigation scroll effect
         const nav = document.querySelector('nav');
@@ -1265,11 +1063,11 @@
         }, observerOptions);
 
         // Observe all animated elements
-        document.querySelectorAll('.about-heading, .about-intro, .about-pillars, .malta-placeholder, .section-title, .section-subtitle, .event-item, .malta-placeholder-small, .mix-item, .community-intro, .community-links').forEach(el => {
+        document.querySelectorAll('.about-quote, .about-text, .text-link, .section-header-left, .mix-card, .event-info, .event-image, .community-heading, .community-text, .btn-outline').forEach(el => {
             observer.observe(el);
         });
 
-        // Smooth scroll for navigation links
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1283,71 +1081,11 @@
             });
         });
 
-        // Musical notes trail cursor
-        const notesContainer = document.querySelector('.cursor-notes');
-        const noteSymbols = ['♪', '♫', '♩', '♬'];
-        const numNotes = 8;
-        const notes = [];
-        let mouseX = 0, mouseY = 0;
-        let lastMouseX = 0, lastMouseY = 0;
-        let idleTime = 0;
-        let globalFade = 1;
-
-        // Create note elements
-        for (let i = 0; i < numNotes; i++) {
-            const note = document.createElement('div');
-            note.className = 'cursor-note';
-            const symbol = noteSymbols[i % noteSymbols.length];
-            note.textContent = symbol;
-            note.style.fontSize = (20 - i * 1.5) + 'px';
-            notesContainer.appendChild(note);
-            notes.push({
-                el: note,
-                x: 0,
-                y: 0,
-                speed: 0.2 - (i * 0.02)
-            });
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            idleTime = 0;
-            globalFade = 1;
+        // Back to top
+        document.querySelector('.back-to-top').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        function animateNotes() {
-            if (mouseX === lastMouseX && mouseY === lastMouseY) {
-                idleTime++;
-                if (idleTime > 30) {
-                    globalFade = Math.max(0, globalFade - 0.02);
-                }
-            }
-            lastMouseX = mouseX;
-            lastMouseY = mouseY;
-
-            notes.forEach((note, i) => {
-                const targetX = i === 0 ? mouseX : notes[i - 1].x;
-                const targetY = i === 0 ? mouseY : notes[i - 1].y;
-
-                note.x += (targetX - note.x) * note.speed;
-                note.y += (targetY - note.y) * note.speed;
-
-                const trailOpacity = 1 - (i / numNotes) * 0.85;
-                const opacity = trailOpacity * globalFade;
-
-                const deltaX = targetX - note.x;
-                const rotation = deltaX * 0.3;
-
-                note.el.style.left = note.x + 'px';
-                note.el.style.top = note.y + 'px';
-                note.el.style.opacity = opacity;
-                note.el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
-            });
-
-            requestAnimationFrame(animateNotes);
-        }
-        animateNotes();
     </script>
 </body>
 </html>
