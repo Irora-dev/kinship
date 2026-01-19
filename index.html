@@ -54,7 +54,7 @@
             align-items: center;
             justify-content: center;
             z-index: 10000;
-            animation: loaderFade 0.8s ease forwards 2s;
+            animation: loaderFade 0.8s ease forwards 1.5s;
         }
 
         .loader-logo {
@@ -86,7 +86,7 @@
         .loader-bar-fill {
             height: 100%;
             background: var(--gradient);
-            animation: loaderBarFill 2s ease forwards;
+            animation: loaderBarFill 1.5s ease forwards;
         }
 
         @keyframes loaderPulse {
@@ -120,7 +120,7 @@
         /* Hero reveal after loader */
         .hero-content {
             opacity: 0;
-            animation: heroReveal 1s ease forwards 2.2s;
+            animation: heroReveal 1s ease forwards 1.7s;
         }
 
         @keyframes heroReveal {
@@ -266,22 +266,22 @@
 
         .hero-tagline {
             font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 600;
             letter-spacing: 0.02em;
             color: var(--cream);
             text-transform: uppercase;
             text-align: left;
             line-height: 0.95;
-            max-width: 500px;
+            max-width: 600px;
             position: relative;
             opacity: 0;
             transform: translateY(30px);
-            animation: textReveal 1s ease forwards 2.5s, taglineGlitch 4s infinite 3.5s;
+            animation: textReveal 1s ease forwards 2s, taglineGlitch 4s infinite 3s;
         }
 
         .tagline-malta {
-            font-size: 4.5rem;
+            font-size: 6rem;
             display: block;
             letter-spacing: 0.01em;
         }
@@ -902,9 +902,13 @@
             }
 
             .hero-tagline {
-                font-size: 1.8rem;
+                font-size: 2rem;
                 text-align: center;
                 max-width: 100%;
+            }
+
+            .tagline-malta {
+                font-size: 3rem;
             }
 
             .loader-logo {
