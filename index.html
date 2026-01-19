@@ -62,12 +62,9 @@
         }
 
         .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.3em;
-            color: var(--text-primary);
-            text-decoration: none;
+            height: 30px;
+            width: auto;
+            filter: brightness(0) invert(1) sepia(0.35) saturate(0.6) hue-rotate(-5deg) brightness(0.95);
         }
 
         .nav-links {
@@ -154,17 +151,14 @@
         }
 
         .logo-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 15vh;
-            margin: auto;
             width: 40vmin;
             height: 40vmin;
+            max-width: 380px;
+            max-height: 380px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 2rem;
         }
 
         .logo {
@@ -183,41 +177,13 @@
             to { transform: rotate(360deg); }
         }
 
-        .hero-text {
-            position: absolute;
-            top: calc(50% + 15vmin);
-            left: 0;
-            right: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .hero-title-img {
-            width: 400px;
-            max-width: 80vw;
-            height: auto;
-            filter: brightness(0) invert(1) sepia(0.35) saturate(0.6) hue-rotate(-5deg) brightness(0.95);
-            animation: glitch 3s infinite;
-            position: relative;
-        }
-
-        @keyframes glitch {
-            0%, 90%, 100% { transform: translate(0); }
-            92% { transform: translate(-2px, 1px); }
-            94% { transform: translate(2px, -1px); }
-            96% { transform: translate(-1px, 2px); }
-            98% { transform: translate(1px, -2px); }
-        }
-
         .hero-tagline {
             font-size: 1.1rem;
             font-weight: 300;
             letter-spacing: 0.3em;
-            padding-left: 0.3em;
-            margin-top: 1.5rem;
             color: var(--accent);
             text-transform: uppercase;
+            text-align: center;
         }
 
 
@@ -879,7 +845,9 @@
 
     <!-- Navigation -->
     <nav>
-        <a href="#" class="nav-logo">KINSHIP</a>
+        <a href="#">
+            <img src="assets/text-logo.png" alt="KINSHIP" class="nav-logo">
+        </a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#events">Events</a></li>
@@ -895,10 +863,7 @@
             <div class="logo-container">
                 <img src="assets/logo.png" alt="Kinship Logo" class="logo">
             </div>
-            <div class="hero-text">
-                <img src="assets/text-logo.png" alt="KINSHIP" class="hero-title-img">
-                <p class="hero-tagline">Melodic Drum & Bass in the Heart of Malta</p>
-            </div>
+            <p class="hero-tagline">Melodic Drum & Bass in the Heart of Malta</p>
         </div>
     </section>
 
@@ -1065,8 +1030,7 @@
         // Navigation scroll effect & Parallax
         const nav = document.querySelector('nav');
         const heroBg = document.querySelector('.hero-bg');
-        const logoContainer = document.querySelector('.logo-container');
-        const heroText = document.querySelector('.hero-text');
+        const heroContent = document.querySelector('.hero-content');
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
@@ -1081,13 +1045,11 @@
             // Parallax effect - different speeds for different elements
             if (scrollY < window.innerHeight) {
                 heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
-                logoContainer.style.transform = `translateY(${scrollY * 0.3}px)`;
-                heroText.style.transform = `translateY(${scrollY * 0.4}px)`;
+                heroContent.style.transform = `translateY(${scrollY * 0.3}px)`;
 
                 // Fade out as you scroll
                 const opacity = 1 - (scrollY / window.innerHeight) * 1.2;
-                logoContainer.style.opacity = Math.max(0, opacity);
-                heroText.style.opacity = Math.max(0, opacity);
+                heroContent.style.opacity = Math.max(0, opacity);
             }
         });
 
