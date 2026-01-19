@@ -17,8 +17,9 @@
         }
 
         :root {
-            --accent: #F5C518;
-            --accent-dim: #C9A000;
+            --accent: #8B5CF6;
+            --accent-secondary: #06B6D4;
+            --accent-dim: #7C3AED;
             --dark-bg: #000000;
             --dark-surface: #050505;
             --dark-elevated: #0A0A0A;
@@ -26,6 +27,7 @@
             --text-primary: #F5F0E6;
             --text-secondary: rgba(245, 240, 230, 0.7);
             --text-muted: rgba(245, 240, 230, 0.5);
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
         }
 
         html {
@@ -217,13 +219,13 @@
         }
 
         .hero-title::before {
-            color: var(--accent);
+            color: var(--accent-secondary);
             animation: glitchTop 3s infinite;
             clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
         }
 
         .hero-title::after {
-            color: #ff00ff;
+            color: var(--accent);
             animation: glitchBottom 3s infinite;
             clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
         }
@@ -385,13 +387,13 @@
         }
 
         .about-heading.visible::before {
-            color: var(--accent);
+            color: var(--accent-secondary);
             animation: glitchSubtleTop 4s infinite;
             clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
         }
 
         .about-heading.visible::after {
-            color: #ff00ff;
+            color: var(--accent);
             animation: glitchSubtleBottom 4s infinite;
             clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
         }
@@ -518,7 +520,7 @@
 
         .event-image {
             height: 200px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+            background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -582,8 +584,8 @@
             display: inline-block;
             margin-top: 1.5rem;
             padding: 0.8rem 2rem;
-            background: var(--accent);
-            color: var(--dark-bg);
+            background: var(--gradient);
+            color: var(--text-primary);
             text-decoration: none;
             font-size: 0.8rem;
             letter-spacing: 0.15em;
@@ -594,8 +596,8 @@
         }
 
         .event-btn:hover {
-            background: var(--text-primary);
-            color: var(--dark-bg);
+            filter: brightness(1.2);
+            transform: translateY(-2px);
         }
 
         /* Mixes Section */
@@ -870,7 +872,7 @@
             pointer-events: none;
             z-index: 9999;
             color: var(--accent);
-            text-shadow: 0 0 8px rgba(245, 197, 24, 0.4);
+            text-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
             animation: noteGlitch 2s infinite;
         }
 
@@ -879,7 +881,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            color: #ff00ff;
+            color: var(--accent-secondary);
             clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
             animation: noteGlitchLayer 2s infinite;
         }
@@ -889,7 +891,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            color: #00ffff;
+            color: #ff00ff;
             clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
             animation: noteGlitchLayer2 2s infinite;
         }
