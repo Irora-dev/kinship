@@ -134,26 +134,21 @@
         .hero-logo {
             width: clamp(60px, 8vw, 90px);
             height: auto;
-            opacity: 0;
-            animation: logoFadeIn 0.8s ease forwards 0.2s;
             /* Make logo cream/white colored */
             filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
+            animation: logoEntrance 0.8s ease forwards 0.2s, gentleRotate 6s ease-in-out infinite 1s;
+            opacity: 0;
         }
 
-        @keyframes logoFadeIn {
+        @keyframes logoEntrance {
             to {
                 opacity: 1;
             }
         }
 
-        .hero-logo.animate {
-            opacity: 1;
-            animation: gentleRotate 8s ease-in-out infinite;
-        }
-
         @keyframes gentleRotate {
-            0%, 100% { transform: rotate(-1.5deg); }
-            50% { transform: rotate(1.5deg); }
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
         }
 
         .vertical-text {
@@ -986,14 +981,6 @@
 
         // Initial setup
         updateCardPositions(0);
-
-        // Start logo rotation animation after fade-in
-        setTimeout(() => {
-            const logo = document.querySelector('.hero-logo');
-            if (logo) {
-                logo.classList.add('animate');
-            }
-        }, 1000);
 
         // ========================================
         // Smooth scroll for anchor links
