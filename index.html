@@ -266,32 +266,6 @@
             text-transform: uppercase;
         }
 
-        /* Hero Sound Lines */
-        .hero-soundlines {
-            position: absolute;
-            bottom: 40px;
-            left: 0;
-            right: 0;
-            height: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 0 20px;
-            z-index: 1;
-            opacity: 0.5;
-        }
-
-        .soundline {
-            width: 2px;
-            background: var(--accent);
-            border-radius: 1px;
-            animation: soundPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes soundPulse {
-            0%, 100% { transform: scaleY(0.3); opacity: 0.4; }
-            50% { transform: scaleY(1); opacity: 1; }
-        }
 
         /* Section Styles */
         section {
@@ -406,10 +380,12 @@
             content: "We're All Kinship";
             position: absolute;
             top: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
             height: 100%;
             opacity: 0;
+            text-align: center;
         }
 
         .about-heading.visible::before {
@@ -899,6 +875,51 @@
             z-index: 9999;
             color: var(--accent);
             text-shadow: 0 0 8px rgba(245, 197, 24, 0.4);
+            animation: noteGlitch 2s infinite;
+        }
+
+        .cursor-note::before {
+            content: attr(data-note);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #ff00ff;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: noteGlitchLayer 2s infinite;
+        }
+
+        .cursor-note::after {
+            content: attr(data-note);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #00ffff;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            animation: noteGlitchLayer2 2s infinite;
+        }
+
+        @keyframes noteGlitch {
+            0%, 85%, 100% { transform: translate(-50%, -50%); }
+            87% { transform: translate(-52%, -48%); }
+            89% { transform: translate(-48%, -52%); }
+            91% { transform: translate(-51%, -49%); }
+            93% { transform: translate(-49%, -51%); }
+        }
+
+        @keyframes noteGlitchLayer {
+            0%, 85%, 100% { transform: translate(0); opacity: 0; }
+            87% { transform: translate(2px, -1px); opacity: 0.8; }
+            89% { transform: translate(-2px, 1px); opacity: 0.8; }
+            91% { transform: translate(1px, 1px); opacity: 0; }
+            93% { transform: translate(-1px, -1px); opacity: 0.8; }
+        }
+
+        @keyframes noteGlitchLayer2 {
+            0%, 85%, 100% { transform: translate(0); opacity: 0; }
+            86% { transform: translate(-2px, 1px); opacity: 0.8; }
+            88% { transform: translate(2px, -1px); opacity: 0.8; }
+            90% { transform: translate(-1px, -1px); opacity: 0; }
+            92% { transform: translate(1px, 1px); opacity: 0.8; }
         }
     </style>
 </head>
@@ -931,7 +952,6 @@
                 <p class="hero-tagline">Melodic Drum & Bass in the Heart of Malta</p>
             </div>
         </div>
-        <div class="hero-soundlines" id="soundlines"></div>
     </section>
 
     <!-- Hero Spacer for scroll effect -->
@@ -1094,27 +1114,11 @@
     </footer>
 
     <script>
-        // Create sound lines
-        const soundlinesContainer = document.getElementById('soundlines');
-        const numLines = 80;
-        for (let i = 0; i < numLines; i++) {
-            const line = document.createElement('div');
-            line.className = 'soundline';
-            const height = 8 + Math.random() * 28;
-            const delay = Math.random() * 2;
-            const duration = 1 + Math.random() * 1;
-            line.style.height = height + 'px';
-            line.style.animationDelay = delay + 's';
-            line.style.animationDuration = duration + 's';
-            soundlinesContainer.appendChild(line);
-        }
-
         // Navigation scroll effect & Parallax
         const nav = document.querySelector('nav');
         const heroBg = document.querySelector('.hero-bg');
         const logoContainer = document.querySelector('.logo-container');
         const heroText = document.querySelector('.hero-text');
-        const soundlines = document.querySelector('.hero-soundlines');
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
@@ -1131,7 +1135,6 @@
                 heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
                 logoContainer.style.transform = `translateY(${scrollY * 0.3}px)`;
                 heroText.style.transform = `translateY(${scrollY * 0.4}px)`;
-                soundlines.style.transform = `translateY(${scrollY * 0.2}px)`;
 
                 // Fade out as you scroll
                 const opacity = 1 - (scrollY / window.innerHeight) * 1.2;
@@ -1187,8 +1190,11 @@
         for (let i = 0; i < numNotes; i++) {
             const note = document.createElement('div');
             note.className = 'cursor-note';
-            note.textContent = noteSymbols[i % noteSymbols.length];
+            const symbol = noteSymbols[i % noteSymbols.length];
+            note.textContent = symbol;
+            note.setAttribute('data-note', symbol);
             note.style.fontSize = (20 - i * 1.5) + 'px';
+            note.style.animationDelay = (i * 0.1) + 's';
             notesContainer.appendChild(note);
             notes.push({
                 el: note,
