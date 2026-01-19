@@ -170,10 +170,65 @@
             height: 100%;
             max-width: 380px;
             max-height: 380px;
-            animation: gentleSpin 90s linear infinite;
+            animation: gentleSpin 90s linear infinite, logoGlitch 3s infinite;
             filter: brightness(0) invert(1) sepia(0.35) saturate(0.6) hue-rotate(-5deg) brightness(0.95);
             object-fit: contain;
             object-position: 48% center;
+        }
+
+        .logo-container::before,
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 15vh;
+            margin: auto;
+            width: 40vmin;
+            height: 40vmin;
+            background-image: url('assets/logo.png');
+            background-size: contain;
+            background-position: 48% center;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            animation: gentleSpin 90s linear infinite;
+        }
+
+        .logo-container::before {
+            filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(0deg);
+            animation: gentleSpin 90s linear infinite, logoGlitchYellow 3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+        }
+
+        .logo-container::after {
+            filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(250deg);
+            animation: gentleSpin 90s linear infinite, logoGlitchMagenta 3s infinite;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+        }
+
+        @keyframes logoGlitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-3px, 2px); }
+            94% { transform: translate(3px, -2px); }
+            96% { transform: translate(-2px, -1px); }
+            98% { transform: translate(2px, 1px); }
+        }
+
+        @keyframes logoGlitchYellow {
+            0%, 90%, 100% { transform: translate(0); opacity: 0; }
+            92% { transform: translate(5px, -3px); opacity: 0.7; }
+            94% { transform: translate(-4px, 3px); opacity: 0.7; }
+            96% { transform: translate(3px, 2px); opacity: 0; }
+            98% { transform: translate(-3px, -2px); opacity: 0.7; }
+        }
+
+        @keyframes logoGlitchMagenta {
+            0%, 90%, 100% { transform: translate(0); opacity: 0; }
+            91% { transform: translate(-5px, 3px); opacity: 0.7; }
+            93% { transform: translate(4px, -3px); opacity: 0.7; }
+            95% { transform: translate(-3px, -2px); opacity: 0; }
+            97% { transform: translate(3px, 2px); opacity: 0.7; }
         }
 
         @keyframes gentleSpin {
