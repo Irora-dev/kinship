@@ -41,6 +41,92 @@
             overflow-x: hidden;
         }
 
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: loaderFade 0.8s ease forwards 2s;
+        }
+
+        .loader-logo {
+            width: 150px;
+            height: 150px;
+            filter: brightness(0) invert(1) sepia(0.35) saturate(0.6) hue-rotate(-5deg) brightness(0.95);
+            animation: loaderPulse 1s ease-in-out infinite, loaderSpin 3s linear infinite;
+        }
+
+        .loader-text {
+            margin-top: 2rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            animation: loaderTextPulse 1s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--dark-elevated);
+            margin-top: 1.5rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loader-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            animation: loaderBarFill 2s ease forwards;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes loaderSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes loaderTextPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes loaderBarFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes loaderFade {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
+
+        /* Hero reveal after loader */
+        .hero-content {
+            opacity: 0;
+            animation: heroReveal 1s ease forwards 2.2s;
+        }
+
+        @keyframes heroReveal {
+            to { opacity: 1; }
+        }
+
         /* Navigation */
         nav {
             position: fixed;
@@ -152,10 +238,10 @@
         }
 
         .logo-container {
-            width: 40vmin;
-            height: 40vmin;
-            max-width: 380px;
-            max-height: 380px;
+            width: 50vmin;
+            height: 50vmin;
+            max-width: 480px;
+            max-height: 480px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -165,8 +251,8 @@
         .logo {
             width: 100%;
             height: 100%;
-            max-width: 380px;
-            max-height: 380px;
+            max-width: 480px;
+            max-height: 480px;
             animation: gentleSpin 90s linear infinite;
             filter: brightness(0) invert(1) sepia(0.35) saturate(0.6) hue-rotate(-5deg) brightness(0.95);
             object-fit: contain;
@@ -180,14 +266,72 @@
 
         .hero-tagline {
             font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 600;
             letter-spacing: 0.05em;
             color: var(--cream);
             text-transform: uppercase;
             text-align: left;
-            line-height: 1.2;
-            max-width: 400px;
+            line-height: 1.1;
+            max-width: 500px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textReveal 1s ease forwards 2.5s, taglineGlitch 4s infinite 3.5s;
+        }
+
+        .hero-tagline::before,
+        .hero-tagline::after {
+            content: "Malta's Melodic DnB Movement";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .hero-tagline::before {
+            color: var(--accent-secondary);
+            animation: taglineGlitchTop 4s infinite 3.5s;
+            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        }
+
+        .hero-tagline::after {
+            color: var(--accent);
+            animation: taglineGlitchBottom 4s infinite 3.5s;
+            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes textReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes taglineGlitch {
+            0%, 92%, 100% { transform: translate(0); }
+            93% { transform: translate(-3px, 2px); }
+            94% { transform: translate(3px, -2px); }
+            95% { transform: translate(-2px, -1px); }
+            96% { transform: translate(2px, 1px); }
+        }
+
+        @keyframes taglineGlitchTop {
+            0%, 92%, 100% { transform: translate(0); opacity: 0; }
+            93% { transform: translate(4px, -2px); opacity: 0.8; }
+            94% { transform: translate(-4px, 2px); opacity: 0.8; }
+            95% { transform: translate(2px, 1px); opacity: 0; }
+            96% { transform: translate(-2px, -1px); opacity: 0.8; }
+        }
+
+        @keyframes taglineGlitchBottom {
+            0%, 92%, 100% { transform: translate(0); opacity: 0; }
+            92.5% { transform: translate(-4px, 2px); opacity: 0.8; }
+            93.5% { transform: translate(4px, -2px); opacity: 0.8; }
+            94.5% { transform: translate(-2px, -1px); opacity: 0; }
+            95.5% { transform: translate(2px, 1px); opacity: 0.8; }
         }
 
 
@@ -750,9 +894,14 @@
             }
 
             .hero-tagline {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
                 text-align: center;
                 max-width: 100%;
+            }
+
+            .loader-logo {
+                width: 100px;
+                height: 100px;
             }
 
             .section-title {
@@ -847,6 +996,15 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loader">
+        <img src="assets/logo.png" alt="Loading" class="loader-logo">
+        <p class="loader-text">Loading</p>
+        <div class="loader-bar">
+            <div class="loader-bar-fill"></div>
+        </div>
+    </div>
+
     <!-- Cursor musical notes trail -->
     <div class="cursor-notes"></div>
 
