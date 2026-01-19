@@ -286,31 +286,6 @@
             letter-spacing: 0.01em;
         }
 
-        .hero-tagline::before,
-        .hero-tagline::after {
-            content: "Malta's Melodic DnB Movement";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-        }
-
-        .hero-tagline::before {
-            color: var(--cream);
-            filter: brightness(1.2);
-            animation: taglineGlitchTop 4s infinite 3.5s;
-            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-        }
-
-        .hero-tagline::after {
-            color: var(--cream);
-            filter: brightness(0.8);
-            animation: taglineGlitchBottom 4s infinite 3.5s;
-            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-        }
-
         @keyframes textReveal {
             to {
                 opacity: 1;
@@ -319,27 +294,26 @@
         }
 
         @keyframes taglineGlitch {
-            0%, 92%, 100% { transform: translate(0); }
-            93% { transform: translate(-3px, 2px); }
-            94% { transform: translate(3px, -2px); }
-            95% { transform: translate(-2px, -1px); }
-            96% { transform: translate(2px, 1px); }
-        }
-
-        @keyframes taglineGlitchTop {
-            0%, 92%, 100% { transform: translate(0); opacity: 0; }
-            93% { transform: translate(4px, -2px); opacity: 0.8; }
-            94% { transform: translate(-4px, 2px); opacity: 0.8; }
-            95% { transform: translate(2px, 1px); opacity: 0; }
-            96% { transform: translate(-2px, -1px); opacity: 0.8; }
-        }
-
-        @keyframes taglineGlitchBottom {
-            0%, 92%, 100% { transform: translate(0); opacity: 0; }
-            92.5% { transform: translate(-4px, 2px); opacity: 0.8; }
-            93.5% { transform: translate(4px, -2px); opacity: 0.8; }
-            94.5% { transform: translate(-2px, -1px); opacity: 0; }
-            95.5% { transform: translate(2px, 1px); opacity: 0.8; }
+            0%, 92%, 100% {
+                transform: translate(0);
+                text-shadow: none;
+            }
+            93% {
+                transform: translate(-3px, 2px);
+                text-shadow: 3px -2px 0 rgba(139, 92, 246, 0.5), -3px 2px 0 rgba(6, 182, 212, 0.5);
+            }
+            94% {
+                transform: translate(3px, -2px);
+                text-shadow: -3px 2px 0 rgba(139, 92, 246, 0.5), 3px -2px 0 rgba(6, 182, 212, 0.5);
+            }
+            95% {
+                transform: translate(-2px, -1px);
+                text-shadow: 2px 1px 0 rgba(139, 92, 246, 0.3), -2px -1px 0 rgba(6, 182, 212, 0.3);
+            }
+            96% {
+                transform: translate(2px, 1px);
+                text-shadow: -2px -1px 0 rgba(139, 92, 246, 0.4), 2px 1px 0 rgba(6, 182, 212, 0.4);
+            }
         }
 
 
