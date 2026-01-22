@@ -79,11 +79,45 @@
             position: fixed;
             inset: 0;
             z-index: 0;
-            opacity: 0.06;
+            opacity: 0.18;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600'%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1.5' d='M-100,100 Q150,150 400,100 T900,100 T1400,100 T1900,100'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1' d='M-100,180 Q200,220 500,180 T1100,180 T1700,180'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1.5' d='M-100,280 Q100,320 350,280 T850,280 T1350,280 T1850,280'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1' d='M-100,360 Q250,410 550,360 T1150,360 T1750,360'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1.5' d='M-100,460 Q180,500 450,460 T950,460 T1450,460'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='1' d='M-100,540 Q120,580 380,540 T880,540 T1380,540 T1880,540'/%3E%3C/svg%3E");
-            background-size: 120% 500px;
-            background-repeat: repeat-y;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Cdefs%3E%3Cpattern id='seigaiha' x='0' y='0' width='40' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M0,20 Q10,0 20,20 Q30,0 40,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M-20,20 Q-10,0 0,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M40,20 Q50,0 60,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M5,20 Q12.5,5 20,20 Q27.5,5 35,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M-15,20 Q-7.5,5 0,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M35,20 Q42.5,5 50,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.3' d='M10,20 Q15,10 20,20 Q25,10 30,20'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='50' fill='url(%23seigaiha)'/%3E%3C/svg%3E");
+            background-size: 200px 50px;
+            background-repeat: repeat;
+        }
+
+        /* Site Loading Screen */
+        .site-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--color-ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .site-loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            width: 60px;
+            height: 60px;
+            filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
+            animation: loaderPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
         /* Film Grain Overlay */
@@ -97,6 +131,109 @@
             background-repeat: repeat;
             background-size: 200px 200px;
         }
+
+        /* ========================================
+           HERO SECTION - Full Width Centered
+           ======================================== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-branding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-6);
+            position: relative;
+            z-index: 20;
+        }
+
+        /* Hero Parallax Images - Both Sides */
+        .hero-parallax {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-parallax-layer {
+            position: absolute;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        .hero-parallax-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Left side images */
+        .hero-layer-l1 {
+            width: 22%;
+            max-width: 280px;
+            aspect-ratio: 3/4;
+            top: 8%;
+            left: 3%;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        .hero-layer-l2 {
+            width: 18%;
+            max-width: 220px;
+            aspect-ratio: 4/5;
+            bottom: 15%;
+            left: 8%;
+            opacity: 0.7;
+            z-index: 3;
+        }
+
+        /* Right side images */
+        .hero-layer-r1 {
+            width: 20%;
+            max-width: 250px;
+            aspect-ratio: 4/5;
+            top: 12%;
+            right: 5%;
+            opacity: 0.6;
+            z-index: 2;
+        }
+
+        .hero-layer-r2 {
+            width: 24%;
+            max-width: 300px;
+            aspect-ratio: 3/4;
+            bottom: 10%;
+            right: 2%;
+            opacity: 0.75;
+            z-index: 4;
+        }
+
+        /* Hero parallax loading animation */
+        .hero-parallax.loading .hero-parallax-layer {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .hero-parallax.loaded .hero-parallax-layer {
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .hero-parallax.loaded .hero-layer-l1 { transition-delay: 0.1s; }
+        .hero-parallax.loaded .hero-layer-r1 { transition-delay: 0.2s; }
+        .hero-parallax.loaded .hero-layer-l2 { transition-delay: 0.3s; }
+        .hero-parallax.loaded .hero-layer-r2 { transition-delay: 0.4s; }
 
         /* ========================================
            SPLIT LAYOUT - Main Structure
@@ -121,43 +258,36 @@
             overflow: hidden;
         }
 
-        /* ========================================
-           HERO SECTION - Vertical Branding
-           ======================================== */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: var(--space-8);
-            position: relative;
-        }
-
-        .hero-branding {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-6);
-        }
-
         .hero-logo {
-            width: clamp(60px, 8vw, 90px);
+            width: clamp(80px, 10vw, 120px);
             height: auto;
             /* Make logo cream/white colored */
             filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
-            animation: logoEntrance 0.8s ease forwards 0.2s, gentleRotate 6s ease-in-out infinite 1s;
+            animation: logoEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.7s, logoFloat 4s ease-in-out infinite 3.0s;
             opacity: 0;
+            transform: scale(0.3) rotate(-20deg);
         }
 
         @keyframes logoEntrance {
-            to {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-15deg);
+                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(10px);
+            }
+            60% {
                 opacity: 1;
+                transform: scale(1.05) rotate(2deg);
+                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(0px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(0px);
             }
         }
 
-        @keyframes gentleRotate {
-            0%, 100% { transform: rotate(-3deg); }
+        @keyframes logoFloat {
+            0%, 100% { transform: rotate(0deg); }
             50% { transform: rotate(3deg); }
         }
 
@@ -170,15 +300,12 @@
 
         .v-letter {
             font-family: var(--font-heading);
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
             font-weight: 500;
             color: var(--color-cream);
             letter-spacing: 0.15em;
             text-transform: uppercase;
             line-height: 1;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: letterSlideIn 0.5s ease forwards;
             position: relative;
         }
 
@@ -190,48 +317,106 @@
             left: 0;
             opacity: 0;
             pointer-events: none;
+            mix-blend-mode: screen;
         }
 
+        /* Left split - amber color moves left */
         .v-letter::before {
             color: var(--color-amber);
-            animation: glitchShake1 4s linear infinite;
+            animation: glitchLeft 4s linear infinite;
         }
 
+        /* Right split - lighter amber moves right */
         .v-letter::after {
             color: var(--color-amber-glow);
-            animation: glitchShake2 4s linear infinite;
+            animation: glitchRight 4s linear infinite;
         }
 
-        @keyframes glitchShake1 {
-            0%, 90%, 100% { opacity: 0; transform: translate(0, 0); }
-            91% { opacity: 0.8; transform: translate(-3px, 1px); }
-            92% { opacity: 0.6; transform: translate(2px, -1px); }
-            93% { opacity: 0; transform: translate(0, 0); }
-            94% { opacity: 0.7; transform: translate(-2px, -2px); }
-            95% { opacity: 0.5; transform: translate(3px, 1px); }
-            96% { opacity: 0; transform: translate(0, 0); }
-            97% { opacity: 0.8; transform: translate(-1px, 2px); }
-            98% { opacity: 0.4; transform: translate(2px, -1px); }
-            99% { opacity: 0; transform: translate(0, 0); }
+        @keyframes glitchLeft {
+            0%, 84%, 100% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            85% {
+                opacity: 1;
+                transform: translate(-12px, 0);
+            }
+            86% {
+                opacity: 0.9;
+                transform: translate(-16px, 2px);
+            }
+            87% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            88% {
+                opacity: 1;
+                transform: translate(-10px, -1px);
+            }
+            89% {
+                opacity: 0.85;
+                transform: translate(-18px, 0);
+            }
+            90% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            93% {
+                opacity: 1;
+                transform: translate(-14px, 1px);
+            }
+            94% {
+                opacity: 0.8;
+                transform: translate(-8px, 0);
+            }
+            95% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
         }
 
-        @keyframes glitchShake2 {
-            0%, 85%, 100% { opacity: 0; transform: translate(0, 0); }
-            86% { opacity: 0.6; transform: translate(2px, -2px); }
-            87% { opacity: 0.8; transform: translate(-3px, 1px); }
-            88% { opacity: 0; transform: translate(0, 0); }
-            89% { opacity: 0.5; transform: translate(1px, 2px); }
-            90% { opacity: 0.7; transform: translate(-2px, -1px); }
-            91% { opacity: 0; transform: translate(0, 0); }
+        @keyframes glitchRight {
+            0%, 84%, 100% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            85% {
+                opacity: 1;
+                transform: translate(12px, 0);
+            }
+            86% {
+                opacity: 0.9;
+                transform: translate(16px, -2px);
+            }
+            87% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            88% {
+                opacity: 1;
+                transform: translate(10px, 1px);
+            }
+            89% {
+                opacity: 0.85;
+                transform: translate(18px, 0);
+            }
+            90% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            93% {
+                opacity: 1;
+                transform: translate(14px, -1px);
+            }
+            94% {
+                opacity: 0.8;
+                transform: translate(8px, 0);
+            }
+            95% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
         }
-
-        .v-letter:nth-child(1) { animation-delay: 0.4s; }
-        .v-letter:nth-child(2) { animation-delay: 0.5s; }
-        .v-letter:nth-child(3) { animation-delay: 0.6s; }
-        .v-letter:nth-child(4) { animation-delay: 0.7s; }
-        .v-letter:nth-child(5) { animation-delay: 0.8s; }
-        .v-letter:nth-child(6) { animation-delay: 0.9s; }
-        .v-letter:nth-child(7) { animation-delay: 1.0s; }
 
         @keyframes fadeInDown {
             to {
@@ -240,10 +425,36 @@
             }
         }
 
-        @keyframes letterSlideIn {
-            to {
+        @keyframes letterReveal {
+            0% {
+                opacity: 0;
+                filter: blur(12px);
+                text-shadow: 0 0 0 transparent;
+            }
+            20% {
+                opacity: 0.6;
+                filter: blur(8px);
+                text-shadow: 0 0 40px var(--color-amber), 0 0 80px var(--color-amber);
+            }
+            40% {
                 opacity: 1;
-                transform: translateX(0);
+                filter: blur(2px);
+                text-shadow: 0 0 30px var(--color-amber-glow), 0 0 60px var(--color-amber);
+            }
+            60% {
+                transform: translateX(0) translateY(0) scale(1.15) rotate(0deg);
+                filter: blur(0px);
+                text-shadow: 0 0 25px var(--color-amber-glow), 0 0 50px var(--color-amber);
+            }
+            80% {
+                transform: translateX(0) translateY(0) scale(0.95) rotate(0deg);
+                text-shadow: 0 0 15px rgba(212, 145, 93, 0.6);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+                filter: blur(0px);
+                text-shadow: 0 0 0 transparent;
             }
         }
 
@@ -256,7 +467,9 @@
             letter-spacing: 0.05em;
             text-align: center;
             opacity: 0;
-            animation: fadeInDown 0.8s ease forwards 1.2s;
+            animation: fadeInDown 0.8s ease forwards 2.5s;
+            position: relative;
+            z-index: 20;
         }
 
         .scroll-indicator {
@@ -268,8 +481,9 @@
             flex-direction: column;
             align-items: center;
             gap: var(--space-4);
-            opacity: 0;
-            animation: fadeInDown 0.8s ease forwards 1.5s, pulse 2s ease-in-out infinite 2s;
+            opacity: 0.6;
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 20;
         }
 
         .scroll-indicator span {
@@ -298,7 +512,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: var(--space-16) var(--space-12);
+            padding: var(--space-16) var(--space-12) var(--space-16) var(--space-24);
             border-top: 1px solid var(--color-charcoal);
         }
 
@@ -319,7 +533,7 @@
         }
 
         .section-text {
-            font-size: var(--text-base);
+            font-size: var(--text-lg);
             line-height: 1.8;
             color: var(--color-haze);
             max-width: 500px;
@@ -328,11 +542,30 @@
         /* About Section */
         .about-quote {
             font-family: var(--font-heading);
-            font-size: var(--text-xl);
+            font-size: var(--text-2xl);
             font-weight: 400;
             font-style: italic;
             color: var(--color-cream);
             margin-bottom: var(--space-8);
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-quote .quote-text {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(20px);
+            transform: translateY(20px) scale(0.95);
+            transition:
+                opacity 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .about-quote.revealed .quote-text {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
         }
 
         .text-link {
@@ -359,21 +592,81 @@
             transform: translateX(4px);
         }
 
-        /* Mixes Section - YouTube Embeds */
+        /* Events Section - Larger to keep poster visible longer */
+        .events-section {
+            min-height: 150vh;
+        }
+
+        /* Mixes Section - Full width centered */
+        .mixes-section {
+            min-height: auto;
+            padding: var(--space-24) var(--space-8);
+            border-top: 1px solid var(--color-charcoal);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: var(--color-ink);
+        }
+
+        .mixes-section .section-label,
+        .mixes-section .section-title {
+            text-align: center;
+        }
+
+        /* Community Section - Full width centered */
+        .community-section {
+            min-height: auto;
+            padding: var(--space-24) var(--space-8);
+            border-top: 1px solid var(--color-charcoal);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: var(--color-ink);
+        }
+
+        .community-section .section-label,
+        .community-section .section-title {
+            text-align: center;
+        }
+
+        .community-section .community-text {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: var(--space-8);
+        }
+
         .youtube-mixes {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: var(--space-6);
             margin-top: var(--space-8);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .youtube-embed {
             position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            width: calc(50% - var(--space-6) / 2);
+            padding-bottom: 28%; /* 16:9 aspect ratio adjusted for half width */
             border-radius: 6px;
             overflow: hidden;
             background: var(--color-smoke);
+        }
+
+        /* First item full width when odd number of mixes */
+        .youtube-mixes .youtube-embed:first-child:nth-last-child(odd),
+        .youtube-mixes .youtube-embed:first-child:nth-last-child(odd) ~ .youtube-embed:nth-child(odd):last-child {
+            width: calc(50% - var(--space-6) / 2);
+        }
+
+        /* For 3 mixes: first one centered on its own row */
+        .youtube-mixes:has(.youtube-embed:nth-child(3):last-child) .youtube-embed:first-child {
+            width: calc(50% - var(--space-6) / 2);
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .youtube-embed iframe {
@@ -417,6 +710,28 @@
         .event-meta {
             font-size: var(--text-sm);
             color: var(--color-mist);
+            margin-bottom: var(--space-8);
+        }
+
+        .event-description {
+            font-size: var(--text-base);
+            color: var(--color-haze);
+            line-height: 1.7;
+            margin-bottom: var(--space-4);
+            max-width: 450px;
+        }
+
+        .event-highlight {
+            color: var(--color-amber);
+            font-weight: 500;
+        }
+
+        .event-cta-text {
+            font-family: var(--font-heading);
+            font-size: var(--text-lg);
+            font-style: italic;
+            color: var(--color-cream);
+            margin-top: var(--space-6);
             margin-bottom: var(--space-8);
         }
 
@@ -467,80 +782,125 @@
         }
 
         /* ========================================
-           PHOTO CAROUSEL - Right Panel (Stacked Effect)
+           PARALLAX IMAGE LAYERS - Right Panel
            ======================================== */
-        .photo-carousel {
+        .parallax-container {
             position: relative;
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 1000px;
+            overflow: hidden;
         }
 
-        .photo-card {
+        .parallax-layer {
             position: absolute;
-            width: 68%;
-            max-width: 420px;
-            aspect-ratio: 3/4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
         }
 
-        /* Stacked card positions - scruffy pile effect */
-        .photo-card[data-position="behind-3"] {
-            opacity: 0.3;
-            transform: translate(25px, -15px) rotate(8deg);
-            z-index: 1;
-        }
-
-        .photo-card[data-position="behind-2"] {
-            opacity: 0.5;
-            transform: translate(-20px, 12px) rotate(-6deg);
-            z-index: 2;
-        }
-
-        .photo-card[data-position="behind-1"] {
-            opacity: 0.7;
-            transform: translate(12px, -8px) rotate(4deg);
-            z-index: 3;
-        }
-
-        .photo-card[data-position="active"] {
-            opacity: 1;
-            transform: translate(0, 0) rotate(-1deg);
-            z-index: 4;
-            pointer-events: auto;
-        }
-
-        .photo-card[data-position="ahead-1"] {
-            opacity: 0;
-            transform: translate(-15px, -30px) rotate(-5deg);
-            z-index: 0;
-        }
-
-        .photo-card[data-position="hidden"] {
-            opacity: 0;
-            transform: translateY(40px) rotate(3deg);
-            z-index: 0;
-        }
-
-        .photo-image {
+        .parallax-layer img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 6px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .photo-card[data-position="active"] .photo-image {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        /* Layer 1 - Back, moves slowest */
+        .parallax-layer-1 {
+            width: 45%;
+            aspect-ratio: 3/4;
+            top: 5%;
+            left: 10%;
+            opacity: 0.4;
+            z-index: 1;
         }
 
+        /* Layer 2 - Mid-back */
+        .parallax-layer-2 {
+            width: 35%;
+            aspect-ratio: 4/5;
+            top: 55%;
+            right: 5%;
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        /* Layer 3 - Middle */
+        .parallax-layer-3 {
+            width: 50%;
+            aspect-ratio: 3/4;
+            top: 25%;
+            right: 20%;
+            opacity: 0.7;
+            z-index: 3;
+        }
+
+        /* Layer 4 - Front-mid */
+        .parallax-layer-4 {
+            width: 40%;
+            aspect-ratio: 4/5;
+            bottom: 15%;
+            left: 5%;
+            opacity: 0.85;
+            z-index: 4;
+        }
+
+        /* Layer 5 - Event Poster (animates in separately) */
+        .parallax-layer-5 {
+            width: 80%;
+            max-width: 420px;
+            aspect-ratio: 1488/2196;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.85) rotate(3deg);
+            opacity: 0;
+            z-index: 10;
+            box-shadow: 0 0 80px rgba(212, 145, 93, 0.5), 0 30px 100px rgba(0, 0, 0, 0.6);
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .parallax-layer-5.poster-visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) rotate(-1deg);
+        }
+
+        /* Loading Animation - Only for layers 1-4 */
+        .parallax-container.loading .parallax-layer:not(.parallax-layer-5) {
+            opacity: 0;
+            transform: translateY(100px) scale(0.8);
+        }
+
+        .parallax-container.loaded .parallax-layer:not(.parallax-layer-5) {
+            transition: opacity 0.8s ease;
+        }
+
+        .parallax-container.loaded .parallax-layer-1 { transition-delay: 0.1s; }
+        .parallax-container.loaded .parallax-layer-2 { transition-delay: 0.2s; }
+        .parallax-container.loaded .parallax-layer-3 { transition-delay: 0.3s; }
+        .parallax-container.loaded .parallax-layer-4 { transition-delay: 0.4s; }
+
+        /* Fade out after events section */
+        .split-right {
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .split-right.faded-out {
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+        }
+
+        /* Fade parallax layers when poster is about to appear */
+        .parallax-layer:not(.parallax-layer-5) {
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .parallax-container.layers-faded .parallax-layer:not(.parallax-layer-5) {
+            opacity: 0;
+            transform: translateY(-100px) scale(0.9);
+        }
 
         /* ========================================
            FOOTER
@@ -557,6 +917,7 @@
             width: 50px;
             height: 50px;
             margin: 0 auto var(--space-6);
+            filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
             opacity: 0.7;
         }
 
@@ -628,6 +989,27 @@
             .content-section {
                 padding: var(--space-12) var(--space-8);
             }
+
+            /* Adjust hero parallax for smaller screens */
+            .hero-layer-l1 {
+                width: 20%;
+                left: 2%;
+            }
+
+            .hero-layer-l2 {
+                width: 16%;
+                left: 5%;
+            }
+
+            .hero-layer-r1 {
+                width: 18%;
+                right: 3%;
+            }
+
+            .hero-layer-r2 {
+                width: 22%;
+                right: 1%;
+            }
         }
 
         @media (max-width: 768px) {
@@ -645,6 +1027,7 @@
 
             .hero-section {
                 min-height: 100vh;
+                padding-bottom: var(--space-16);
             }
 
             .hero-branding {
@@ -652,11 +1035,48 @@
             }
 
             .hero-logo {
-                width: 50px;
+                width: 90px;
             }
 
             .v-letter {
-                font-size: clamp(1.5rem, 6vw, 2rem);
+                font-size: clamp(2.5rem, 10vw, 3rem);
+            }
+
+            .hero-tagline {
+                max-width: 240px;
+                line-height: 1.3;
+                padding: 0 var(--space-6);
+                text-align: center;
+                margin-top: var(--space-6);
+            }
+
+            /* Hero parallax - smaller and more subtle on mobile */
+            .hero-layer-l1 {
+                width: 28%;
+                top: 5%;
+                left: -5%;
+                opacity: 0.35;
+            }
+
+            .hero-layer-l2 {
+                width: 24%;
+                bottom: 20%;
+                left: -8%;
+                opacity: 0.45;
+            }
+
+            .hero-layer-r1 {
+                width: 26%;
+                top: 8%;
+                right: -6%;
+                opacity: 0.4;
+            }
+
+            .hero-layer-r2 {
+                width: 30%;
+                bottom: 18%;
+                right: -8%;
+                opacity: 0.5;
             }
 
             .content-section {
@@ -667,122 +1087,162 @@
             .event-name {
                 font-size: var(--text-2xl);
             }
+
+            .mixes-section {
+                padding: var(--space-16) var(--space-6);
+            }
+
+            .youtube-embed {
+                width: 100%;
+                padding-bottom: 56.25%;
+            }
+
+            .youtube-mixes:has(.youtube-embed:nth-child(3):last-child) .youtube-embed:first-child {
+                width: 100%;
+            }
+
+            .events-section {
+                min-height: 100vh;
+            }
+
+            .community-section {
+                padding: var(--space-16) var(--space-6);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Site Loading Screen -->
+    <div class="site-loader" id="siteLoader">
+        <div class="loader-content">
+            <img src="assets/logo.png" alt="Loading" class="loader-logo">
+        </div>
+    </div>
+
     <!-- Subtle wave background -->
     <div class="wave-bg"></div>
 
     <!-- Film Grain Overlay -->
     <div class="grain-overlay"></div>
 
+    <!-- Hero Section - Full Width with Parallax on Both Sides -->
+    <section class="hero-section" id="hero">
+        <!-- Parallax Images Container -->
+        <div class="hero-parallax loading" id="heroParallax">
+            <!-- Left side images -->
+            <div class="hero-parallax-layer hero-layer-l1" data-speed="0.15">
+                <img src="assets/1.jpg" alt="Kinship atmosphere">
+            </div>
+            <div class="hero-parallax-layer hero-layer-l2" data-speed="0.35">
+                <img src="assets/3.jpg" alt="Kinship atmosphere">
+            </div>
+            <!-- Right side images -->
+            <div class="hero-parallax-layer hero-layer-r1" data-speed="0.25">
+                <img src="assets/2.jpg" alt="Kinship atmosphere">
+            </div>
+            <div class="hero-parallax-layer hero-layer-r2" data-speed="0.45">
+                <img src="assets/4.jpg" alt="Kinship atmosphere">
+            </div>
+        </div>
+
+        <!-- Centered Branding -->
+        <div class="hero-branding">
+            <img src="assets/logo.png" alt="Kinship" class="hero-logo">
+            <div class="vertical-text">
+                <span class="v-letter" data-letter="K">K</span>
+                <span class="v-letter" data-letter="I">I</span>
+                <span class="v-letter" data-letter="N">N</span>
+                <span class="v-letter" data-letter="S">S</span>
+                <span class="v-letter" data-letter="H">H</span>
+                <span class="v-letter" data-letter="I">I</span>
+                <span class="v-letter" data-letter="P">P</span>
+            </div>
+        </div>
+        <p class="hero-tagline">Fostering a love for melodic drum & bass in Malta</p>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
     <!-- Main Split Container -->
     <div class="split-container">
         <!-- Left Column: Content -->
         <div class="split-left">
-            <!-- Hero Section -->
-            <section class="hero-section">
-                <div class="hero-branding">
-                    <img src="assets/logo.png" alt="Kinship" class="hero-logo">
-                    <div class="vertical-text">
-                        <span class="v-letter" data-letter="K">K</span>
-                        <span class="v-letter" data-letter="I">I</span>
-                        <span class="v-letter" data-letter="N">N</span>
-                        <span class="v-letter" data-letter="S">S</span>
-                        <span class="v-letter" data-letter="H">H</span>
-                        <span class="v-letter" data-letter="I">I</span>
-                        <span class="v-letter" data-letter="P">P</span>
-                    </div>
-                </div>
-                <p class="hero-tagline">Fostering a love for melodic drum & bass in Malta</p>
-                <div class="scroll-indicator">
-                    <span>Scroll</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12l7 7 7-7"/>
-                    </svg>
-                </div>
-            </section>
-
             <!-- About Section -->
             <section class="content-section" id="about" data-section="about">
-                <span class="section-label">About</span>
-                <p class="about-quote">"Everyone's first rave was once."</p>
+                <p class="about-quote"><span class="quote-text">"We're All Kinship"</span></p>
                 <p class="section-text">
-                    Kinship exists to build Malta's melodic drum & bass community—not as promoters throwing events, but as a gathering point for people who love the warmer, more emotional side of DnB.
+                    Born from a love for the warm, emotional side to drum and bass, Kinship is a collective that brings seasoned DnB lovers and first time ravers together to experience bliss-filled unforgettable melodic and vocal drum and bass nights in Malta.
                 </p>
-                <a href="#" class="text-link">
-                    Discover More <span>→</span>
-                </a>
             </section>
 
             <!-- Events Section -->
-            <section class="content-section" id="events" data-section="events">
+            <section class="content-section events-section" id="events" data-section="events">
                 <span class="section-label">Next Event</span>
                 <div class="event-details">
-                    <h2 class="event-name">KINSHIP 001</h2>
-                    <p class="event-date">March 15, 2026</p>
-                    <div class="event-lineup">
-                        <p>Hybrid Minds</p>
-                        <p>Monrroe</p>
-                        <p>+ Kinship Residents</p>
-                    </div>
-                    <p class="event-meta">Warehouse 52, Marsa · Doors 10pm</p>
+                    <h2 class="event-name">First Dance</h2>
+                    <p class="event-description event-highlight" style="margin-top: -0.5rem;">Bring a friend for free</p>
+                    <p class="event-date">20th April</p>
+                    <p class="event-description">
+                        Feel the warmth of melodic DnB whilst you dance with friends. We're bringing Malta together for a stunning night of melodic drum and bass. Bring someone who's never experienced a DnB night before and share the moment with them.
+                    </p>
+                    <p class="event-cta-text">We can't wait to see you there.</p>
                     <a href="#" class="btn-primary">Get Tickets</a>
                 </div>
             </section>
-
-            <!-- Mixes Section -->
-            <section class="content-section" id="mixes" data-section="mixes">
-                <span class="section-label">Mixes</span>
-                <h2 class="section-title">For the late drive home</h2>
-                <div class="youtube-mixes">
-                    <div class="youtube-embed">
-                        <iframe src="https://www.youtube.com/embed/Rq84SY2NPX0" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="youtube-embed">
-                        <iframe src="https://www.youtube.com/embed/xsX3cJOYotQ" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="youtube-embed">
-                        <iframe src="https://www.youtube.com/embed/i7AhEcDRql8" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Community Section -->
-            <section class="content-section" id="community" data-section="community">
-                <span class="section-label">Community</span>
-                <h2 class="section-title">Find Your People</h2>
-                <p class="community-text">
-                    Kinship is more than events. It's listening sessions in living rooms. It's group trips to festivals. It's finding your tribe in a new city.
-                </p>
-                <a href="#" class="btn-outline">Join the Community</a>
-            </section>
         </div>
 
-        <!-- Right Column: Photo Carousel -->
+        <!-- Right Column: Parallax Image Layers -->
         <div class="split-right">
-            <div class="photo-carousel">
-                <!-- Photo cards -->
-                <div class="photo-card">
-                    <img src="assets/2.jpg" alt="Kinship" class="photo-image">
+            <div class="parallax-container loading" id="parallaxContainer">
+                <div class="parallax-layer parallax-layer-1" data-speed="0.2">
+                    <img src="assets/1.jpg" alt="Kinship">
                 </div>
-                <div class="photo-card">
-                    <img src="assets/text-logo.png" alt="Kinship" class="photo-image">
+                <div class="parallax-layer parallax-layer-2" data-speed="0.35">
+                    <img src="assets/2.jpg" alt="Kinship">
                 </div>
-                <div class="photo-card">
-                    <img src="assets/1.jpg" alt="Kinship" class="photo-image">
+                <div class="parallax-layer parallax-layer-3" data-speed="0.5">
+                    <img src="assets/3.jpg" alt="Kinship">
                 </div>
-                <div class="photo-card">
-                    <img src="assets/3.jpg" alt="Kinship" class="photo-image">
+                <div class="parallax-layer parallax-layer-4" data-speed="0.7">
+                    <img src="assets/4.jpg" alt="Kinship">
                 </div>
-                <div class="photo-card">
-                    <img src="assets/4.jpg" alt="Kinship" class="photo-image">
+                <div class="parallax-layer parallax-layer-5" data-speed="1">
+                    <img src="assets/event-poster.png" alt="First Dance Event Poster">
                 </div>
-
             </div>
         </div>
     </div>
+
+    <!-- Mixes Section - Full Width -->
+    <section class="mixes-section" id="mixes" data-section="mixes">
+        <span class="section-label">Mixes</span>
+        <h2 class="section-title">The Latest Mixes</h2>
+        <div class="youtube-mixes">
+            <div class="youtube-embed">
+                <iframe src="https://www.youtube.com/embed/Rq84SY2NPX0" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="youtube-embed">
+                <iframe src="https://www.youtube.com/embed/xsX3cJOYotQ" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="youtube-embed">
+                <iframe src="https://www.youtube.com/embed/i7AhEcDRql8" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section - Full Width -->
+    <section class="community-section" id="community" data-section="community">
+        <span class="section-label">Community</span>
+        <h2 class="section-title">Find Your Kin</h2>
+        <p class="community-text">
+            Kinship is more than events. It's listening sessions in living rooms. It's group trips to festivals. It's finding your tribe in Malta.
+        </p>
+        <a href="#" class="btn-outline">Join the Community</a>
+    </section>
 
     <!-- Footer -->
     <footer>
@@ -811,52 +1271,123 @@
 
     <script>
         // ========================================
-        // Photo Carousel - Scroll-based rotation with stacked effect
+        // Site Loading Animation
         // ========================================
-        const photoCards = document.querySelectorAll('.photo-card');
-        const totalPhotos = photoCards.length;
-        let currentPhoto = 0;
+        const siteLoader = document.getElementById('siteLoader');
+        const parallaxContainer = document.getElementById('parallaxContainer');
+        const heroParallax = document.getElementById('heroParallax');
 
-        // Update card positions for messy pile effect
-        function updateCardPositions(activeIndex) {
-            photoCards.forEach((card, index) => {
-                const diff = index - activeIndex;
+        // Hide loader and trigger parallax entrance after 1.5s
+        setTimeout(() => {
+            siteLoader.classList.add('loaded');
 
-                let position;
-                if (diff === 0) {
-                    position = 'active';
-                } else if (diff === 1) {
-                    position = 'behind-1';
-                } else if (diff === 2) {
-                    position = 'behind-2';
-                } else if (diff === 3) {
-                    position = 'behind-3';
-                } else if (diff === -1) {
-                    position = 'ahead-1';
-                } else {
-                    position = 'hidden';
-                }
+            // Trigger parallax entrance
+            setTimeout(() => {
+                parallaxContainer.classList.remove('loading');
+                parallaxContainer.classList.add('loaded');
+                heroParallax.classList.remove('loading');
+                heroParallax.classList.add('loaded');
+                // Initialize parallax positions after loading
+                updateParallax();
+            }, 300);
+        }, 1500);
 
-                card.setAttribute('data-position', position);
-            });
-        }
+        // ========================================
+        // Parallax Image Layers - Scroll-based movement
+        // ========================================
+        const parallaxLayers = document.querySelectorAll('.parallax-layer:not(.parallax-layer-5)');
+        const heroParallaxLayers = document.querySelectorAll('.hero-parallax-layer');
+        const eventPoster = document.querySelector('.parallax-layer-5');
+        const eventsSection = document.getElementById('events');
+        const mixesSection = document.getElementById('mixes');
+        const splitRight = document.querySelector('.split-right');
+        const aboutQuote = document.querySelector('.about-quote');
+        const aboutSection = document.getElementById('about');
+        const heroSection = document.getElementById('hero');
 
-        // Calculate which photo to show based on scroll position
-        function updatePhotoCarousel() {
+        function updateParallax() {
             const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = scrollTop / docHeight;
+            const eventsTop = eventsSection.offsetTop;
+            const eventsBottom = eventsSection.offsetTop + eventsSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const heroHeight = heroSection.offsetHeight;
+            const aboutTop = aboutSection ? aboutSection.offsetTop : windowHeight;
+            const aboutBottom = aboutSection ? aboutSection.offsetTop + aboutSection.offsetHeight : windowHeight;
 
-            // Map scroll percentage to photo index
-            const newPhoto = Math.min(
-                Math.floor(scrollPercent * totalPhotos * 1.2),
-                totalPhotos - 1
-            );
+            // ========================================
+            // Hero Parallax - Subtle movement in hero section
+            // ========================================
+            heroParallaxLayers.forEach((layer) => {
+                const speed = parseFloat(layer.dataset.speed) || 0.3;
+                // Only apply parallax within hero section
+                const heroProgress = Math.min(scrollTop / heroHeight, 1);
+                const yOffset = scrollTop * speed * -0.5;
+                // Fade out as user scrolls past hero
+                const opacity = layer.classList.contains('hero-layer-l1') ? 0.5 :
+                               layer.classList.contains('hero-layer-l2') ? 0.7 :
+                               layer.classList.contains('hero-layer-r1') ? 0.6 : 0.75;
+                const fadeOpacity = opacity * (1 - heroProgress * 0.8);
+                layer.style.transform = `translateY(${yOffset}px)`;
+                layer.style.opacity = fadeOpacity;
+            });
 
-            if (newPhoto !== currentPhoto) {
-                currentPhoto = newPhoto;
-                updateCardPositions(currentPhoto);
+            // Reveal quote when about section comes into view
+            if (scrollTop + windowHeight * 0.7 > aboutTop) {
+                aboutQuote.classList.add('revealed');
             }
+
+            // Calculate when events section enters viewport (trigger later, closer to events)
+            const posterTrigger = scrollTop + windowHeight * 0.4 > eventsTop;
+            const layersFadeTrigger = scrollTop + windowHeight * 0.6 > eventsTop; // Fade layers slightly before poster appears
+            // Only fade out when mixes section comes into view
+            const mixesTop = mixesSection.offsetTop;
+            const pastEvents = scrollTop + windowHeight * 0.5 > mixesTop;
+
+            // Fade out entire right side when past events section
+            if (pastEvents) {
+                splitRight.classList.add('faded-out');
+            } else {
+                splitRight.classList.remove('faded-out');
+            }
+
+            // Fade out parallax layers 1-4 before poster appears
+            if (layersFadeTrigger && !pastEvents) {
+                parallaxContainer.classList.add('layers-faded');
+            } else {
+                parallaxContainer.classList.remove('layers-faded');
+            }
+
+            // Show/hide event poster when events section is in view
+            if (posterTrigger && !pastEvents) {
+                eventPoster.classList.add('poster-visible');
+            } else {
+                eventPoster.classList.remove('poster-visible');
+            }
+
+            // Variable speed parallax - very slow during about, fast approaching events
+            // Keep images around until end of about section
+            const transitionStart = aboutBottom;
+            const transitionEnd = eventsTop - windowHeight * 0.3;
+
+            let speedMultiplier;
+            if (scrollTop < transitionStart) {
+                // Very slow parallax during hero/about section - keep images around
+                speedMultiplier = 0.2;
+            } else if (scrollTop > transitionEnd) {
+                // Fast parallax approaching events
+                speedMultiplier = 3;
+            } else {
+                // Ease between slow and fast
+                const progress = (scrollTop - transitionStart) / (transitionEnd - transitionStart);
+                speedMultiplier = 0.2 + (progress * progress * 2.8); // Quadratic ease for smooth acceleration
+            }
+
+            // Apply parallax movement to layers 1-4
+            parallaxLayers.forEach((layer) => {
+                const speed = parseFloat(layer.dataset.speed) || 0.5;
+                const yOffset = scrollTop * speed * -speedMultiplier;
+                layer.style.transform = `translateY(${yOffset}px)`;
+            });
         }
 
         // Throttled scroll handler
@@ -864,15 +1395,15 @@
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 requestAnimationFrame(() => {
-                    updatePhotoCarousel();
+                    updateParallax();
                     ticking = false;
                 });
                 ticking = true;
             }
         }, { passive: true });
 
-        // Initial setup
-        updateCardPositions(0);
+        // Initial call
+        updateParallax();
 
         // ========================================
         // Smooth scroll for anchor links
