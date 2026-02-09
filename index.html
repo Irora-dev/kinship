@@ -9,57 +9,40 @@
     <link rel="apple-touch-icon" href="assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        * {
+        /* ========================================
+           RESET & CUSTOM PROPERTIES
+           ======================================== */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            /* Core palette */
-            --color-ink: #0D0D0D;
-            --color-smoke: #1A1A1A;
-            --color-charcoal: #2A2A2A;
-            --color-stone: #3D3D3D;
+            --void: #0a0510;
+            --void-light: #181024;
+            --limestone: #E8DCC5;
+            --honey-gold: #D4AF37;
+            --terracotta: #C86B57;
+            --azure: #005F73;
+            --whitewash: #F9F7F2;
 
-            /* Warm accents */
-            --color-amber: #D4915D;
-            --color-amber-glow: #E5A66D;
-            --color-amber-dim: #B87A4A;
+            --font-display: 'Cinzel', serif;
+            --font-mono: 'Space Mono', monospace;
 
-            /* Light tones */
-            --color-haze: #E8DFD0;
-            --color-cream: #F5F0E8;
-            --color-mist: #A89F94;
+            --text-xs: clamp(0.65rem, 0.6rem + 0.25vw, 0.75rem);
+            --text-sm: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+            --text-base: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+            --text-lg: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
+            --text-xl: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+            --text-2xl: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+            --text-3xl: clamp(2.5rem, 1.8rem + 3.5vw, 5rem);
+            --text-hero: clamp(3rem, 2rem + 5vw, 7rem);
 
-            /* Font families */
-            --font-heading: 'Cormorant Garamond', Georgia, serif;
-            --font-body: 'Inter', -apple-system, sans-serif;
-
-            /* Font sizes (fluid) */
-            --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-            --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-            --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-            --text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.35rem);
-            --text-xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
-            --text-2xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
-            --text-3xl: clamp(2.5rem, 2rem + 3vw, 4.5rem);
-
-            /* Spacing */
-            --space-4: 1rem;
-            --space-6: 1.5rem;
-            --space-8: 2rem;
-            --space-12: 3rem;
-            --space-16: 4rem;
-            --space-24: 6rem;
-            --space-32: 8rem;
-
-            /* Effects */
-            --shadow-glow: 0 0 40px rgba(212, 145, 93, 0.3);
             --transition-base: 300ms ease;
-            --transition-slow: 500ms ease;
+            --transition-slow: 600ms ease;
         }
 
         html {
@@ -67,1361 +50,1213 @@
         }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--color-ink);
-            color: var(--color-haze);
+            font-family: var(--font-mono);
+            background: var(--void);
+            color: var(--limestone);
             overflow-x: hidden;
             line-height: 1.6;
+            opacity: 0;
+            transition: opacity 0.8s ease;
         }
 
-        /* Subtle wave/tide pattern background */
-        .wave-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            opacity: 0.18;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Cdefs%3E%3Cpattern id='seigaiha' x='0' y='0' width='40' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M0,20 Q10,0 20,20 Q30,0 40,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M-20,20 Q-10,0 0,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.5' d='M40,20 Q50,0 60,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M5,20 Q12.5,5 20,20 Q27.5,5 35,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M-15,20 Q-7.5,5 0,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.4' d='M35,20 Q42.5,5 50,20'/%3E%3Cpath fill='none' stroke='%23D4915D' stroke-width='0.3' d='M10,20 Q15,10 20,20 Q25,10 30,20'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='50' fill='url(%23seigaiha)'/%3E%3C/svg%3E");
-            background-size: 200px 50px;
-            background-repeat: repeat;
+        body.loaded {
+            opacity: 1;
         }
 
-        /* Site Loading Screen */
-        .site-loader {
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ========================================
+           SVG NOISE OVERLAY
+           ======================================== */
+        .noise-overlay {
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: var(--color-ink);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .site-loader.loaded {
-            opacity: 0;
-            visibility: hidden;
             pointer-events: none;
+            opacity: 0.07;
+            mix-blend-mode: overlay;
         }
 
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-logo {
-            width: 60px;
-            height: 60px;
-            filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
-            animation: loaderPulse 1s ease-in-out infinite;
-        }
-
-        @keyframes loaderPulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        /* Film Grain Overlay */
-        .grain-overlay {
-            pointer-events: none;
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 200px 200px;
-        }
-
-        /* ========================================
-           HERO SECTION - Full Width Centered
-           ======================================== */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: var(--space-8);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-branding {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-6);
-            position: relative;
-            z-index: 20;
-        }
-
-        /* Hero Parallax Images - Both Sides */
-        .hero-parallax {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .hero-parallax-layer {
-            position: absolute;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: transform 0.1s ease-out;
-            will-change: transform;
-        }
-
-        .hero-parallax-layer img {
+        .noise-overlay svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
         }
-
-        /* Left side images */
-        .hero-layer-l1 {
-            width: 22%;
-            max-width: 280px;
-            aspect-ratio: 3/4;
-            top: 8%;
-            left: 3%;
-            opacity: 0.5;
-            z-index: 1;
-        }
-
-        .hero-layer-l2 {
-            width: 18%;
-            max-width: 220px;
-            aspect-ratio: 4/5;
-            bottom: 15%;
-            left: 8%;
-            opacity: 0.7;
-            z-index: 3;
-        }
-
-        /* Right side images */
-        .hero-layer-r1 {
-            width: 20%;
-            max-width: 250px;
-            aspect-ratio: 4/5;
-            top: 12%;
-            right: 5%;
-            opacity: 0.6;
-            z-index: 2;
-        }
-
-        .hero-layer-r2 {
-            width: 24%;
-            max-width: 300px;
-            aspect-ratio: 3/4;
-            bottom: 10%;
-            right: 2%;
-            opacity: 0.75;
-            z-index: 4;
-        }
-
-        /* Hero parallax loading animation */
-        .hero-parallax.loading .hero-parallax-layer {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        .hero-parallax.loaded .hero-parallax-layer {
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .hero-parallax.loaded .hero-layer-l1 { transition-delay: 0.1s; }
-        .hero-parallax.loaded .hero-layer-r1 { transition-delay: 0.2s; }
-        .hero-parallax.loaded .hero-layer-l2 { transition-delay: 0.3s; }
-        .hero-parallax.loaded .hero-layer-r2 { transition-delay: 0.4s; }
 
         /* ========================================
-           SPLIT LAYOUT - Main Structure
+           NAVIGATION
            ======================================== */
-        .split-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 100vh;
-        }
-
-        /* Left Column - Scrollable Content */
-        .split-left {
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Right Column - Sticky Photo Carousel */
-        .split-right {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .hero-logo {
-            width: clamp(80px, 10vw, 120px);
-            height: auto;
-            /* Make logo cream/white colored */
-            filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
-            animation: logoEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.7s, logoFloat 4s ease-in-out infinite 3.0s;
-            opacity: 0;
-            transform: scale(0.3) rotate(-20deg);
-        }
-
-        @keyframes logoEntrance {
-            0% {
-                opacity: 0;
-                transform: scale(0.3) rotate(-15deg);
-                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(10px);
-            }
-            60% {
-                opacity: 1;
-                transform: scale(1.05) rotate(2deg);
-                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(0px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-                filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg) blur(0px);
-            }
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        .vertical-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(0.15rem, 0.4vw, 0.25rem);
-        }
-
-        .v-letter {
-            font-family: var(--font-heading);
-            font-size: clamp(2.2rem, 5vw, 3.4rem);
-            font-weight: 500;
-            color: var(--color-cream);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            line-height: 1;
-            position: relative;
-        }
-
-        .v-letter::before,
-        .v-letter::after {
-            content: attr(data-letter);
-            position: absolute;
+        .nav {
+            position: fixed;
             top: 0;
             left: 0;
-            opacity: 0;
-            pointer-events: none;
-            mix-blend-mode: screen;
-        }
-
-        /* Left split - amber color moves left */
-        .v-letter::before {
-            color: var(--color-amber);
-            animation: glitchLeft 4s linear infinite;
-        }
-
-        /* Right split - lighter amber moves right */
-        .v-letter::after {
-            color: var(--color-amber-glow);
-            animation: glitchRight 4s linear infinite;
-        }
-
-        @keyframes glitchLeft {
-            0%, 84%, 100% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            85% {
-                opacity: 1;
-                transform: translate(-12px, 0);
-            }
-            86% {
-                opacity: 0.9;
-                transform: translate(-16px, 2px);
-            }
-            87% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            88% {
-                opacity: 1;
-                transform: translate(-10px, -1px);
-            }
-            89% {
-                opacity: 0.85;
-                transform: translate(-18px, 0);
-            }
-            90% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            93% {
-                opacity: 1;
-                transform: translate(-14px, 1px);
-            }
-            94% {
-                opacity: 0.8;
-                transform: translate(-8px, 0);
-            }
-            95% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-        }
-
-        @keyframes glitchRight {
-            0%, 84%, 100% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            85% {
-                opacity: 1;
-                transform: translate(12px, 0);
-            }
-            86% {
-                opacity: 0.9;
-                transform: translate(16px, -2px);
-            }
-            87% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            88% {
-                opacity: 1;
-                transform: translate(10px, 1px);
-            }
-            89% {
-                opacity: 0.85;
-                transform: translate(18px, 0);
-            }
-            90% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-            93% {
-                opacity: 1;
-                transform: translate(14px, -1px);
-            }
-            94% {
-                opacity: 0.8;
-                transform: translate(8px, 0);
-            }
-            95% {
-                opacity: 0;
-                transform: translate(0, 0);
-            }
-        }
-
-        @keyframes fadeInDown {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes letterReveal {
-            0% {
-                opacity: 0;
-                filter: blur(12px);
-                text-shadow: 0 0 0 transparent;
-            }
-            20% {
-                opacity: 0.6;
-                filter: blur(8px);
-                text-shadow: 0 0 40px var(--color-amber), 0 0 80px var(--color-amber);
-            }
-            40% {
-                opacity: 1;
-                filter: blur(2px);
-                text-shadow: 0 0 30px var(--color-amber-glow), 0 0 60px var(--color-amber);
-            }
-            60% {
-                transform: translateX(0) translateY(0) scale(1.15) rotate(0deg);
-                filter: blur(0px);
-                text-shadow: 0 0 25px var(--color-amber-glow), 0 0 50px var(--color-amber);
-            }
-            80% {
-                transform: translateX(0) translateY(0) scale(0.95) rotate(0deg);
-                text-shadow: 0 0 15px rgba(212, 145, 93, 0.6);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
-                filter: blur(0px);
-                text-shadow: 0 0 0 transparent;
-            }
-        }
-
-        .hero-tagline {
-            margin-top: var(--space-8);
-            font-family: var(--font-body);
-            font-size: var(--text-sm);
-            font-weight: 300;
-            color: var(--color-mist);
-            letter-spacing: 0.05em;
-            text-align: center;
-            opacity: 0;
-            animation: fadeInDown 0.8s ease forwards 2.5s;
-            position: relative;
-            z-index: 20;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: var(--space-8);
-            left: 50%;
-            transform: translateX(-50%);
+            right: 0;
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: var(--space-4);
-            opacity: 0.6;
-            animation: pulse 2s ease-in-out infinite;
-            z-index: 20;
+            justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            transition: background var(--transition-base), backdrop-filter var(--transition-base);
         }
 
-        .scroll-indicator span {
-            font-size: var(--text-xs);
-            color: var(--color-mist);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+        .nav.scrolled {
+            background: rgba(10, 5, 16, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
-        .scroll-indicator svg {
-            width: 20px;
-            height: 20px;
-            color: var(--color-amber);
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1) sepia(0.05) saturate(0.3);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(5px); }
-        }
-
-        /* ========================================
-           CONTENT SECTIONS - Left Panel
-           ======================================== */
-        .content-section {
-            min-height: 100vh;
+        .nav-links {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: var(--space-16) var(--space-12) var(--space-16) var(--space-24);
-            border-top: 1px solid var(--color-charcoal);
+            gap: 2.5rem;
+            list-style: none;
         }
 
-        .section-label {
+        .nav-links a {
+            font-family: var(--font-mono);
             font-size: var(--text-xs);
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            color: var(--color-mist);
-            margin-bottom: var(--space-6);
+            color: var(--limestone);
+            opacity: 0.7;
+            transition: opacity var(--transition-base), color var(--transition-base);
         }
 
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: var(--text-2xl);
-            font-weight: 400;
-            color: var(--color-cream);
-            margin-bottom: var(--space-6);
-        }
-
-        .section-text {
-            font-size: var(--text-lg);
-            line-height: 1.8;
-            color: var(--color-haze);
-            max-width: 500px;
-        }
-
-        /* About Section */
-        .about-quote {
-            font-family: var(--font-heading);
-            font-size: var(--text-2xl);
-            font-weight: 400;
-            font-style: italic;
-            color: var(--color-cream);
-            margin-bottom: var(--space-8);
-            position: relative;
-            display: inline-block;
-        }
-
-        .about-quote .quote-text {
-            display: inline-block;
-            opacity: 0;
-            filter: blur(20px);
-            transform: translateY(20px) scale(0.95);
-            transition:
-                opacity 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .about-quote.revealed .quote-text {
+        .nav-links a:hover {
             opacity: 1;
-            filter: blur(0);
-            transform: translateY(0) scale(1);
+            color: var(--honey-gold);
         }
 
-        .text-link {
-            display: inline-flex;
+        .nav-login {
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--honey-gold);
+            border: 1px solid var(--honey-gold);
+            padding: 0.4rem 1.2rem;
+            transition: background var(--transition-base), color var(--transition-base);
+        }
+
+        .nav-login:hover {
+            background: var(--honey-gold);
+            color: var(--void);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--limestone);
+            transition: transform var(--transition-base), opacity var(--transition-base);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 4px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -4px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(10, 5, 16, 0.97);
+            flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--color-amber);
-            text-decoration: none;
-            font-size: var(--text-sm);
-            font-weight: 500;
-            margin-top: var(--space-6);
+            justify-content: center;
+            gap: 2.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-base), visibility var(--transition-base);
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            color: var(--limestone);
+            letter-spacing: 0.1em;
             transition: color var(--transition-base);
         }
 
-        .text-link:hover {
-            color: var(--color-amber-glow);
+        .mobile-menu a:hover {
+            color: var(--honey-gold);
         }
 
-        .text-link span {
-            transition: transform var(--transition-base);
-        }
-
-        .text-link:hover span {
-            transform: translateX(4px);
-        }
-
-        /* Events Section - Larger to keep poster visible longer */
-        .events-section {
-            min-height: 150vh;
-        }
-
-        /* Mixes Section - Full width centered */
-        .mixes-section {
-            min-height: auto;
-            padding: var(--space-24) var(--space-8);
-            border-top: 1px solid var(--color-charcoal);
-            text-align: center;
+        /* ========================================
+           3-COLUMN GRID LAYOUT
+           ======================================== */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
             position: relative;
-            z-index: 10;
-            background: var(--color-ink);
         }
 
-        .mixes-section .section-label,
-        .mixes-section .section-title {
-            text-align: center;
-        }
-
-        /* Community Section - Full width centered */
-        .community-section {
-            min-height: auto;
-            padding: var(--space-24) var(--space-8);
-            border-top: 1px solid var(--color-charcoal);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            background: var(--color-ink);
-        }
-
-        .community-section .section-label,
-        .community-section .section-title {
-            text-align: center;
-        }
-
-        .community-section .community-text {
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: var(--space-8);
-        }
-
-        .youtube-mixes {
+        .side-panel {
+            padding: 2rem 1rem;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             justify-content: center;
-            gap: var(--space-6);
-            margin-top: var(--space-8);
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        .youtube-embed {
+        .side-panel.left {
+            border-right: 1px solid rgba(232, 220, 197, 0.08);
+        }
+
+        .side-panel.right {
+            border-left: 1px solid rgba(232, 220, 197, 0.08);
+        }
+
+        .data-label {
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--honey-gold);
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .data-value {
+            font-family: var(--font-mono);
+            font-size: var(--text-sm);
+            color: var(--limestone);
+            margin-bottom: 1.5rem;
+        }
+
+        .data-value:last-child {
+            margin-bottom: 0;
+        }
+
+        .center-col {
+            padding: 2rem;
+        }
+
+        /* Section labels */
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--honey-gold);
+            opacity: 0.6;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* ========================================
+           HERO — "THE DOOR"
+           ======================================== */
+        .hero {
+            min-height: 100vh;
             position: relative;
-            width: calc(50% - var(--space-6) / 2);
-            padding-bottom: 28%; /* 16:9 aspect ratio adjusted for half width */
-            border-radius: 6px;
             overflow: hidden;
-            background: var(--color-smoke);
         }
 
-        /* First item full width when odd number of mixes */
-        .youtube-mixes .youtube-embed:first-child:nth-last-child(odd),
-        .youtube-mixes .youtube-embed:first-child:nth-last-child(odd) ~ .youtube-embed:nth-child(odd):last-child {
-            width: calc(50% - var(--space-6) / 2);
+        .hero .grid-section {
+            min-height: 100vh;
+            align-items: center;
         }
 
-        /* For 3 mixes: first one centered on its own row */
-        .youtube-mixes:has(.youtube-embed:nth-child(3):last-child) .youtube-embed:first-child {
-            width: calc(50% - var(--space-6) / 2);
-            margin-left: auto;
-            margin-right: auto;
+        .hero .side-panel {
+            z-index: 10;
         }
 
-        .youtube-embed iframe {
+        /* The Door Container */
+        .door-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            z-index: 5;
+        }
+
+        .door-portal {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 5% 10%;
+            border-radius: 50% 50% 48% 52% / 60% 55% 45% 40%;
+            overflow: hidden;
+            filter: url(#liquid-distortion);
+        }
+
+        .door-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                conic-gradient(
+                    from 0deg at 50% 50%,
+                    var(--void) 0deg,
+                    var(--void-light) 60deg,
+                    #2a1040 120deg,
+                    var(--terracotta) 180deg,
+                    var(--honey-gold) 240deg,
+                    #1a0830 300deg,
+                    var(--void) 360deg
+                );
+            animation: magma-flow 20s linear infinite;
+        }
+
+        .door-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                ellipse at 50% 50%,
+                transparent 0%,
+                rgba(10, 5, 16, 0.3) 40%,
+                rgba(10, 5, 16, 0.7) 70%,
+                var(--void) 100%
+            );
+        }
+
+        @keyframes magma-flow {
+            from { transform: rotate(0deg) scale(1.4); }
+            to { transform: rotate(360deg) scale(1.4); }
+        }
+
+        .door-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .door-logo {
+            width: clamp(60px, 8vw, 100px);
+            height: auto;
+            filter: brightness(0) invert(1) sepia(0.05) saturate(0.3);
+            opacity: 0.9;
+        }
+
+        .door-title {
+            font-family: var(--font-display);
+            font-size: var(--text-hero);
+            font-weight: 400;
+            letter-spacing: 0.25em;
+            color: var(--whitewash);
+            mix-blend-mode: hard-light;
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
+        }
+
+        .door-tagline {
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            letter-spacing: 0.15em;
+            color: var(--limestone);
+            opacity: 0.7;
+            text-transform: uppercase;
+            max-width: 320px;
+        }
+
+        .scroll-cue {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: scroll-pulse 2.5s ease-in-out infinite;
+        }
+
+        .scroll-cue span {
+            font-size: var(--text-xs);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--limestone);
+            opacity: 0.4;
+        }
+
+        .scroll-cue svg {
+            width: 16px;
+            height: 16px;
+            color: var(--honey-gold);
+            opacity: 0.6;
+        }
+
+        @keyframes scroll-pulse {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(6px); }
+        }
+
+        /* ========================================
+           MANIFESTO SECTION
+           ======================================== */
+        .manifesto {
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+            border-top: 1px solid rgba(232, 220, 197, 0.06);
+        }
+
+        .manifesto-quote {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 400;
+            color: var(--whitewash);
+            line-height: 1.3;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            filter: blur(16px);
+            transform: translateY(20px);
+            transition: opacity 1.4s ease, filter 1.6s ease, transform 1.4s ease;
+        }
+
+        .manifesto-quote.revealed {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        .manifesto-text {
+            font-size: var(--text-base);
+            line-height: 1.9;
+            color: var(--limestone);
+            opacity: 0.85;
+            max-width: 540px;
+        }
+
+        /* ========================================
+           EVENTS SECTION
+           ======================================== */
+        .events {
+            padding-top: 6rem;
+            padding-bottom: 8rem;
+            border-top: 1px solid rgba(232, 220, 197, 0.06);
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .event-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-name {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 500;
+            color: var(--whitewash);
+            letter-spacing: 0.05em;
+        }
+
+        .event-date {
+            font-family: var(--font-mono);
+            font-size: var(--text-lg);
+            color: var(--honey-gold);
+        }
+
+        .event-highlight {
+            font-family: var(--font-mono);
+            font-size: var(--text-sm);
+            color: var(--terracotta);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .event-description {
+            font-size: var(--text-base);
+            line-height: 1.8;
+            color: var(--limestone);
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 0.85rem 2.5rem;
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--void);
+            background: var(--honey-gold);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-top: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .btn-primary:hover {
+            background: var(--whitewash);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .event-poster {
+            width: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .event-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ========================================
+           RELEASES SECTION
+           ======================================== */
+        .releases {
+            padding-top: 6rem;
+            padding-bottom: 8rem;
+            border-top: 1px solid rgba(232, 220, 197, 0.06);
+        }
+
+        .releases-title {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            color: var(--whitewash);
+            letter-spacing: 0.08em;
+            margin-bottom: 2.5rem;
+        }
+
+        .releases-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .releases-grid .yt-wrap:first-child {
+            grid-column: 1 / -1;
+        }
+
+        .yt-wrap {
+            position: relative;
+            padding-bottom: 56.25%;
+            background: var(--void-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .yt-wrap iframe {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        /* Events Section */
-        .event-details {
-            margin-top: var(--space-8);
+        /* ========================================
+           COMMUNITY SECTION
+           ======================================== */
+        .community {
+            padding-top: 6rem;
+            padding-bottom: 8rem;
+            border-top: 1px solid rgba(232, 220, 197, 0.06);
         }
 
-        .event-name {
-            font-family: var(--font-heading);
-            font-size: var(--text-3xl);
-            font-weight: 400;
-            color: var(--color-cream);
-            margin-bottom: var(--space-4);
+        .community .center-col {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .event-date {
-            font-size: var(--text-lg);
-            color: var(--color-amber);
-            margin-bottom: var(--space-6);
+        .community-title {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            color: var(--whitewash);
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
         }
 
-        .event-lineup {
-            margin-bottom: var(--space-6);
-        }
-
-        .event-lineup p {
-            font-size: var(--text-base);
-            color: var(--color-haze);
-            line-height: 1.8;
-        }
-
-        .event-meta {
-            font-size: var(--text-sm);
-            color: var(--color-mist);
-            margin-bottom: var(--space-8);
-        }
-
-        .event-description {
-            font-size: var(--text-base);
-            color: var(--color-haze);
-            line-height: 1.7;
-            margin-bottom: var(--space-4);
-            max-width: 450px;
-        }
-
-        .event-highlight {
-            color: var(--color-amber);
-            font-weight: 500;
-        }
-
-        .event-cta-text {
-            font-family: var(--font-heading);
-            font-size: var(--text-lg);
-            font-style: italic;
-            color: var(--color-cream);
-            margin-top: var(--space-6);
-            margin-bottom: var(--space-8);
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: var(--space-4) var(--space-8);
-            background: var(--color-amber);
-            color: var(--color-ink);
-            font-size: var(--text-sm);
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-decoration: none;
-            border-radius: 9999px;
-            transition: all var(--transition-base);
-        }
-
-        .btn-primary:hover {
-            background: var(--color-amber-glow);
-            box-shadow: var(--shadow-glow);
-        }
-
-        /* Community Section */
         .community-text {
             font-size: var(--text-base);
             line-height: 1.8;
-            color: var(--color-haze);
-            max-width: 450px;
-            margin-bottom: var(--space-8);
+            color: var(--limestone);
+            opacity: 0.8;
+            max-width: 480px;
+            margin-bottom: 2.5rem;
         }
 
         .btn-outline {
             display: inline-block;
-            padding: var(--space-4) var(--space-8);
+            padding: 0.85rem 2.5rem;
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--honey-gold);
             background: transparent;
-            color: var(--color-amber);
-            font-size: var(--text-sm);
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-decoration: none;
-            border: 1px solid var(--color-amber);
-            border-radius: 9999px;
+            border: 1px solid var(--honey-gold);
+            cursor: pointer;
             transition: all var(--transition-base);
         }
 
         .btn-outline:hover {
-            background: var(--color-amber);
-            color: var(--color-ink);
-        }
-
-        /* ========================================
-           PARALLAX IMAGE LAYERS - Right Panel
-           ======================================== */
-        .parallax-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .parallax-layer {
-            position: absolute;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: transform 0.1s ease-out;
-            will-change: transform;
-        }
-
-        .parallax-layer img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Layer 1 - Back, moves slowest */
-        .parallax-layer-1 {
-            width: 45%;
-            aspect-ratio: 3/4;
-            top: 5%;
-            left: 10%;
-            opacity: 0.4;
-            z-index: 1;
-        }
-
-        /* Layer 2 - Mid-back */
-        .parallax-layer-2 {
-            width: 35%;
-            aspect-ratio: 4/5;
-            top: 55%;
-            right: 5%;
-            opacity: 0.5;
-            z-index: 2;
-        }
-
-        /* Layer 3 - Middle */
-        .parallax-layer-3 {
-            width: 50%;
-            aspect-ratio: 3/4;
-            top: 25%;
-            right: 20%;
-            opacity: 0.7;
-            z-index: 3;
-        }
-
-        /* Layer 4 - Front-mid */
-        .parallax-layer-4 {
-            width: 40%;
-            aspect-ratio: 4/5;
-            bottom: 15%;
-            left: 5%;
-            opacity: 0.85;
-            z-index: 4;
-        }
-
-        /* Layer 5 - Event Poster (animates in separately) */
-        .parallax-layer-5 {
-            width: 80%;
-            max-width: 420px;
-            aspect-ratio: 1488/2196;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.85) rotate(3deg);
-            opacity: 0;
-            z-index: 10;
-            box-shadow: 0 0 80px rgba(212, 145, 93, 0.5), 0 30px 100px rgba(0, 0, 0, 0.6);
-            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            pointer-events: none;
-        }
-
-        .parallax-layer-5.poster-visible {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1) rotate(-1deg);
-        }
-
-        /* Loading Animation - Only for layers 1-4 */
-        .parallax-container.loading .parallax-layer:not(.parallax-layer-5) {
-            opacity: 0;
-            transform: translateY(100px) scale(0.8);
-        }
-
-        .parallax-container.loaded .parallax-layer:not(.parallax-layer-5) {
-            transition: opacity 0.8s ease;
-        }
-
-        .parallax-container.loaded .parallax-layer-1 { transition-delay: 0.1s; }
-        .parallax-container.loaded .parallax-layer-2 { transition-delay: 0.2s; }
-        .parallax-container.loaded .parallax-layer-3 { transition-delay: 0.3s; }
-        .parallax-container.loaded .parallax-layer-4 { transition-delay: 0.4s; }
-
-        /* Fade out after events section */
-        .split-right {
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .split-right.faded-out {
-            opacity: 0;
-            transform: translateX(50px);
-            pointer-events: none;
-        }
-
-        /* Fade parallax layers when poster is about to appear */
-        .parallax-layer:not(.parallax-layer-5) {
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .parallax-container.layers-faded .parallax-layer:not(.parallax-layer-5) {
-            opacity: 0;
-            transform: translateY(-100px) scale(0.9);
+            background: var(--honey-gold);
+            color: var(--void);
         }
 
         /* ========================================
            FOOTER
            ======================================== */
+        .footer-ticker {
+            overflow: hidden;
+            border-top: 1px solid rgba(232, 220, 197, 0.06);
+            border-bottom: 1px solid rgba(232, 220, 197, 0.06);
+            padding: 1rem 0;
+        }
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: ticker-scroll 25s linear infinite;
+        }
+
+        .ticker-item {
+            font-family: var(--font-display);
+            font-size: var(--text-sm);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--limestone);
+            opacity: 0.3;
+            white-space: nowrap;
+            padding: 0 2rem;
+        }
+
+        .ticker-item .sep {
+            color: var(--honey-gold);
+            margin: 0 1rem;
+        }
+
+        @keyframes ticker-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
         footer {
-            position: relative;
-            z-index: 10;
-            border-top: 1px solid var(--color-charcoal);
-            padding: var(--space-16) var(--space-8);
+            padding: 4rem 2rem;
             text-align: center;
         }
 
         .footer-logo {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto var(--space-6);
-            filter: brightness(0) invert(1) sepia(0.1) saturate(0.5) hue-rotate(10deg);
-            opacity: 0.7;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1.5rem;
+            filter: brightness(0) invert(1) sepia(0.05) saturate(0.3);
+            opacity: 0.6;
         }
 
         .footer-handle {
             font-size: var(--text-sm);
-            color: var(--color-mist);
-            margin-bottom: var(--space-6);
+            color: var(--limestone);
+            opacity: 0.5;
+            margin-bottom: 1.5rem;
         }
 
         .footer-handle a {
-            color: var(--color-amber);
-            text-decoration: none;
-            transition: color var(--transition-base);
+            color: var(--honey-gold);
+            transition: opacity var(--transition-base);
         }
 
         .footer-handle a:hover {
-            color: var(--color-amber-glow);
+            opacity: 0.7;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: var(--space-6);
-            margin-bottom: var(--space-8);
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .social-links a {
-            color: var(--color-mist);
-            transition: color var(--transition-base);
+            color: var(--limestone);
+            opacity: 0.4;
+            transition: opacity var(--transition-base), color var(--transition-base);
         }
 
         .social-links a:hover {
-            color: var(--color-amber);
+            opacity: 1;
+            color: var(--honey-gold);
         }
 
         .social-links svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
+        }
+
+        .footer-cta {
+            margin-bottom: 2.5rem;
         }
 
         .footer-copy {
             font-size: var(--text-xs);
-            color: var(--color-stone);
-            margin-bottom: var(--space-4);
+            color: var(--limestone);
+            opacity: 0.2;
+            margin-bottom: 0.75rem;
         }
 
         .back-to-top {
             font-size: var(--text-xs);
-            color: var(--color-mist);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color var(--transition-base);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--limestone);
+            opacity: 0.3;
+            transition: opacity var(--transition-base), color var(--transition-base);
         }
 
         .back-to-top:hover {
-            color: var(--color-amber);
+            opacity: 1;
+            color: var(--honey-gold);
         }
 
         /* ========================================
-           RESPONSIVE
+           SCROLL REVEAL
+           ======================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           RESPONSIVE — 1024px
            ======================================== */
         @media (max-width: 1024px) {
-            .split-container {
-                grid-template-columns: 55% 45%;
+            .grid-section {
+                grid-template-columns: 140px 1fr 140px;
+                padding: 0 1rem;
             }
 
-            .content-section {
-                padding: var(--space-12) var(--space-8);
+            .door-title {
+                font-size: clamp(2.5rem, 2rem + 3vw, 4.5rem);
             }
 
-            /* Adjust hero parallax for smaller screens */
-            .hero-layer-l1 {
-                width: 20%;
-                left: 2%;
+            .event-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
-            .hero-layer-l2 {
-                width: 16%;
-                left: 5%;
-            }
-
-            .hero-layer-r1 {
-                width: 18%;
-                right: 3%;
-            }
-
-            .hero-layer-r2 {
-                width: 22%;
-                right: 1%;
+            .event-poster {
+                max-width: 340px;
             }
         }
 
+        /* ========================================
+           RESPONSIVE — 768px
+           ======================================== */
         @media (max-width: 768px) {
-            .split-container {
-                display: block;
+            .grid-section {
+                grid-template-columns: 1fr;
+                padding: 0 1.5rem;
             }
 
-            .split-right {
+            .side-panel {
                 display: none;
             }
 
-            .split-left {
-                width: 100%;
+            .side-panel.left, .side-panel.right {
+                border: none;
             }
 
-            .hero-section {
-                min-height: 100vh;
-                padding-bottom: var(--space-16);
+            /* Nav */
+            .nav {
+                padding: 1rem 1.5rem;
             }
 
-            .hero-branding {
-                gap: var(--space-4);
+            .nav-links, .nav-login {
+                display: none;
             }
 
-            .hero-logo {
-                width: 90px;
+            .hamburger {
+                display: flex;
             }
 
-            .v-letter {
-                font-size: clamp(2.5rem, 10vw, 3rem);
+            .mobile-menu {
+                display: flex;
             }
 
-            .hero-tagline {
-                max-width: 240px;
-                line-height: 1.3;
-                padding: 0 var(--space-6);
-                text-align: center;
-                margin-top: var(--space-6);
+            /* Hero */
+            .door-title {
+                font-size: clamp(2rem, 1.5rem + 4vw, 3.5rem);
+                letter-spacing: 0.15em;
             }
 
-            /* Hero parallax - smaller and more subtle on mobile */
-            .hero-layer-l1 {
-                width: 28%;
-                top: 5%;
-                left: -5%;
-                opacity: 0.35;
+            .door-tagline {
+                max-width: 260px;
             }
 
-            .hero-layer-l2 {
-                width: 24%;
-                bottom: 20%;
-                left: -8%;
-                opacity: 0.45;
+            /* Events */
+            .event-grid {
+                grid-template-columns: 1fr;
             }
 
-            .hero-layer-r1 {
-                width: 26%;
-                top: 8%;
-                right: -6%;
-                opacity: 0.4;
+            .event-poster {
+                max-width: 100%;
             }
 
-            .hero-layer-r2 {
-                width: 30%;
-                bottom: 18%;
-                right: -8%;
-                opacity: 0.5;
+            /* Releases */
+            .releases-grid {
+                grid-template-columns: 1fr;
             }
 
-            .content-section {
-                min-height: auto;
-                padding: var(--space-16) var(--space-6);
+            .releases-grid .yt-wrap:first-child {
+                grid-column: auto;
+            }
+
+            /* Sections */
+            .manifesto, .events, .releases, .community {
+                padding-top: 4rem;
+                padding-bottom: 5rem;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE — 480px
+           ======================================== */
+        @media (max-width: 480px) {
+            .door-title {
+                font-size: clamp(1.8rem, 1.2rem + 4vw, 2.8rem);
+                letter-spacing: 0.1em;
+            }
+
+            .manifesto-quote {
+                font-size: var(--text-xl);
             }
 
             .event-name {
-                font-size: var(--text-2xl);
+                font-size: var(--text-xl);
             }
 
-            .mixes-section {
-                padding: var(--space-16) var(--space-6);
+            .community-title {
+                font-size: var(--text-xl);
             }
 
-            .youtube-embed {
-                width: 100%;
-                padding-bottom: 56.25%;
+            .nav {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* ========================================
+           REDUCED MOTION
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
 
-            .youtube-mixes:has(.youtube-embed:nth-child(3):last-child) .youtube-embed:first-child {
-                width: 100%;
+            .door-portal {
+                filter: none;
             }
 
-            .events-section {
-                min-height: 100vh;
+            .door-bg {
+                animation: none;
+                transform: scale(1.4);
             }
 
-            .community-section {
-                padding: var(--space-16) var(--space-6);
+            .ticker-track {
+                animation: none;
+            }
+
+            html {
+                scroll-behavior: auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Site Loading Screen -->
-    <div class="site-loader" id="siteLoader">
-        <div class="loader-content">
-            <img src="assets/logo.png" alt="Loading" class="loader-logo">
-        </div>
+
+    <!-- Hidden SVG Filters -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <filter id="liquid-distortion">
+                <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.012 0.015" numOctaves="3" seed="2" stitchTiles="stitch" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="noise-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay">
+        <svg><rect width="100%" height="100%" filter="url(#noise-filter)"/></svg>
     </div>
 
-    <!-- Subtle wave background -->
-    <div class="wave-bg"></div>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <img src="assets/logo.png" alt="Kinship" class="nav-logo">
+        <ul class="nav-links">
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#releases">Releases</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#community">Community</a></li>
+        </ul>
+        <a href="#" class="nav-login">Login</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
 
-    <!-- Film Grain Overlay -->
-    <div class="grain-overlay"></div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#releases">Releases</a>
+        <a href="#events">Events</a>
+        <a href="#community">Community</a>
+    </div>
 
-    <!-- Hero Section - Full Width with Parallax on Both Sides -->
-    <section class="hero-section" id="hero">
-        <!-- Parallax Images Container -->
-        <div class="hero-parallax loading" id="heroParallax">
-            <!-- Left side images -->
-            <div class="hero-parallax-layer hero-layer-l1" data-speed="0.15">
-                <img src="assets/1.jpg" alt="Kinship atmosphere">
+    <!-- ========================================
+         HERO — THE DOOR
+         ======================================== -->
+    <section class="hero" id="hero">
+        <div class="grid-section">
+            <!-- Left Data Panel -->
+            <div class="side-panel left">
+                <div class="data-label">Location</div>
+                <div class="data-value">Malta, EU</div>
+                <div class="data-label">Genre</div>
+                <div class="data-value">Melodic DnB</div>
+                <div class="data-label">Est.</div>
+                <div class="data-value">2025</div>
             </div>
-            <div class="hero-parallax-layer hero-layer-l2" data-speed="0.35">
-                <img src="assets/3.jpg" alt="Kinship atmosphere">
-            </div>
-            <!-- Right side images -->
-            <div class="hero-parallax-layer hero-layer-r1" data-speed="0.25">
-                <img src="assets/2.jpg" alt="Kinship atmosphere">
-            </div>
-            <div class="hero-parallax-layer hero-layer-r2" data-speed="0.45">
-                <img src="assets/4.jpg" alt="Kinship atmosphere">
-            </div>
-        </div>
 
-        <!-- Centered Branding -->
-        <div class="hero-branding">
-            <img src="assets/logo.png" alt="Kinship" class="hero-logo">
-            <div class="vertical-text">
-                <span class="v-letter" data-letter="K">K</span>
-                <span class="v-letter" data-letter="I">I</span>
-                <span class="v-letter" data-letter="N">N</span>
-                <span class="v-letter" data-letter="S">S</span>
-                <span class="v-letter" data-letter="H">H</span>
-                <span class="v-letter" data-letter="I">I</span>
-                <span class="v-letter" data-letter="P">P</span>
+            <!-- Center — The Door -->
+            <div class="center-col">
+                <div class="door-container">
+                    <div class="door-portal">
+                        <div class="door-bg"></div>
+                    </div>
+                    <div class="door-content">
+                        <img src="assets/logo.png" alt="Kinship" class="door-logo">
+                        <h1 class="door-title">KINSHIP</h1>
+                        <p class="door-tagline">Bringing Malta together through warm & vocal drum & bass</p>
+                        <div class="scroll-cue">
+                            <span>Scroll</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12l7 7 7-7"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <p class="hero-tagline">Fostering a love for melodic drum & bass in Malta</p>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
+
+            <!-- Right Data Panel -->
+            <div class="side-panel right">
+                <div class="data-label">Next Event</div>
+                <div class="data-value">Apr 20</div>
+                <div class="data-label">Status</div>
+                <div class="data-value" style="color: var(--terracotta);">Tickets Open</div>
+                <div class="data-label">Follow</div>
+                <div class="data-value">@kinshipmalta</div>
+            </div>
         </div>
     </section>
 
-    <!-- Main Split Container -->
-    <div class="split-container">
-        <!-- Left Column: Content -->
-        <div class="split-left">
-            <!-- About Section -->
-            <section class="content-section" id="about" data-section="about">
-                <p class="about-quote"><span class="quote-text">"We're All Kinship"</span></p>
-                <p class="section-text">
-                    Born from a love for the warm, emotional side to drum and bass, Kinship is a collective that brings seasoned DnB lovers and first time ravers together to experience bliss-filled unforgettable melodic and vocal drum and bass nights in Malta.
+    <!-- ========================================
+         MANIFESTO
+         ======================================== -->
+    <section class="manifesto" id="manifesto">
+        <div class="grid-section">
+            <div class="side-panel left"></div>
+            <div class="center-col">
+                <div class="section-tag">Manifesto</div>
+                <p class="manifesto-quote" id="manifestoQuote">"We're All Kinship"</p>
+                <p class="manifesto-text reveal">
+                    Born from a love for the warm, emotional side to drum and bass, Kinship brings first time ravers and seasoned dnb lovers together for blissfilled unforgettable melodic and vocal drum and bass and jumpup nights in the heart of Malta.
                 </p>
-            </section>
-
-            <!-- Events Section -->
-            <section class="content-section events-section" id="events" data-section="events">
-                <span class="section-label">Next Event</span>
-                <div class="event-details">
-                    <h2 class="event-name">First Dance</h2>
-                    <p class="event-description event-highlight" style="margin-top: -0.5rem;">Bring a friend for free</p>
-                    <p class="event-date">20th April</p>
-                    <p class="event-description">
-                        Feel the warmth of melodic DnB whilst you dance with friends. We're bringing Malta together for a stunning night of melodic drum and bass. Bring someone who's never experienced a DnB night before and share the moment with them.
-                    </p>
-                    <p class="event-cta-text">We can't wait to see you there.</p>
-                    <a href="#" class="btn-primary">Get Tickets</a>
-                </div>
-            </section>
+            </div>
+            <div class="side-panel right"></div>
         </div>
+    </section>
 
-        <!-- Right Column: Parallax Image Layers -->
-        <div class="split-right">
-            <div class="parallax-container loading" id="parallaxContainer">
-                <div class="parallax-layer parallax-layer-1" data-speed="0.2">
-                    <img src="assets/1.jpg" alt="Kinship">
-                </div>
-                <div class="parallax-layer parallax-layer-2" data-speed="0.35">
-                    <img src="assets/2.jpg" alt="Kinship">
-                </div>
-                <div class="parallax-layer parallax-layer-3" data-speed="0.5">
-                    <img src="assets/3.jpg" alt="Kinship">
-                </div>
-                <div class="parallax-layer parallax-layer-4" data-speed="0.7">
-                    <img src="assets/4.jpg" alt="Kinship">
-                </div>
-                <div class="parallax-layer parallax-layer-5" data-speed="1">
-                    <img src="assets/event-poster.png" alt="First Dance Event Poster">
+    <!-- ========================================
+         EVENTS
+         ======================================== -->
+    <section class="events" id="events">
+        <div class="grid-section">
+            <div class="side-panel left"></div>
+            <div class="center-col">
+                <div class="section-tag">Events</div>
+                <div class="event-grid reveal">
+                    <div class="event-info">
+                        <h2 class="event-name">First Dance</h2>
+                        <div class="event-date">April 20th</div>
+                        <div class="event-highlight">Bring a friend for free</div>
+                        <p class="event-description">
+                            Feel the warmth of melodic DnB whilst you dance with friends. We're bringing Malta together for a stunning night of melodic drum and bass. Bring someone who's never experienced a DnB night before and share the moment with them.
+                        </p>
+                        <a href="#" class="btn-primary">Get Tickets</a>
+                    </div>
+                    <div class="event-poster">
+                        <img src="assets/event-poster.png" alt="First Dance Event Poster">
+                    </div>
                 </div>
             </div>
+            <div class="side-panel right"></div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         RELEASES
+         ======================================== -->
+    <section class="releases" id="releases">
+        <div class="grid-section">
+            <div class="side-panel left"></div>
+            <div class="center-col">
+                <div class="section-tag">Releases</div>
+                <h2 class="releases-title reveal">The Latest Mixes</h2>
+                <div class="releases-grid reveal">
+                    <div class="yt-wrap">
+                        <iframe src="https://www.youtube.com/embed/Rq84SY2NPX0" title="Kinship Mix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <div class="yt-wrap">
+                        <iframe src="https://www.youtube.com/embed/xsX3cJOYotQ" title="Kinship Mix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <div class="yt-wrap">
+                        <iframe src="https://www.youtube.com/embed/i7AhEcDRql8" title="Kinship Mix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="side-panel right"></div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         COMMUNITY
+         ======================================== -->
+    <section class="community" id="community">
+        <div class="grid-section">
+            <div class="side-panel left"></div>
+            <div class="center-col">
+                <div class="section-tag">Community</div>
+                <h2 class="community-title reveal">Find Your Kin</h2>
+                <p class="community-text reveal">
+                    Kinship is more than events. It's listening sessions in living rooms. It's group trips to festivals. It's finding your tribe in Malta.
+                </p>
+                <a href="#" class="btn-outline reveal">Join the Community</a>
+            </div>
+            <div class="side-panel right"></div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+
+    <!-- Ticker Strip -->
+    <div class="footer-ticker">
+        <div class="ticker-track">
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
+            <span class="ticker-item">KINSHIP <span class="sep">/</span> MALTA <span class="sep">/</span> MELODIC DNB <span class="sep">/</span></span>
         </div>
     </div>
 
-    <!-- Mixes Section - Full Width -->
-    <section class="mixes-section" id="mixes" data-section="mixes">
-        <span class="section-label">Mixes</span>
-        <h2 class="section-title">The Latest Mixes</h2>
-        <div class="youtube-mixes">
-            <div class="youtube-embed">
-                <iframe src="https://www.youtube.com/embed/Rq84SY2NPX0" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="youtube-embed">
-                <iframe src="https://www.youtube.com/embed/xsX3cJOYotQ" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="youtube-embed">
-                <iframe src="https://www.youtube.com/embed/i7AhEcDRql8" title="Kinship Mix" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- Community Section - Full Width -->
-    <section class="community-section" id="community" data-section="community">
-        <span class="section-label">Community</span>
-        <h2 class="section-title">Find Your Kin</h2>
-        <p class="community-text">
-            Kinship is more than events. It's listening sessions in living rooms. It's group trips to festivals. It's finding your tribe in Malta.
-        </p>
-        <a href="#" class="btn-outline">Join the Community</a>
-    </section>
-
-    <!-- Footer -->
     <footer>
         <img src="assets/logo.png" alt="Kinship" class="footer-logo">
         <p class="footer-handle"><a href="#">@kinshipmalta</a></p>
         <div class="social-links">
+            <!-- Instagram -->
             <a href="#" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
             </a>
+            <!-- SoundCloud -->
             <a href="#" aria-label="SoundCloud">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.052-.1-.084-.1zm-.899 1.124c-.053 0-.084.04-.094.09l-.199 1.14.199 1.09c.01.05.041.09.094.09.054 0 .084-.04.094-.09l.224-1.09-.224-1.14c-.01-.05-.04-.09-.094-.09zm1.945-1.049c-.06 0-.102.05-.111.11l-.21 2.167.21 2.082c.009.063.051.107.111.107.058 0 .101-.044.11-.107l.239-2.082-.239-2.167c-.009-.06-.052-.11-.11-.11zm.901-.127c-.065 0-.111.056-.12.12l-.191 2.254.191 2.164c.009.066.055.116.12.116.063 0 .109-.05.12-.116l.216-2.164-.216-2.254c-.011-.064-.057-.12-.12-.12zm.958-.163c-.071 0-.119.058-.128.126l-.173 2.417.173 2.246c.009.071.057.123.128.123.069 0 .117-.052.127-.123l.197-2.246-.197-2.417c-.01-.068-.058-.126-.127-.126zm.966-.199c-.074 0-.123.063-.135.134l-.155 2.616.155 2.328c.012.074.061.127.135.127.072 0 .121-.053.134-.127l.176-2.328-.176-2.616c-.013-.071-.062-.134-.134-.134zm.973-.226c-.08 0-.132.066-.142.14l-.137 2.842.137 2.41c.01.078.062.133.142.133.078 0 .129-.055.142-.133l.155-2.41-.155-2.842c-.013-.074-.064-.14-.142-.14zm.983-.259c-.084 0-.137.071-.15.149l-.119 3.101.119 2.486c.013.082.066.143.15.143.082 0 .135-.061.15-.143l.134-2.486-.134-3.101c-.015-.078-.068-.149-.15-.149zm.992-.287c-.089 0-.143.074-.157.155l-.1 3.388.1 2.562c.014.085.068.148.157.148.087 0 .141-.063.157-.148l.113-2.562-.113-3.388c-.016-.081-.07-.155-.157-.155zm1-.316c-.093 0-.148.08-.164.163l-.082 3.704.082 2.638c.016.09.071.153.164.153.091 0 .147-.063.164-.153l.094-2.638-.094-3.704c-.017-.083-.073-.163-.164-.163zm1.013-.343c-.099 0-.154.083-.171.168l-.063 4.047.063 2.714c.017.092.072.158.171.158.097 0 .152-.066.171-.158l.072-2.714-.072-4.047c-.019-.085-.074-.168-.171-.168zm1.025-.37c-.103 0-.158.088-.179.175l-.044 4.417.044 2.79c.021.095.076.163.179.163.101 0 .156-.068.179-.163l.051-2.79-.051-4.417c-.023-.087-.078-.175-.179-.175zm1.036-.396c-.108 0-.164.091-.186.181l-.026 4.813.026 2.866c.022.098.078.168.186.168.106 0 .162-.07.186-.168l.03-2.866-.03-4.813c-.024-.09-.08-.181-.186-.181zm1.049-.421c-.113 0-.168.095-.193.187l-.007 5.208.007 2.942c.025.103.08.173.193.173.111 0 .166-.07.193-.173l.009-2.942-.009-5.208c-.027-.092-.082-.187-.193-.187zm1.061-.449c-.117 0-.173.099-.2.193l.012 5.604-.012 3.018c.027.107.083.178.2.178.115 0 .171-.071.2-.178l.014-3.018-.014-5.604c-.029-.094-.085-.193-.2-.193zm1.073-.475c-.122 0-.178.102-.207.199l.032 5.999-.032 3.094c.029.11.085.183.207.183.12 0 .176-.073.207-.183l.037-3.094-.037-5.999c-.031-.097-.087-.199-.207-.199zm1.086-.501c-.127 0-.183.106-.214.205l.051 6.395-.051 3.17c.031.114.087.188.214.188.125 0 .181-.074.214-.188l.059-3.17-.059-6.395c-.033-.099-.089-.205-.214-.205zm1.098-.529c-.131 0-.188.109-.221.211l.071 6.79-.071 3.246c.033.117.09.193.221.193.13 0 .186-.076.221-.193l.082-3.246-.082-6.79c-.035-.102-.091-.211-.221-.211zm4.498 2.239c-.241 0-.472.043-.688.125-1.133-6.73-6.871-11.824-13.791-11.824-7.64 0-13.833 6.193-13.833 13.833s6.193 13.833 13.833 13.833h14.479c2.727 0 4.939-2.212 4.939-4.939s-2.212-4.939-4.939-4.939z"/>
                 </svg>
             </a>
+            <!-- Mixcloud -->
             <a href="#" aria-label="Mixcloud">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M2.462 8.596l1.372 6.804h.319l1.391-6.804h1.88l1.391 6.804h.32l1.371-6.804h1.812l-1.979 8.404H7.58l-1.35-6.391-1.35 6.391H2.463L.483 8.596zm14.638 0v8.404h-1.607v-3.091H12.87v3.091h-1.607V8.596h1.607v3.705h2.623V8.596zm3.077 8.404h-1.607V8.596h1.607zm3.34-8.404c.952 0 1.727.775 1.727 1.728v4.949c0 .952-.775 1.727-1.727 1.727h-2.98v-8.404zm.12 6.796V10.204h-1.492v5.188z"/>
                 </svg>
             </a>
         </div>
-        <p class="footer-copy">© 2026 Kinship · Malta</p>
-        <a href="#" class="back-to-top">Back to Top ↑</a>
+        <div class="footer-cta">
+            <a href="#" class="btn-primary">Get Tickets</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Kinship &middot; Malta</p>
+        <a href="#hero" class="back-to-top">Back to Top &uarr;</a>
     </footer>
 
     <script>
         // ========================================
-        // Site Loading Animation
+        // Body Fade-in
         // ========================================
-        const siteLoader = document.getElementById('siteLoader');
-        const parallaxContainer = document.getElementById('parallaxContainer');
-        const heroParallax = document.getElementById('heroParallax');
-
-        // Hide loader and trigger parallax entrance after 1.5s
-        setTimeout(() => {
-            siteLoader.classList.add('loaded');
-
-            // Trigger parallax entrance
-            setTimeout(() => {
-                parallaxContainer.classList.remove('loading');
-                parallaxContainer.classList.add('loaded');
-                heroParallax.classList.remove('loading');
-                heroParallax.classList.add('loaded');
-                // Initialize parallax positions after loading
-                updateParallax();
-            }, 300);
-        }, 1500);
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
 
         // ========================================
-        // Parallax Image Layers - Scroll-based movement
+        // Mouse-Interactive Liquid Distortion
         // ========================================
-        const parallaxLayers = document.querySelectorAll('.parallax-layer:not(.parallax-layer-5)');
-        const heroParallaxLayers = document.querySelectorAll('.hero-parallax-layer');
-        const eventPoster = document.querySelector('.parallax-layer-5');
-        const eventsSection = document.getElementById('events');
-        const mixesSection = document.getElementById('mixes');
-        const splitRight = document.querySelector('.split-right');
-        const aboutQuote = document.querySelector('.about-quote');
-        const aboutSection = document.getElementById('about');
-        const heroSection = document.getElementById('hero');
+        const turbulence = document.getElementById('turbulence');
+        let rafId = null;
+        let targetX = 0.012;
+        let targetY = 0.015;
+        let currentX = 0.012;
+        let currentY = 0.015;
 
-        function updateParallax() {
-            const scrollTop = window.scrollY;
-            const eventsTop = eventsSection.offsetTop;
-            const eventsBottom = eventsSection.offsetTop + eventsSection.offsetHeight;
-            const windowHeight = window.innerHeight;
-            const heroHeight = heroSection.offsetHeight;
-            const aboutTop = aboutSection ? aboutSection.offsetTop : windowHeight;
-            const aboutBottom = aboutSection ? aboutSection.offsetTop + aboutSection.offsetHeight : windowHeight;
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            targetX = 0.008 + x * 0.012;
+            targetY = 0.010 + y * 0.015;
 
-            // ========================================
-            // Hero Parallax - Subtle movement in hero section
-            // ========================================
-            heroParallaxLayers.forEach((layer) => {
-                const speed = parseFloat(layer.dataset.speed) || 0.3;
-                // Only apply parallax within hero section
-                const heroProgress = Math.min(scrollTop / heroHeight, 1);
-                const yOffset = scrollTop * speed * -0.5;
-                // Fade out as user scrolls past hero
-                const opacity = layer.classList.contains('hero-layer-l1') ? 0.5 :
-                               layer.classList.contains('hero-layer-l2') ? 0.7 :
-                               layer.classList.contains('hero-layer-r1') ? 0.6 : 0.75;
-                const fadeOpacity = opacity * (1 - heroProgress * 0.8);
-                layer.style.transform = `translateY(${yOffset}px)`;
-                layer.style.opacity = fadeOpacity;
-            });
-
-            // Reveal quote when about section comes into view
-            if (scrollTop + windowHeight * 0.7 > aboutTop) {
-                aboutQuote.classList.add('revealed');
+            if (!rafId) {
+                rafId = requestAnimationFrame(updateDistortion);
             }
+        });
 
-            // Calculate when events section enters viewport (trigger later, closer to events)
-            const posterTrigger = scrollTop + windowHeight * 0.4 > eventsTop;
-            const layersFadeTrigger = scrollTop + windowHeight * 0.6 > eventsTop; // Fade layers slightly before poster appears
-            // Only fade out when mixes section comes into view
-            const mixesTop = mixesSection.offsetTop;
-            const pastEvents = scrollTop + windowHeight * 0.5 > mixesTop;
+        function updateDistortion() {
+            currentX += (targetX - currentX) * 0.08;
+            currentY += (targetY - currentY) * 0.08;
+            turbulence.setAttribute('baseFrequency', `${currentX.toFixed(4)} ${currentY.toFixed(4)}`);
 
-            // Fade out entire right side when past events section
-            if (pastEvents) {
-                splitRight.classList.add('faded-out');
+            if (Math.abs(targetX - currentX) > 0.0001 || Math.abs(targetY - currentY) > 0.0001) {
+                rafId = requestAnimationFrame(updateDistortion);
             } else {
-                splitRight.classList.remove('faded-out');
+                rafId = null;
             }
-
-            // Fade out parallax layers 1-4 before poster appears
-            if (layersFadeTrigger && !pastEvents) {
-                parallaxContainer.classList.add('layers-faded');
-            } else {
-                parallaxContainer.classList.remove('layers-faded');
-            }
-
-            // Show/hide event poster when events section is in view
-            if (posterTrigger && !pastEvents) {
-                eventPoster.classList.add('poster-visible');
-            } else {
-                eventPoster.classList.remove('poster-visible');
-            }
-
-            // Variable speed parallax - very slow during about, fast approaching events
-            // Keep images around until end of about section
-            const transitionStart = aboutBottom;
-            const transitionEnd = eventsTop - windowHeight * 0.3;
-
-            let speedMultiplier;
-            if (scrollTop < transitionStart) {
-                // Very slow parallax during hero/about section - keep images around
-                speedMultiplier = 0.2;
-            } else if (scrollTop > transitionEnd) {
-                // Fast parallax approaching events
-                speedMultiplier = 3;
-            } else {
-                // Ease between slow and fast
-                const progress = (scrollTop - transitionStart) / (transitionEnd - transitionStart);
-                speedMultiplier = 0.2 + (progress * progress * 2.8); // Quadratic ease for smooth acceleration
-            }
-
-            // Apply parallax movement to layers 1-4
-            parallaxLayers.forEach((layer) => {
-                const speed = parseFloat(layer.dataset.speed) || 0.5;
-                const yOffset = scrollTop * speed * -speedMultiplier;
-                layer.style.transform = `translateY(${yOffset}px)`;
-            });
         }
 
-        // Throttled scroll handler
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateParallax();
-                    ticking = false;
+        // ========================================
+        // IntersectionObserver — Scroll Reveals
+        // ========================================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+        // Manifesto quote — separate observer with lower threshold
+        const quoteEl = document.getElementById('manifestoQuote');
+        if (quoteEl) {
+            const quoteObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        quoteObserver.unobserve(entry.target);
+                    }
                 });
-                ticking = true;
+            }, { threshold: 0.1 });
+            quoteObserver.observe(quoteEl);
+        }
+
+        // ========================================
+        // Navbar Scroll State
+        // ========================================
+        const nav = document.getElementById('nav');
+        let navTicking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!navTicking) {
+                requestAnimationFrame(() => {
+                    if (window.scrollY > 100) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                    navTicking = false;
+                });
+                navTicking = true;
             }
         }, { passive: true });
 
-        // Initial call
-        updateParallax();
-
         // ========================================
-        // Smooth scroll for anchor links
+        // Smooth Scroll for Anchor Links
         // ========================================
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    mobileMenu.classList.remove('open');
+                    hamburger.classList.remove('active');
                 }
             });
         });
 
-        // Back to top
+        // ========================================
+        // Mobile Hamburger Menu
+        // ========================================
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // ========================================
+        // Back to Top
+        // ========================================
         document.querySelector('.back-to-top').addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
