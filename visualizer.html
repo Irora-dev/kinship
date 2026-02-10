@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinship Portal Visualizer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --void: #0a0510;
+  --void-light: #181024;
+  --limestone: #E8DCC5;
+  --honey-gold: #D4AF37;
+  --terracotta: #C86B57;
+  --azure: #005F73;
+  --whitewash: #F9F7F2;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--void);
+  font-family: 'Space Mono', monospace;
+  color: var(--limestone);
+  user-select: none;
+}
+
+#canvas-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+canvas#portal {
+  display: block;
+  background: var(--void);
+}
+
+/* Drop zone overlay */
+#drop-zone {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 5, 16, 0.92);
+  z-index: 100;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+}
+
+#drop-zone.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#drop-zone.drag-over {
+  background: rgba(10, 5, 16, 0.75);
+}
+
+#drop-zone .ring {
+  width: 260px; height: 260px;
+  border: 2px solid var(--honey-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 0 60px rgba(212,175,55,0.15), inset 0 0 40px rgba(212,175,55,0.08);
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+#drop-zone.drag-over .ring {
+  border-color: var(--terracotta);
+  box-shadow: 0 0 80px rgba(200,107,87,0.3), inset 0 0 50px rgba(200,107,87,0.12);
+}
+
+#drop-zone .ring svg {
+  width: 48px; height: 48px;
+  fill: none;
+  stroke: var(--honey-gold);
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+#drop-zone h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--limestone);
+}
+
+#drop-zone p {
+  margin-top: 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(232,220,197,0.4);
+}
+
+#file-input { display: none; }
+
+/* Controls bar */
+#controls {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: rgba(10, 5, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(212,175,55,0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  z-index: 50;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#controls.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#controls button {
+  background: none;
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+#controls button:hover {
+  border-color: var(--honey-gold);
+  background: rgba(212,175,55,0.08);
+}
+
+#controls button svg {
+  width: 16px; height: 16px;
+  fill: var(--honey-gold);
+}
+
+#time-display {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: rgba(232,220,197,0.6);
+  min-width: 90px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+#scrubber-wrap {
+  flex: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+#scrubber-track {
+  width: 100%; height: 3px;
+  background: rgba(232,220,197,0.12);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+#scrubber-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--terracotta), var(--honey-gold));
+  border-radius: 2px;
+  width: 0%;
+  transition: none;
+}
+
+#scrubber-thumb {
+  position: absolute;
+  top: 50%; left: 0%;
+  width: 12px; height: 12px;
+  background: var(--honey-gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(212,175,55,0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#scrubber-wrap:hover #scrubber-thumb { opacity: 1; }
+
+#volume-wrap {
+  width: 80px; height: 36px;
+  display: flex; align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+#volume-wrap svg {
+  width: 16px; height: 16px;
+  fill: rgba(232,220,197,0.5);
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+input[type="range"]#volume {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%; height: 3px;
+  background: rgba(232,220,197,0.12);
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]#volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px; height: 10px;
+  background: var(--honey-gold);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(212,175,55,0.4);
+}
+
+#filename {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: rgba(232,220,197,0.4);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Recording controls */
+#rec-btn {
+  background: none;
+  border: 1px solid rgba(200,80,80,0.5) !important;
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#rec-btn:hover {
+  border-color: #e55 !important;
+  background: rgba(200,80,80,0.1);
+}
+
+#rec-btn .rec-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #c55;
+  transition: background 0.2s;
+}
+
+#rec-btn.recording .rec-dot {
+  background: #f44;
+  animation: rec-pulse 1s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+#rec-indicator {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #f44;
+  flex-shrink: 0;
+}
+
+#rec-indicator.active {
+  display: flex;
+}
+
+#rec-indicator .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #f44;
+  animation: rec-pulse 1s ease-in-out infinite;
+}
+
+/* Recording settings panel */
+#rec-settings {
+  position: fixed;
+  top: 12px; right: 12px;
+  background: rgba(10, 5, 16, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,175,55,0.15);
+  padding: 14px 18px;
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  min-width: 180px;
+}
+
+#rec-settings.visible {
+  display: flex;
+}
+
+#rec-settings label {
+  color: rgba(232,220,197,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 9px;
+}
+
+#rec-settings select {
+  background: rgba(24,16,36,0.8);
+  color: var(--limestone);
+  border: 1px solid rgba(212,175,55,0.2);
+  padding: 4px 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Download toast */
+#download-toast {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(10, 5, 16, 0.95);
+  border: 1px solid var(--honey-gold);
+  padding: 24px 32px;
+  text-align: center;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 40px rgba(212,175,55,0.15);
+}
+
+#download-toast.visible {
+  display: flex;
+}
+
+#download-toast p {
+  font-size: 11px;
+  color: rgba(232,220,197,0.7);
+}
+
+#download-toast button {
+  background: var(--honey-gold);
+  color: var(--void);
+  border: none;
+  padding: 8px 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#download-toast button:hover {
+  background: var(--whitewash);
+}
+
+#download-toast .dismiss {
+  background: transparent;
+  color: rgba(232,220,197,0.4);
+  border: 1px solid rgba(232,220,197,0.15);
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<div id="canvas-wrap">
+  <canvas id="portal"></canvas>
+</div>
+
+<!-- Drop zone -->
+<div id="drop-zone">
+  <div class="ring">
+    <svg viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="18" stroke-dasharray="4 4"/>
+      <path d="M24 14v16M18 24l6 6 6-6"/>
+    </svg>
+    <h2>Drop Audio</h2>
+  </div>
+  <p>MP3 or WAV &mdash; click or drag</p>
+</div>
+
+<input type="file" id="file-input" accept="audio/*">
+
+<!-- Controls -->
+<div id="controls">
+  <button id="play-btn" title="Play / Pause">
+    <svg id="icon-play" viewBox="0 0 16 16"><polygon points="3,1 13,8 3,15"/></svg>
+    <svg id="icon-pause" viewBox="0 0 16 16" style="display:none"><rect x="2" y="1" width="4" height="14"/><rect x="10" y="1" width="4" height="14"/></svg>
+  </button>
+  <span id="time-display">0:00 / 0:00</span>
+  <div id="scrubber-wrap">
+    <div id="scrubber-track"><div id="scrubber-fill"></div></div>
+    <div id="scrubber-thumb"></div>
+  </div>
+  <div id="volume-wrap">
+    <svg viewBox="0 0 16 16"><path d="M1 6v4h3l4 4V2L4 6H1z"/><path d="M11 3.5a5 5 0 010 9" fill="none" stroke="rgba(232,220,197,0.5)" stroke-width="1.2"/></svg>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+  </div>
+  <span id="filename"></span>
+  <div style="flex:1"></div>
+  <div id="rec-indicator"><span class="dot"></span><span id="rec-time">00:00</span></div>
+  <button id="rec-btn" title="Record video"><div class="rec-dot"></div></button>
+</div>
+
+<!-- Recording settings -->
+<div id="rec-settings">
+  <label>Resolution</label>
+  <select id="res-select">
+    <option value="1280,720">720p</option>
+    <option value="1920,1080" selected>1080p</option>
+  </select>
+  <label>Bitrate</label>
+  <select id="bitrate-select">
+    <option value="5000000">5 Mbps</option>
+    <option value="10000000" selected>10 Mbps</option>
+    <option value="20000000">20 Mbps</option>
+  </select>
+</div>
+
+<!-- Download toast -->
+<div id="download-toast">
+  <p id="download-info">Recording complete</p>
+  <button id="download-btn">Download Video</button>
+  <button class="dismiss" id="download-dismiss">Close</button>
+</div>
+
+<script>
+// ========================
+// CONSTANTS & PALETTE
+// ========================
+const COLORS = {
+  void:       [10, 5, 16],
+  voidLight:  [24, 16, 36],
+  limestone:  [232, 220, 197],
+  honeyGold:  [212, 175, 55],
+  terracotta: [200, 107, 87],
+  azure:      [0, 95, 115],
+  whitewash:  [249, 247, 242],
+};
+
+function rgb(c, a) {
+  return a !== undefined ? `rgba(${c[0]},${c[1]},${c[2]},${a})` : `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+function lerpColor(a, b, t) {
+  return [
+    a[0] + (b[0] - a[0]) * t,
+    a[1] + (b[1] - a[1]) * t,
+    a[2] + (b[2] - a[2]) * t,
+  ];
+}
+
+// ========================
+// DOM REFS
+// ========================
+const canvas      = document.getElementById('portal');
+const ctx         = canvas.getContext('2d', { willReadFrequently: true });
+const dropZone    = document.getElementById('drop-zone');
+const fileInput   = document.getElementById('file-input');
+const controlsBar = document.getElementById('controls');
+const playBtn     = document.getElementById('play-btn');
+const iconPlay    = document.getElementById('icon-play');
+const iconPause   = document.getElementById('icon-pause');
+const timeDisplay = document.getElementById('time-display');
+const scrubberWrap  = document.getElementById('scrubber-wrap');
+const scrubberFill  = document.getElementById('scrubber-fill');
+const scrubberThumb = document.getElementById('scrubber-thumb');
+const volumeSlider  = document.getElementById('volume');
+const filenameSpan  = document.getElementById('filename');
+
+// ========================
+// OFFSCREEN CANVASES
+// ========================
+let offCanvas, offCtx;
+let blurCanvas, blurCtx;
+let noiseCanvas, noiseCtx;
+let noiseImageData;
+
+function createOffscreenCanvases(w, h) {
+  offCanvas = document.createElement('canvas');
+  offCanvas.width = w; offCanvas.height = h;
+  offCtx = offCanvas.getContext('2d');
+
+  blurCanvas = document.createElement('canvas');
+  blurCanvas.width = Math.floor(w / 4);
+  blurCanvas.height = Math.floor(h / 4);
+  blurCtx = blurCanvas.getContext('2d');
+
+  noiseCanvas = document.createElement('canvas');
+  noiseCanvas.width = w; noiseCanvas.height = h;
+  noiseCtx = noiseCanvas.getContext('2d');
+  generateNoise(w, h);
+}
+
+function generateNoise(w, h) {
+  noiseImageData = noiseCtx.createImageData(w, h);
+  const d = noiseImageData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    // Varied grain: mix of fine and coarse noise for film-like texture
+    const fine = Math.random() * 255;
+    const coarse = Math.random() < 0.15 ? (Math.random() < 0.5 ? 0 : 255) : fine;
+    const v = fine * 0.7 + coarse * 0.3;
+    d[i] = d[i+1] = d[i+2] = v;
+    d[i+3] = 35; // higher base opacity for grittier look
+  }
+  noiseCtx.putImageData(noiseImageData, 0, 0);
+}
+
+// ========================
+// SIZING
+// ========================
+let W, H, CX, CY, portalR;
+
+function resize() {
+  const ww = window.innerWidth;
+  const wh = window.innerHeight;
+  const aspect = 16 / 9;
+
+  if (ww / wh > aspect) {
+    H = wh;
+    W = Math.floor(wh * aspect);
+  } else {
+    W = ww;
+    H = Math.floor(ww / aspect);
+  }
+
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+
+  CX = W / 2;
+  CY = H / 2;
+  portalR = Math.min(W, H) * 0.3;
+
+  createOffscreenCanvases(W, H);
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+// ========================
+// AUDIO ENGINE
+// ========================
+let audioCtx, analyser, gainNode, sourceNode, audioBuffer;
+let isPlaying = false;
+let startTime = 0;
+let pauseOffset = 0;
+let audioDuration = 0;
+
+const FFT_SIZE = 2048;
+let freqData, timeData;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = FFT_SIZE;
+  analyser.smoothingTimeConstant = 0.8;
+
+  gainNode = audioCtx.createGain();
+  gainNode.gain.value = parseFloat(volumeSlider.value);
+  gainNode.connect(audioCtx.destination);
+  analyser.connect(gainNode);
+
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  timeData = new Uint8Array(analyser.frequencyBinCount);
+}
+
+function loadAudioFile(file) {
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    audioCtx.decodeAudioData(e.target.result, function(buffer) {
+      audioBuffer = buffer;
+      audioDuration = buffer.duration;
+      pauseOffset = 0;
+      filenameSpan.textContent = file.name;
+      dropZone.classList.add('hidden');
+      controlsBar.classList.add('visible');
+      playAudio();
+    }, function(err) {
+      console.error('Decode error', err);
+      alert('Could not decode audio file.');
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function playAudio() {
+  if (!audioBuffer) return;
+  if (sourceNode) { try { sourceNode.stop(); } catch(e){} }
+
+  sourceNode = audioCtx.createBufferSource();
+  sourceNode.buffer = audioBuffer;
+  sourceNode.connect(analyser);
+  sourceNode.onended = function() {
+    if (isPlaying) {
+      // check if we reached the end
+      const elapsed = audioCtx.currentTime - startTime + pauseOffset;
+      if (elapsed >= audioDuration - 0.1) {
+        isPlaying = false;
+        pauseOffset = 0;
+        updatePlayIcon();
+      }
+    }
+  };
+
+  startTime = audioCtx.currentTime;
+  sourceNode.start(0, pauseOffset);
+  isPlaying = true;
+  updatePlayIcon();
+}
+
+function pauseAudio() {
+  if (!isPlaying) return;
+  pauseOffset += audioCtx.currentTime - startTime;
+  try { sourceNode.stop(); } catch(e) {}
+  isPlaying = false;
+  updatePlayIcon();
+}
+
+function togglePlay() {
+  if (!audioBuffer) return;
+  if (isPlaying) pauseAudio();
+  else playAudio();
+}
+
+function seekTo(frac) {
+  if (!audioBuffer) return;
+  const wasPlaying = isPlaying;
+  if (isPlaying) { try { sourceNode.stop(); } catch(e){} isPlaying = false; }
+  pauseOffset = frac * audioDuration;
+  if (wasPlaying) playAudio();
+}
+
+function getCurrentTime() {
+  if (!audioBuffer) return 0;
+  if (isPlaying) {
+    return Math.min(pauseOffset + (audioCtx.currentTime - startTime), audioDuration);
+  }
+  return pauseOffset;
+}
+
+function updatePlayIcon() {
+  iconPlay.style.display = isPlaying ? 'none' : 'block';
+  iconPause.style.display = isPlaying ? 'block' : 'none';
+}
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+// ========================
+// AUDIO ANALYSIS
+// ========================
+let smoothBass = 0, smoothMids = 0, smoothHighs = 0, smoothRMS = 0;
+let smoothVocal = 0; // vocal presence (300Hz-3kHz focus)
+let bassHistory = new Float32Array(60);
+let bassHistIdx = 0;
+let vocalHistory = new Float32Array(40);
+let vocalHistIdx = 0;
+let prevVocalBins = null; // for spectral flux
+let beatPunch = 0;
+let beatCooldown = 0;
+let vocalTrigger = false;
+
+function analyzeAudio() {
+  if (!analyser || !isPlaying) {
+    smoothBass *= 0.95;
+    smoothMids *= 0.95;
+    smoothHighs *= 0.95;
+    smoothRMS *= 0.95;
+    smoothVocal *= 0.95;
+    beatPunch *= 0.92;
+    vocalTrigger = false;
+    return;
+  }
+
+  analyser.getByteFrequencyData(freqData);
+  analyser.getByteTimeDomainData(timeData);
+
+  // Frequency bin resolution: sampleRate / fftSize
+  // At 44100Hz, fftSize 2048: each bin ≈ 21.5Hz
+  // Bass: 0-250Hz → bins 0-12
+  let bass = 0;
+  for (let i = 0; i < 12; i++) bass += freqData[i];
+  bass /= (12 * 255);
+
+  // Mids: 250Hz-4kHz → bins 12-186
+  let mids = 0;
+  for (let i = 12; i < 186; i++) mids += freqData[i];
+  mids /= (174 * 255);
+
+  // Vocal range: 300Hz-3kHz → bins ~14-140
+  let vocal = 0;
+  const vocalStart = 14, vocalEnd = 140;
+  const vocalBinCount = vocalEnd - vocalStart;
+  for (let i = vocalStart; i < vocalEnd; i++) vocal += freqData[i];
+  vocal /= (vocalBinCount * 255);
+
+  // Spectral flux in vocal range — measures how much the spectrum is changing
+  // This catches vocal onsets, melodic movement, and rhythmic energy shifts
+  let vocalFlux = 0;
+  if (prevVocalBins) {
+    for (let i = vocalStart; i < vocalEnd; i++) {
+      const diff = freqData[i] - prevVocalBins[i];
+      if (diff > 0) vocalFlux += diff; // only positive changes (onsets)
+    }
+    vocalFlux /= (vocalBinCount * 255);
+  }
+  // Store current frame for next comparison
+  if (!prevVocalBins) prevVocalBins = new Uint8Array(freqData.length);
+  prevVocalBins.set(freqData);
+
+  // Highs: 4kHz+ → bins 186+
+  let highs = 0;
+  const highCount = freqData.length - 186;
+  for (let i = 186; i < freqData.length; i++) highs += freqData[i];
+  highs /= (highCount * 255);
+
+  // RMS from time domain
+  let rms = 0;
+  for (let i = 0; i < timeData.length; i++) {
+    const v = (timeData[i] - 128) / 128;
+    rms += v * v;
+  }
+  rms = Math.sqrt(rms / timeData.length);
+
+  // Smooth interpolation
+  const lerpRate = 0.18;
+  smoothBass += (bass - smoothBass) * lerpRate;
+  smoothMids += (mids - smoothMids) * lerpRate;
+  smoothHighs += (highs - smoothHighs) * lerpRate;
+  smoothRMS += (rms - smoothRMS) * lerpRate;
+  smoothVocal += (vocal - smoothVocal) * 0.12;
+
+  // Beat detection
+  bassHistory[bassHistIdx] = bass;
+  bassHistIdx = (bassHistIdx + 1) % bassHistory.length;
+
+  let avgBass = 0;
+  for (let i = 0; i < bassHistory.length; i++) avgBass += bassHistory[i];
+  avgBass /= bassHistory.length;
+
+  if (beatCooldown <= 0 && bass > avgBass * 1.3 && bass > 0.18) {
+    beatPunch = 1.0;
+    beatCooldown = 8;
+  }
+  if (beatCooldown > 0) beatCooldown--;
+  beatPunch *= 0.88;
+
+  // Vocal presence detection — use spectral flux (change in vocal range)
+  // combined with energy level. Much more sensitive than raw threshold.
+  vocalHistory[vocalHistIdx] = vocalFlux;
+  vocalHistIdx = (vocalHistIdx + 1) % vocalHistory.length;
+
+  let avgFlux = 0;
+  for (let i = 0; i < vocalHistory.length; i++) avgFlux += vocalHistory[i];
+  avgFlux /= vocalHistory.length;
+
+  // Trigger on: spectral flux spike (something changed in vocal range)
+  // OR sustained mid/vocal energy above a low threshold (melodic content present)
+  const fluxSpike = vocalFlux > avgFlux * 1.3 && vocalFlux > 0.02;
+  const sustainedEnergy = vocal > 0.08 && mids > 0.1;
+  vocalTrigger = fluxSpike || (sustainedEnergy && Math.random() < 0.03);
+}
+
+// ========================
+// DYNAMIC COLOR SYSTEM
+// ========================
+// Colors shift based on which frequencies dominate
+const PALETTE = {
+  deepBlue:    [10, 25, 110],
+  midnightBlue:[15, 8, 65],
+  aqua:        [0, 200, 220],
+  teal:        [0, 150, 160],
+  deepPurple:  [55, 10, 100],
+  violet:      [100, 25, 150],
+  gold:        [225, 185, 55],
+  brightGold:  [255, 220, 80],
+  warmWhite:   [255, 245, 230],
+  terracotta:  [215, 110, 85],
+  coral:       [235, 135, 100],
+  ember:       [180, 50, 20],
+  deepCrimson: [120, 15, 30],
+};
+
+// Returns portal colors blended by current frequency profile
+// Uses non-linear weighting for richer, more dramatic shifts
+function getPortalColors() {
+  const b = smoothBass;
+  const m = smoothMids;
+  const h = smoothHighs;
+
+  // Non-linear weighting — exaggerate the dominant frequency
+  const bSq = b * b;
+  const mSq = m * m;
+  const hSq = h * h;
+  const total = Math.max(bSq + mSq + hSq, 0.001);
+
+  const bw = bSq / total;
+  const mw = mSq / total;
+  const hw = hSq / total;
+
+  function blend3(a, b, c) {
+    return [
+      a[0] * bw + b[0] * mw + c[0] * hw,
+      a[1] * bw + b[1] * mw + c[1] * hw,
+      a[2] * bw + b[2] * mw + c[2] * hw,
+    ];
+  }
+
+  // Primary: bass→deep saturated blue, mids→ember/terracotta, highs→aqua
+  const primary = blend3(PALETTE.deepBlue, PALETTE.terracotta, PALETTE.aqua);
+
+  // Secondary: bass→deep purple/crimson, mids→gold, highs→bright gold
+  const secondary = blend3(PALETTE.deepCrimson, PALETTE.gold, PALETTE.brightGold);
+
+  // Accent: bass→violet/teal, mids→coral/ember, highs→warm white
+  const accent = blend3(PALETTE.teal, PALETTE.coral, PALETTE.warmWhite);
+
+  // Glow: bass→midnight, mids→ember glow, highs→aqua shimmer
+  const glow = blend3(PALETTE.midnightBlue, PALETTE.ember, PALETTE.aqua);
+
+  return { primary, secondary, accent, glow };
+}
+
+// Smoothly interpolated portal colors (to avoid flickering)
+let smoothColors = {
+  primary: [100, 80, 60],
+  secondary: [120, 90, 50],
+  accent: [80, 120, 130],
+  glow: [20, 20, 50],
+};
+
+function updateColors() {
+  const target = getPortalColors();
+  const rate = 0.06;
+  for (const key of ['primary', 'secondary', 'accent', 'glow']) {
+    for (let i = 0; i < 3; i++) {
+      smoothColors[key][i] += (target[key][i] - smoothColors[key][i]) * rate;
+    }
+  }
+}
+
+// ========================
+// TEXT ANIMATION SYSTEM
+// ========================
+const WORD_POOL = [
+  'KINSHIP', 'FEEL', 'BREATHE', 'TOGETHER', 'RISE',
+  'PULSE', 'DRIFT', 'DEEPER', 'WARM', 'FLOW',
+  'ECHO', 'LIGHT', 'DISSOLVE', 'MOVE', 'BLOOM',
+  'MALTA', 'ALIVE', 'HOME', 'UNITY', 'MERGE',
+  'GLOW', 'LIFT', 'OPEN', 'FREE', 'WAVES',
+];
+
+const MAX_WORDS = 4;
+let activeWords = [];
+let wordCooldown = 0;
+let lastWordIdx = -1;
+
+function spawnWord() {
+  if (activeWords.length >= MAX_WORDS) return;
+
+  // Pick a word we haven't just used
+  let idx;
+  do { idx = Math.floor(Math.random() * WORD_POOL.length); } while (idx === lastWordIdx);
+  lastWordIdx = idx;
+
+  // Position: random angle around center, placed in the outer ring of the portal
+  const angle = Math.random() * Math.PI * 2;
+  const dist = portalR * (0.5 + Math.random() * 0.6);
+  const x = CX + Math.cos(angle) * dist;
+  const y = CY + Math.sin(angle) * dist;
+
+  // Size based on energy
+  const size = Math.floor(14 + smoothRMS * 30 + Math.random() * 10);
+
+  activeWords.push({
+    text: WORD_POOL[idx],
+    x, y, angle,
+    dist,
+    driftAngle: angle + (Math.random() - 0.5) * 0.3,
+    driftSpeed: 0.15 + Math.random() * 0.3,
+    size,
+    life: 120 + Math.floor(Math.random() * 60), // frames
+    maxLife: 120 + Math.floor(Math.random() * 60),
+    fadeIn: 20, // frames to fade in
+  });
+}
+
+function updateWords() {
+  if (wordCooldown > 0) wordCooldown--;
+
+  // Spawn on vocal trigger
+  if (vocalTrigger && wordCooldown <= 0 && activeWords.length < MAX_WORDS) {
+    spawnWord();
+    wordCooldown = 25 + Math.floor(Math.random() * 20); // min frames between words
+  }
+
+  for (let i = activeWords.length - 1; i >= 0; i--) {
+    const w = activeWords[i];
+    w.life--;
+    if (w.life <= 0) { activeWords.splice(i, 1); continue; }
+    // Drift outward slowly
+    w.dist += w.driftSpeed;
+    w.x = CX + Math.cos(w.driftAngle) * w.dist;
+    w.y = CY + Math.sin(w.driftAngle) * w.dist;
+  }
+}
+
+function drawWords(c) {
+  for (const w of activeWords) {
+    const progress = 1 - (w.life / w.maxLife); // 0→1
+    // Fade in quickly, hold, fade out
+    let alpha;
+    const fadeInProgress = Math.min(1, (w.maxLife - w.life) / w.fadeIn);
+    const fadeOutProgress = w.life < 30 ? w.life / 30 : 1;
+    alpha = fadeInProgress * fadeOutProgress;
+
+    // Scale: start slightly small, grow, then shrink at end
+    const scale = 0.8 + fadeInProgress * 0.2;
+    const endScale = w.life < 20 ? 0.9 + (w.life / 20) * 0.1 : 1;
+
+    c.save();
+    c.translate(w.x, w.y);
+    c.scale(scale * endScale, scale * endScale);
+
+    // Glow layer
+    c.globalAlpha = alpha * 0.3;
+    c.font = `${w.size}px 'Cinzel', serif`;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillStyle = rgb(smoothColors.accent, 1);
+    c.filter = 'blur(8px)';
+    c.fillText(w.text, 0, 0);
+    c.filter = 'none';
+
+    // Main text
+    c.globalAlpha = alpha * 0.7;
+    c.fillStyle = rgb(smoothColors.accent, 1);
+    c.fillText(w.text, 0, 0);
+
+    // Bright inner
+    c.globalAlpha = alpha * 0.4;
+    c.fillStyle = rgb(COLORS.whitewash, 1);
+    c.fillText(w.text, 0, 0);
+
+    c.restore();
+  }
+}
+
+// ========================
+// PORTAL RENDERING
+// ========================
+let frameTime = 0;
+let rotationAngle = 0;
+let distortionPhase = 0;
+
+// Wobble system — organic, irregular edge deformation
+const WOBBLE_POINTS = 64; // resolution of the wobbly circle
+let wobbleOffsets = new Float32Array(WOBBLE_POINTS); // current offsets
+let wobbleTargets = new Float32Array(WOBBLE_POINTS); // target offsets
+let wobbleSpeeds = new Float32Array(WOBBLE_POINTS); // per-point lerp speed
+let popScale = 0; // beat pop impulse
+
+// Initialize random wobble targets
+for (let i = 0; i < WOBBLE_POINTS; i++) {
+  wobbleOffsets[i] = (Math.random() - 0.5) * 0.06;
+  wobbleTargets[i] = (Math.random() - 0.5) * 0.08;
+  wobbleSpeeds[i] = 0.01 + Math.random() * 0.03;
+}
+
+function updateWobble(dt) {
+  // Pop on beat — strong outward burst
+  if (beatPunch > 0.2) popScale = Math.max(popScale, beatPunch * 0.18);
+  popScale *= 0.85; // decay
+
+  for (let i = 0; i < WOBBLE_POINTS; i++) {
+    // Lerp toward target
+    wobbleOffsets[i] += (wobbleTargets[i] - wobbleOffsets[i]) * wobbleSpeeds[i];
+
+    // When close to target, pick a new random target
+    if (Math.abs(wobbleOffsets[i] - wobbleTargets[i]) < 0.005) {
+      wobbleTargets[i] = (Math.random() - 0.5) * (0.06 + smoothBass * 0.08);
+      wobbleSpeeds[i] = 0.008 + Math.random() * 0.025;
+    }
+
+    // Add bass-driven bulge — low frequency pushes outward irregularly
+    wobbleOffsets[i] += Math.sin(frameTime * 1.2 + i * 0.4) * smoothBass * 0.003;
+  }
+}
+
+// Draw a wobbly circle path (does NOT fill/stroke — caller does that)
+// cx, cy = center, r = base radius
+function wobbleCirclePath(c, cx, cy, r, phaseOffset, wobbleAmount) {
+  c.beginPath();
+  const amt = wobbleAmount || 1;
+  for (let i = 0; i <= WOBBLE_POINTS; i++) {
+    const idx = i % WOBBLE_POINTS;
+    const angle = (i / WOBBLE_POINTS) * Math.PI * 2;
+
+    // Combine stored wobble with some sin-based organic movement
+    const w = wobbleOffsets[idx] * amt;
+    const organic = Math.sin(angle * 3 + frameTime * 0.7 + (phaseOffset || 0)) * 0.015 * amt
+                  + Math.sin(angle * 5 - frameTime * 0.4 + (phaseOffset || 0) * 2) * 0.01 * amt;
+    const pop = popScale * (0.8 + Math.sin(angle * 2 + frameTime * 3) * 0.2);
+    const rr = r * (1 + w + organic + pop);
+
+    const x = cx + Math.cos(angle) * rr;
+    const y = cy + Math.sin(angle) * rr;
+    if (i === 0) c.moveTo(x, y);
+    else c.lineTo(x, y);
+  }
+  c.closePath();
+}
+
+// ========================
+// SCRATCH / DUST PARTICLES
+// ========================
+const MAX_SCRATCHES = 60;
+let scratchParticles = [];
+
+function spawnScratch(burst) {
+  const count = burst ? 8 + Math.floor(Math.random() * 6) : 1;
+  for (let n = 0; n < count; n++) {
+    if (scratchParticles.length >= MAX_SCRATCHES) break;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.3 + Math.random() * 1.5 + (burst ? 1.5 : 0);
+    const isScratch = Math.random() < 0.4; // 40% scratch lines, 60% dust specks
+    scratchParticles.push({
+      x: CX + (Math.random() - 0.5) * W * 0.8,
+      y: CY + (Math.random() - 0.5) * H * 0.8,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 0.3, // slight upward drift
+      life: 30 + Math.floor(Math.random() * 50),
+      maxLife: 30 + Math.floor(Math.random() * 50),
+      size: isScratch ? 0 : 0.5 + Math.random() * 1.5,
+      // scratch line props
+      isScratch,
+      len: isScratch ? 8 + Math.random() * 25 : 0,
+      scratchAngle: isScratch ? Math.random() * Math.PI : 0,
+      flicker: Math.random(), // random brightness offset
+    });
+  }
+}
+
+function updateScratches() {
+  // Spawn ambient dust constantly, burst on beats
+  if (Math.random() < 0.15 + smoothRMS * 0.3) spawnScratch(false);
+  if (beatPunch > 0.3) spawnScratch(true);
+
+  for (let i = scratchParticles.length - 1; i >= 0; i--) {
+    const p = scratchParticles[i];
+    p.life--;
+    if (p.life <= 0) { scratchParticles.splice(i, 1); continue; }
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.98;
+    p.vy *= 0.98;
+  }
+}
+
+function drawScratches(c) {
+  for (const p of scratchParticles) {
+    const fade = Math.min(1, p.life / 8) * Math.min(1, (p.maxLife - p.life) / 5);
+    const flick = 0.5 + Math.sin(frameTime * 40 + p.flicker * 100) * 0.5; // flicker
+    const alpha = fade * flick * (0.15 + smoothRMS * 0.2);
+    if (alpha < 0.01) continue;
+
+    c.save();
+    c.globalAlpha = alpha;
+
+    if (p.isScratch) {
+      // Thin white scratch line
+      c.strokeStyle = `rgba(255,250,240,${0.6 + Math.random() * 0.4})`;
+      c.lineWidth = 0.3 + Math.random() * 0.5;
+      c.beginPath();
+      c.moveTo(p.x, p.y);
+      c.lineTo(
+        p.x + Math.cos(p.scratchAngle) * p.len,
+        p.y + Math.sin(p.scratchAngle) * p.len
+      );
+      c.stroke();
+    } else {
+      // Dust speck
+      c.fillStyle = `rgba(255,250,235,${0.4 + Math.random() * 0.3})`;
+      c.beginPath();
+      c.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      c.fill();
+    }
+    c.restore();
+  }
+}
+
+function drawPortal(dt) {
+  frameTime += dt;
+  updateColors();
+  const c = offCtx;
+  c.clearRect(0, 0, W, H);
+
+  const sc = smoothColors;
+  const bassScale = 1 + smoothBass * 0.25 + beatPunch * 0.3;
+  const midSpeed = 0.25 + smoothMids * 1.8;
+  const highGlow = smoothHighs * 4;
+  const brightness = 0.6 + smoothRMS * 1.8;
+
+  rotationAngle += midSpeed * dt;
+  distortionPhase += (0.4 + smoothBass * 2.5) * dt;
+  updateWobble(dt);
+
+  // 1. Deep void background — pure black with subtle color tint
+  c.fillStyle = 'rgb(2,1,4)';
+  c.fillRect(0, 0, W, H);
+
+  // 2. Ambient nebula clouds — multiple drifting layers for richness
+  const nebulaR = Math.max(W, H) * 1.0;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+
+  // Primary nebula — large slow drift
+  const neb1 = c.createRadialGradient(
+    CX + Math.sin(frameTime * 0.08) * 80, CY + Math.cos(frameTime * 0.06) * 60,
+    0, CX, CY, nebulaR
+  );
+  neb1.addColorStop(0, rgb(sc.primary, 0.1 * brightness));
+  neb1.addColorStop(0.15, rgb(sc.secondary, 0.07 * brightness));
+  neb1.addColorStop(0.35, rgb(sc.glow, 0.04 * brightness));
+  neb1.addColorStop(0.6, rgb(sc.primary, 0.015 * brightness));
+  neb1.addColorStop(1, 'transparent');
+  c.fillStyle = neb1;
+  c.fillRect(0, 0, W, H);
+
+  // Secondary nebula — offset and counter-drifting
+  const neb2 = c.createRadialGradient(
+    CX + Math.cos(frameTime * 0.05) * 110, CY + Math.sin(frameTime * 0.04) * 90,
+    0, CX, CY, nebulaR * 0.75
+  );
+  neb2.addColorStop(0, rgb(sc.accent, 0.06 * brightness));
+  neb2.addColorStop(0.25, rgb(sc.glow, 0.03 * brightness));
+  neb2.addColorStop(0.5, rgb(sc.secondary, 0.015 * brightness));
+  neb2.addColorStop(1, 'transparent');
+  c.fillStyle = neb2;
+  c.fillRect(0, 0, W, H);
+
+  // Third nebula cloud — tighter, pulsing with bass
+  const neb3 = c.createRadialGradient(
+    CX + Math.sin(frameTime * 0.12) * 40, CY - Math.cos(frameTime * 0.1) * 50,
+    0, CX, CY, nebulaR * 0.5
+  );
+  neb3.addColorStop(0, rgb(sc.glow, 0.08 * brightness * (0.5 + smoothBass * 0.5)));
+  neb3.addColorStop(0.3, rgb(sc.accent, 0.03 * brightness));
+  neb3.addColorStop(1, 'transparent');
+  c.fillStyle = neb3;
+  c.fillRect(0, 0, W, H);
+  c.restore();
+
+  // 3. Conic gradient layers — richer, more color stops, deeper saturation
+  c.save();
+  c.translate(CX, CY);
+
+  for (let layer = 0; layer < 4; layer++) {
+    const speeds = [1, -0.35, 0.6, -0.2];
+    const alphas = [0.45, 0.2, 0.12, 0.07];
+    const sizes = [1.35, 1.15, 0.95, 1.5];
+
+    const layerAngle = rotationAngle * speeds[layer];
+    const layerScale = bassScale * (1 - layer * 0.05);
+    const layerAlpha = alphas[layer] * brightness;
+    const layerR = portalR * sizes[layer] * layerScale;
+
+    c.save();
+    c.rotate(layerAngle);
+
+    const conic = c.createConicGradient(0, 0, 0);
+    if (layer === 0) {
+      // Rich primary layer with many color transitions
+      conic.addColorStop(0, rgb([2, 1, 6], layerAlpha * 0.5));
+      conic.addColorStop(0.08, rgb(sc.glow, layerAlpha * 1.8));
+      conic.addColorStop(0.18, rgb(sc.primary, layerAlpha * 2.5));
+      conic.addColorStop(0.3, rgb(sc.secondary, layerAlpha * 2.8));
+      conic.addColorStop(0.42, rgb(sc.accent, layerAlpha * 3));
+      conic.addColorStop(0.5, rgb(sc.glow, layerAlpha * 2));
+      conic.addColorStop(0.6, rgb(sc.primary, layerAlpha * 2.5));
+      conic.addColorStop(0.72, rgb(sc.secondary, layerAlpha * 1.5));
+      conic.addColorStop(0.85, rgb(sc.glow, layerAlpha * 1));
+      conic.addColorStop(1, rgb([2, 1, 6], layerAlpha * 0.5));
+    } else if (layer === 1) {
+      conic.addColorStop(0, rgb(sc.secondary, layerAlpha * 0.8));
+      conic.addColorStop(0.2, rgb(sc.accent, layerAlpha * 1.2));
+      conic.addColorStop(0.5, rgb(sc.glow, layerAlpha * 0.6));
+      conic.addColorStop(0.8, rgb(sc.primary, layerAlpha * 1.5));
+      conic.addColorStop(1, rgb(sc.secondary, layerAlpha * 0.8));
+    } else if (layer === 2) {
+      conic.addColorStop(0, rgb(sc.accent, layerAlpha));
+      conic.addColorStop(0.33, rgb(sc.glow, layerAlpha * 0.5));
+      conic.addColorStop(0.66, rgb(sc.primary, layerAlpha * 0.7));
+      conic.addColorStop(1, rgb(sc.accent, layerAlpha));
+    } else {
+      // Outermost haze layer — very faint, largest
+      conic.addColorStop(0, rgb(sc.primary, layerAlpha * 0.3));
+      conic.addColorStop(0.5, rgb(sc.secondary, layerAlpha * 0.2));
+      conic.addColorStop(1, rgb(sc.primary, layerAlpha * 0.3));
+    }
+
+    c.fillStyle = conic;
+    wobbleCirclePath(c, 0, 0, layerR, layer * 1.5, 1 + layer * 0.3);
+    c.fill();
+    c.restore();
+  }
+
+  // 4. Gradient arms — frequency-colored, more of them, varied widths
+  for (let i = 0; i < 8; i++) {
+    const armAngle = rotationAngle * (i % 2 === 0 ? 1 : 0.7) + (i / 8) * Math.PI * 2;
+    const armR = portalR * bassScale * (0.9 + Math.sin(frameTime * 0.4 + i * 1.0) * 0.15);
+    const spread = (0.18 + smoothMids * 0.12) * (0.6 + (i % 3) * 0.3);
+    const armAlpha = (0.06 + smoothMids * 0.1) * brightness;
+    const cols = [sc.primary, sc.secondary, sc.accent, sc.glow];
+    const armCol = cols[i % 4];
+
+    c.save();
+    c.rotate(armAngle);
+    c.globalCompositeOperation = 'lighter';
+
+    const armGrad = c.createRadialGradient(0, 0, portalR * 0.08, armR * 0.25, 0, armR);
+    armGrad.addColorStop(0, rgb(armCol, armAlpha * 0.2));
+    armGrad.addColorStop(0.2, rgb(armCol, armAlpha * 0.8));
+    armGrad.addColorStop(0.45, rgb(armCol, armAlpha));
+    armGrad.addColorStop(0.7, rgb(armCol, armAlpha * 0.3));
+    armGrad.addColorStop(1, 'transparent');
+
+    c.fillStyle = armGrad;
+    c.beginPath();
+    c.moveTo(0, 0);
+    c.arc(0, 0, armR, -spread, spread);
+    c.closePath();
+    c.fill();
+    c.restore();
+  }
+
+  c.restore();
+
+  // 5. Energy rings — more rings, thinner, with inner glow
+  c.save();
+  c.translate(CX, CY);
+  c.globalCompositeOperation = 'lighter';
+  for (let r = 0; r < 6; r++) {
+    const ringR = portalR * (0.18 + r * 0.14) * bassScale;
+    const wobble = Math.sin(frameTime * (0.8 + r * 0.35) + r * 1.7) * (2 + smoothBass * 18);
+    const ringAlpha = (0.015 + smoothHighs * 0.03 + beatPunch * 0.025) * brightness;
+    const ringCol = [sc.accent, sc.glow, sc.secondary, sc.primary, sc.accent, sc.glow][r];
+    c.strokeStyle = rgb(ringCol, ringAlpha);
+    c.lineWidth = 0.3 + smoothRMS * 1.2;
+    // Use wobble system for ring shape
+    c.beginPath();
+    const ringPhase = r * 2.1;
+    for (let i = 0; i <= WOBBLE_POINTS; i++) {
+      const idx = i % WOBBLE_POINTS;
+      const a = (i / WOBBLE_POINTS) * Math.PI * 2;
+      const w = wobbleOffsets[idx] * 0.6;
+      const sineWob = Math.sin(a * (3 + r) + frameTime * 1.2 + r * 0.6) * wobble / ringR;
+      const pop = popScale * (0.7 + Math.sin(a * 2 + frameTime * 3) * 0.3);
+      const rr = ringR * (1 + w + sineWob + pop);
+      const x = Math.cos(a) * rr;
+      const y = Math.sin(a) * rr;
+      if (i === 0) c.moveTo(x, y);
+      else c.lineTo(x, y);
+    }
+    c.closePath();
+    c.stroke();
+  }
+  c.restore();
+
+  // 6. The Abyss — deep black center that feels truly bottomless
+  // Multiple overlapping gradients create a deep concave illusion
+  const abyssR = portalR * 0.42 * bassScale;
+
+  // Bright hot rim right at the edge of the abyss
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const rimGrad = c.createRadialGradient(CX, CY, abyssR * 0.7, CX, CY, abyssR * 1.4);
+  rimGrad.addColorStop(0, 'transparent');
+  rimGrad.addColorStop(0.35, rgb(sc.accent, 0.08 * brightness));
+  rimGrad.addColorStop(0.55, rgb(sc.primary, 0.12 * brightness));
+  rimGrad.addColorStop(0.7, rgb(sc.glow, 0.06 * brightness));
+  rimGrad.addColorStop(1, 'transparent');
+  c.fillStyle = rimGrad;
+  c.fillRect(0, 0, W, H);
+  c.restore();
+
+  // Inner color bleed — faint color at the lip of the void
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const lipGrad = c.createRadialGradient(CX, CY, abyssR * 0.5, CX, CY, abyssR * 0.95);
+  lipGrad.addColorStop(0, 'transparent');
+  lipGrad.addColorStop(0.6, rgb(sc.accent, 0.04 * brightness));
+  lipGrad.addColorStop(0.85, rgb(sc.primary, 0.06 * brightness));
+  lipGrad.addColorStop(1, rgb(sc.glow, 0.02 * brightness));
+  c.fillStyle = lipGrad;
+  wobbleCirclePath(c, CX, CY, abyssR * 1.0, 3.0, 0.7);
+  c.fill();
+  c.restore();
+
+  // The void itself — layered darkness for depth perception
+  // Outer darkness ring
+  const v1 = c.createRadialGradient(CX, CY, 0, CX, CY, abyssR * 1.05);
+  v1.addColorStop(0, 'rgb(0,0,0)');
+  v1.addColorStop(0.45, 'rgb(0,0,0)');
+  v1.addColorStop(0.65, 'rgba(0,0,0,0.98)');
+  v1.addColorStop(0.8, 'rgba(1,0,3,0.9)');
+  v1.addColorStop(0.92, 'rgba(3,1,8,0.6)');
+  v1.addColorStop(1, 'transparent');
+  c.fillStyle = v1;
+  c.fillRect(CX - abyssR * 1.1, CY - abyssR * 1.1, abyssR * 2.2, abyssR * 2.2);
+
+  // Inner pure black — the true void, slightly pulsing
+  const innerR = abyssR * (0.55 + smoothBass * 0.08);
+  const v2 = c.createRadialGradient(CX, CY, 0, CX, CY, innerR);
+  v2.addColorStop(0, 'rgb(0,0,0)');
+  v2.addColorStop(0.8, 'rgb(0,0,0)');
+  v2.addColorStop(1, 'rgba(0,0,0,0.85)');
+  c.fillStyle = v2;
+  wobbleCirclePath(c, CX, CY, innerR, 4.5, 0.5);
+  c.fill();
+
+  // Subtle depth gradient at very center — hints of impossibly deep color
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const depthR = abyssR * 0.3;
+  const depthGrad = c.createRadialGradient(CX, CY, 0, CX, CY, depthR);
+  depthGrad.addColorStop(0, rgb(sc.primary, 0.015 * brightness));
+  depthGrad.addColorStop(0.5, rgb(sc.accent, 0.008 * brightness));
+  depthGrad.addColorStop(1, 'transparent');
+  c.fillStyle = depthGrad;
+  wobbleCirclePath(c, CX, CY, depthR, 6.0, 0.4);
+  c.fill();
+  c.restore();
+
+  // 7. Edge glow — wider, richer
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const edgeR = portalR * 1.12 * bassScale;
+  const edgeInner = portalR * 0.7 * bassScale;
+  const edgeGrad = c.createRadialGradient(CX, CY, edgeInner, CX, CY, edgeR);
+  edgeGrad.addColorStop(0, 'transparent');
+  edgeGrad.addColorStop(0.3, rgb(sc.glow, highGlow * 0.03));
+  edgeGrad.addColorStop(0.55, rgb(sc.accent, highGlow * 0.05));
+  edgeGrad.addColorStop(0.75, rgb(sc.primary, highGlow * 0.07));
+  edgeGrad.addColorStop(0.9, rgb(sc.secondary, highGlow * 0.03));
+  edgeGrad.addColorStop(1, rgb(sc.glow, highGlow * 0.01));
+  c.fillStyle = edgeGrad;
+  wobbleCirclePath(c, CX, CY, edgeR, 0.5, 1.2);
+  c.fill();
+  c.restore();
+
+  // 8. Text system
+  updateWords();
+  drawWords(c);
+
+  // 9. Distortion
+  applyDistortion(c);
+
+  // ── Composite to main canvas ──
+
+  // 10. Multi-pass bloom — extra pass for richer glow
+  blurCtx.drawImage(offCanvas, 0, 0, blurCanvas.width, blurCanvas.height);
+  blurCtx.filter = 'blur(12px)';
+  blurCtx.drawImage(blurCanvas, 0, 0);
+  blurCtx.filter = 'blur(6px)';
+  blurCtx.drawImage(blurCanvas, 0, 0);
+  blurCtx.filter = 'blur(3px)';
+  blurCtx.drawImage(blurCanvas, 0, 0);
+  blurCtx.filter = 'none';
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.drawImage(offCanvas, 0, 0);
+
+  // Bloom pass 1 — main glow
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = 0.45 + smoothRMS * 0.4 + beatPunch * 0.3;
+  ctx.drawImage(blurCanvas, 0, 0, W, H);
+  ctx.restore();
+
+  // Bloom pass 2 — wide soft halo
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = 0.2 + beatPunch * 0.2;
+  ctx.drawImage(blurCanvas, -W * 0.03, -H * 0.03, W * 1.06, H * 1.06);
+  ctx.restore();
+
+  // Bloom pass 3 — extra wide for luscious falloff
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = 0.08 + smoothBass * 0.06;
+  ctx.drawImage(blurCanvas, -W * 0.06, -H * 0.06, W * 1.12, H * 1.12);
+  ctx.restore();
+
+  // Beat flash — colored by current palette
+  if (beatPunch > 0.05) {
+    ctx.save();
+    const flashGrad = ctx.createRadialGradient(CX, CY, 0, CX, CY, portalR * 1.5);
+    flashGrad.addColorStop(0, rgb(sc.accent, beatPunch * 0.15));
+    flashGrad.addColorStop(0.3, rgb(sc.primary, beatPunch * 0.08));
+    flashGrad.addColorStop(0.6, rgb(sc.secondary, beatPunch * 0.04));
+    flashGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = flashGrad;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+
+  // 11. Scratch / dust particles (drawn on main canvas for crispy look)
+  updateScratches();
+  drawScratches(ctx);
+
+  // 12. Heavy film grain — grungy noise overlay
+  ctx.save();
+  ctx.globalAlpha = 0.09 + smoothBass * 0.04 + beatPunch * 0.06;
+  ctx.globalCompositeOperation = 'overlay';
+  const noiseX = Math.floor(Math.random() * 50);
+  const noiseY = Math.floor(Math.random() * 50);
+  ctx.drawImage(noiseCanvas, noiseX, noiseY, W, H, 0, 0, W, H);
+  // Second grain pass, offset, for denser texture
+  ctx.globalAlpha = 0.06 + smoothRMS * 0.03;
+  ctx.globalCompositeOperation = 'soft-light';
+  const noiseX2 = Math.floor(Math.random() * 50);
+  const noiseY2 = Math.floor(Math.random() * 50);
+  ctx.drawImage(noiseCanvas, noiseX2, noiseY2, W, H, 0, 0, W, H);
+  ctx.restore();
+
+  // Regenerate grain every ~6 frames for animated film texture
+  if (Math.random() < 0.16) generateNoise(noiseCanvas.width, noiseCanvas.height);
+
+  // 12. Vignette — heavy darkness at edges
+  const vigGrad = ctx.createRadialGradient(CX, CY, portalR * 0.35, CX, CY, Math.max(W, H) * 0.68);
+  vigGrad.addColorStop(0, 'transparent');
+  vigGrad.addColorStop(0.45, 'rgba(0,0,0,0.15)');
+  vigGrad.addColorStop(0.7, 'rgba(0,0,0,0.45)');
+  vigGrad.addColorStop(0.88, 'rgba(0,0,0,0.8)');
+  vigGrad.addColorStop(1, 'rgba(0,0,0,0.97)');
+  ctx.fillStyle = vigGrad;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// Distortion: pixel displacement using getImageData
+function applyDistortion(c) {
+  // Only apply when there's bass energy, and limit the area for perf
+  if (smoothBass < 0.02) return;
+
+  const intensity = smoothBass * 12 + beatPunch * 8;
+  const regionSize = Math.min(Math.floor(portalR * 2.2), W, H);
+  const sx = Math.max(0, Math.floor(CX - regionSize / 2));
+  const sy = Math.max(0, Math.floor(CY - regionSize / 2));
+  const sw = Math.min(regionSize, W - sx);
+  const sh = Math.min(regionSize, H - sy);
+
+  if (sw <= 0 || sh <= 0) return;
+
+  let imgData;
+  try {
+    imgData = c.getImageData(sx, sy, sw, sh);
+  } catch(e) { return; }
+
+  const src = new Uint8ClampedArray(imgData.data);
+  const dst = imgData.data;
+  const phase = distortionPhase;
+
+  // Sample every 2nd pixel for performance
+  for (let y = 0; y < sh; y += 1) {
+    for (let x = 0; x < sw; x += 1) {
+      const dx = x - sw / 2;
+      const dy = y - sh / 2;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const normDist = dist / (regionSize / 2);
+
+      // Displacement scales down near edges and center
+      const envelope = Math.sin(Math.min(normDist, 1) * Math.PI);
+      const displaceX = Math.sin(phase + y * 0.02 + x * 0.01) * intensity * envelope;
+      const displaceY = Math.cos(phase * 0.8 + x * 0.02 - y * 0.01) * intensity * envelope;
+
+      let srcX = Math.round(x + displaceX);
+      let srcY = Math.round(y + displaceY);
+      srcX = Math.max(0, Math.min(sw - 1, srcX));
+      srcY = Math.max(0, Math.min(sh - 1, srcY));
+
+      const dstIdx = (y * sw + x) * 4;
+      const srcIdx = (srcY * sw + srcX) * 4;
+      dst[dstIdx]     = src[srcIdx];
+      dst[dstIdx + 1] = src[srcIdx + 1];
+      dst[dstIdx + 2] = src[srcIdx + 2];
+      dst[dstIdx + 3] = src[srcIdx + 3];
+    }
+  }
+
+  c.putImageData(imgData, sx, sy);
+}
+
+
+// ========================
+// UI EVENTS
+// ========================
+
+// Drop zone
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const files = e.dataTransfer.files;
+  if (files.length > 0 && files[0].type.startsWith('audio')) {
+    loadAudioFile(files[0]);
+  }
+});
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) loadAudioFile(e.target.files[0]);
+});
+
+// Play/Pause
+playBtn.addEventListener('click', togglePlay);
+
+// Volume
+volumeSlider.addEventListener('input', () => {
+  if (gainNode) gainNode.gain.value = parseFloat(volumeSlider.value);
+});
+
+// Scrubber
+let isScrubbing = false;
+
+function scrubFromEvent(e) {
+  const rect = scrubberWrap.getBoundingClientRect();
+  let frac = (e.clientX - rect.left) / rect.width;
+  frac = Math.max(0, Math.min(1, frac));
+  seekTo(frac);
+  updateScrubber(frac);
+}
+
+scrubberWrap.addEventListener('mousedown', (e) => {
+  isScrubbing = true;
+  scrubFromEvent(e);
+});
+window.addEventListener('mousemove', (e) => {
+  if (isScrubbing) scrubFromEvent(e);
+});
+window.addEventListener('mouseup', () => { isScrubbing = false; });
+
+function updateScrubber(frac) {
+  const pct = (frac * 100).toFixed(2) + '%';
+  scrubberFill.style.width = pct;
+  scrubberThumb.style.left = pct;
+}
+
+// Keyboard shortcuts
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+});
+
+// ========================
+// MAIN LOOP
+// ========================
+let lastTime = 0;
+
+function loop(timestamp) {
+  const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+  lastTime = timestamp;
+
+  analyzeAudio();
+  drawPortal(dt);
+
+  // Update UI
+  if (audioBuffer && !isScrubbing) {
+    const ct = getCurrentTime();
+    const frac = ct / audioDuration;
+    updateScrubber(frac);
+    timeDisplay.textContent = formatTime(ct) + ' / ' + formatTime(audioDuration);
+  }
+
+  requestAnimationFrame(loop);
+}
+
+requestAnimationFrame(loop);
+
+// ========================
+// RECORDING SYSTEM
+// ========================
+const recBtn       = document.getElementById('rec-btn');
+const recIndicator = document.getElementById('rec-indicator');
+const recTime      = document.getElementById('rec-time');
+const recSettings  = document.getElementById('rec-settings');
+const resSelect    = document.getElementById('res-select');
+const bitrateSelect = document.getElementById('bitrate-select');
+const downloadToast = document.getElementById('download-toast');
+const downloadInfo  = document.getElementById('download-info');
+const downloadBtn   = document.getElementById('download-btn');
+const downloadDismiss = document.getElementById('download-dismiss');
+
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+let recordingStart = 0;
+let recTimerRaf = null;
+let downloadUrl = null;
+let recAudioCtx = null;
+let recSource = null;
+
+function pickMimeType() {
+  const candidates = [
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp9',
+    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=vp8',
+    'video/webm'
+  ];
+  for (const mime of candidates) {
+    if (MediaRecorder.isTypeSupported(mime)) return mime;
+  }
+  return '';
+}
+
+function updateRecTimer() {
+  if (!isRecording) return;
+  const elapsed = (performance.now() - recordingStart) / 1000;
+  const m = Math.floor(elapsed / 60);
+  const s = Math.floor(elapsed % 60);
+  recTime.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  recTimerRaf = requestAnimationFrame(updateRecTimer);
+}
+
+// Show settings panel when audio is loaded
+function showRecSettings() {
+  recSettings.classList.add('visible');
+}
+
+recBtn.addEventListener('click', () => {
+  if (!audioBuffer) return;
+  if (isRecording) {
+    stopRecording();
+    return;
+  }
+  startRecording();
+});
+
+function startRecording() {
+  if (!audioBuffer || isRecording) return;
+
+  // Clean up previous
+  if (downloadUrl) {
+    URL.revokeObjectURL(downloadUrl);
+    downloadUrl = null;
+  }
+  downloadToast.classList.remove('visible');
+
+  const mimeType = pickMimeType();
+  if (!mimeType) {
+    alert('Your browser does not support WebM recording.');
+    return;
+  }
+
+  const bitrate = parseInt(bitrateSelect.value, 10);
+
+  // Pause current playback
+  if (isPlaying) pauseAudio();
+  pauseOffset = 0;
+
+  // Create a separate AudioContext for recording that routes to both speakers and capture
+  recAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  recSource = recAudioCtx.createBufferSource();
+  recSource.buffer = audioBuffer;
+
+  const recGain = recAudioCtx.createGain();
+  recGain.gain.value = parseFloat(volumeSlider.value);
+
+  // Create analyser on recording context too
+  const recAnalyser = recAudioCtx.createAnalyser();
+  recAnalyser.fftSize = FFT_SIZE;
+  recAnalyser.smoothingTimeConstant = 0.8;
+
+  const recDest = recAudioCtx.createMediaStreamDestination();
+
+  recSource.connect(recAnalyser);
+  recAnalyser.connect(recGain);
+  recGain.connect(recAudioCtx.destination);
+  recGain.connect(recDest);
+
+  // Swap the analyser so the visualizer reads from the recording context
+  analyser = recAnalyser;
+  freqData = new Uint8Array(recAnalyser.frequencyBinCount);
+  timeData = new Uint8Array(recAnalyser.frequencyBinCount);
+
+  // Combine canvas + audio
+  const canvasStream = canvas.captureStream(60);
+  const combined = new MediaStream([
+    ...canvasStream.getVideoTracks(),
+    ...recDest.stream.getAudioTracks()
+  ]);
+
+  recordedChunks = [];
+  try {
+    mediaRecorder = new MediaRecorder(combined, {
+      mimeType: mimeType,
+      videoBitsPerSecond: bitrate
+    });
+  } catch (err) {
+    alert('Failed to create recorder: ' + err.message);
+    recAudioCtx.close();
+    return;
+  }
+
+  mediaRecorder.ondataavailable = (e) => {
+    if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+  };
+
+  mediaRecorder.onstop = () => {
+    isRecording = false;
+    cancelAnimationFrame(recTimerRaf);
+    recIndicator.classList.remove('active');
+    recBtn.classList.remove('recording');
+
+    // Restore original audio context analyser
+    if (audioCtx) {
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = FFT_SIZE;
+      analyser.smoothingTimeConstant = 0.8;
+      analyser.connect(gainNode);
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+      timeData = new Uint8Array(analyser.frequencyBinCount);
+    }
+
+    if (recordedChunks.length === 0) return;
+
+    const blob = new Blob(recordedChunks, { type: mimeType });
+    const sizeMB = (blob.size / (1024 * 1024)).toFixed(1);
+    downloadUrl = URL.createObjectURL(blob);
+    downloadInfo.textContent = 'Recording complete — ' + sizeMB + ' MB (' + mimeType + ')';
+    downloadToast.classList.add('visible');
+  };
+
+  mediaRecorder.onerror = (e) => {
+    alert('Recording error: ' + (e.error ? e.error.message : 'unknown'));
+    stopRecording();
+  };
+
+  recSource.onended = () => {
+    if (isRecording && mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+    }
+    if (recAudioCtx && recAudioCtx.state !== 'closed') {
+      recAudioCtx.close().catch(() => {});
+    }
+  };
+
+  // Mark as playing for the visualizer's analyzeAudio()
+  isPlaying = true;
+  updatePlayIcon();
+
+  // Start both
+  try {
+    mediaRecorder.start(1000);
+    recSource.start(0);
+  } catch (err) {
+    alert('Failed to start: ' + err.message);
+    recAudioCtx.close();
+    return;
+  }
+
+  isRecording = true;
+  recordingStart = performance.now();
+  recIndicator.classList.add('active');
+  recBtn.classList.add('recording');
+  updateRecTimer();
+}
+
+function stopRecording() {
+  if (!isRecording) return;
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+  }
+  if (recSource) {
+    try { recSource.stop(); } catch(e) {}
+  }
+  isPlaying = false;
+  updatePlayIcon();
+}
+
+downloadBtn.addEventListener('click', () => {
+  if (!downloadUrl) return;
+  const a = document.createElement('a');
+  a.href = downloadUrl;
+  const baseName = (filenameSpan.textContent || 'kinship').replace(/\.[^.]+$/, '');
+  a.download = baseName + '-portal.webm';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+downloadDismiss.addEventListener('click', () => {
+  downloadToast.classList.remove('visible');
+});
+
+// Show rec settings when controls appear
+const origLoadAudio = loadAudioFile;
+loadAudioFile = function(file) {
+  origLoadAudio(file);
+  showRecSettings();
+};
+</script>
+</body>
+</html>
